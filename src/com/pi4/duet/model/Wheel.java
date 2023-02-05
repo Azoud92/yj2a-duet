@@ -7,12 +7,17 @@ public class Wheel {
 	
 	public final Ball ball_1, ball_2;
 	
-	private double angle = 0;
+	private double angle;
 	private double rotationSpeed;
 	
 	public Wheel() {
-		// A FAIRE : Initialiser les différents composants ci-dessus
-		// ...
+		this.center=new Point(0,0);
+		this.radius=50;
+		ball_2=new Ball();
+		ball_1=new Ball();
+		this.angle=0;
+		this.rotationSpeed=1;
+
 	}
 	
 	public int getRadius() { return radius; }

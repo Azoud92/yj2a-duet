@@ -14,6 +14,9 @@ public class GamePlane {
 	public GamePlane() {
 		// A FAIRE : Initialiser les différents composants ci-dessus
 		// ...
+		this.p1 = null;//A MODIFIER
+		this.p2 = null;//A MODIFIER
+		wheel = new Wheel();//A MODIFIER
 	}
 	
 	public void update() { // ajouter les param. nécessaires
