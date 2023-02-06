@@ -1,18 +1,19 @@
 package com.pi4.duet.model;
 import java.lang.Math;
 
+
 public class Wheel {
 	
 	private int radius;
 	private Point center;
 	
-	public final Ball ball_1, ball_2;
+	public  Ball ball_1, ball_2;
 	
 	private double angle;
 	private double rotationSpeed;
 	
 	public Wheel() {
-		this.center=new Point(0,0);
+		this.center=new Point(200,150);
 		this.radius=50;
 		ball_2=new Ball(new Point(center.getX()+radius, center.getY()));
 		ball_1=new Ball(new Point(center.getX()-radius, center.getY()));
@@ -41,7 +42,7 @@ public class Wheel {
 	 */
 	
 	public void rotateHoraire() {
-		setAngle(getAngle()-0.01745*5);
+		setAngle(getAngle()-0.01745*10);
 		//Changement coordonées Ball 2;
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
@@ -50,7 +51,7 @@ public class Wheel {
 		ball_1.getCenterBall().setY(-ball_2.getCenterBall().getY());
 	}
 	public void rotateContreHoraire(){
-		setAngle(getAngle()+0.01745*5);
+		setAngle(getAngle()+0.01745*10);
 		//Changement coordonées Ball 2;
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
@@ -64,7 +65,7 @@ public class Wheel {
 		return false;
 	}
 	
-	private class Ball {
+	public class Ball {
 		
 		int radius;
 		Point centerBall;
