@@ -2,8 +2,8 @@ package com.pi4.duet.model;
 
 public class Obstacle {
 	
-	private int width, height;
-	private Point[] coord; // représ. les 4 points (haut gauche, haut droit, bas gauche, bas droit) du rectangle formé
+	private int width, height; 
+	private Point[] coord; // représ. les 4 points (haut gauche, haut droit, bas droit, bas gauche) du rectangle formé
 	private double velocity, rotationSpeed, angle = 0;
 	
 	public Obstacle(int width, int height, Point pos, double velocity, double rotationSpeed, double angle) {
@@ -11,8 +11,8 @@ public class Obstacle {
 		this.height = height;
 		coord[0] = pos; // position du Rectangle (en haut à gauche)
 		coord[1] = new Point(coord[0].getX() + width, coord[0].getY());
-		coord[2] = new Point(coord[0].getX(), coord[0].getY() + height);
-		coord[3] = new Point(coord[0].getX() + width, coord[0].getY() + height);
+		coord[2] = new Point(coord[0].getX() + width, coord[0].getY() + height);
+		coord[3] = new Point(coord[0].getX(), coord[0].getY() + height);
 		
 		this.velocity = velocity;
 		this.rotationSpeed = rotationSpeed;
