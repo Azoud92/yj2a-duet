@@ -18,7 +18,7 @@ public class Obstacle {
 		this.velocity = velocity;
 		this.rotationSpeed = rotationSpeed;
 		this.angle = angle;
-
+		rotate(angle);
 	}
 	
 	public void update(int a) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies

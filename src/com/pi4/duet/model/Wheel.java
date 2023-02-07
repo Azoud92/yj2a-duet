@@ -84,75 +84,34 @@ public class Wheel {
 		double distance(Point a,Point b){
 			return Math.sqrt((a.getX()-b.getX())*(a.getX()-b.getX())+(a.getY()-b.getY())*(a.getY()-b.getY()));
 		}
-		
-		boolean isInCollision(Obstacle o) {
-			/*Pour résumer : il y a quatres conditions qui verifient si une des balles touchent un des quatres segment
-			du quadrilatère
 
-			Pour cela, on prend deux points, du quadrilatère et  on créer la fonction affine associé et on regarde si le
-			centre de la balle vérifie l'équation de la droite engendrée par le fonction, si c'est le cas c'est que la
-			balle appartient à la droite.
-			De plus il faut rajouter deux conditions qui vérifie que la distance entre la balle et les deux points est
-			inférieur à la distance totale : cette conditions reflète le fait que la balle est dans la droite mais
-			aussi dans le segment des deux points
-			 */
+		public double produitVectoriel(Vecteur v1,Vecteur v2){
+			return v1.getX()*v2.getY()-v1.getY()*v2.getX();
+		}
+		public double produitScalaire(Vecteur v1,Vecteur v2){
+			return v1.getX()*v2.getX()+v1.getY()*v2.getY();
+		}
+		public boolean isInCollision(Obstacle o){
+			//Segment premier
+			Vecteur v11=new Vecteur(o.getCoords()[0],o.getCoords()[1]);
+			Vecteur v12=new Vecteur(o.getCoords()[0],centerBall);
+			if(produitVectoriel(v11,v12)==0&&produitScalaire(v11,v12)>0&&produitScalaire(v11,v12)<=produitScalaire(v11,v11)) return true;
 
-			//Premier segment
-			double dist1=distance(o.getCoords()[0],o.getCoords()[1]);
-			if(o.getCoords()[0].getX()-o.getCoords()[1].getX()==0){
-				if(o.getCoords()[0].getX()== centerBall.getX()&&distance(o.getCoords()[0],centerBall)<=dist1&&distance(o.getCoords()[1],centerBall)<=dist1){
-					return true;
-				}
-			}else{
-				double coefD1=(o.getCoords()[0].getY()-o.getCoords()[1].getY())/(o.getCoords()[0].getX()-o.getCoords()[1].getX());
-				double ordonneO1=o.getCoords()[0].getY()-coefD1*o.getCoords()[0].getX();
-				if(distance(o.getCoords()[0],centerBall)<=dist1&&distance(o.getCoords()[1],centerBall)<=dist1&&centerBall.getY()==coefD1*centerBall.getX()+ordonneO1) {
-					return true;
-				}
-			}
-			//Deuxième segment
-			double dist2=distance(o.getCoords()[0],o.getCoords()[2]);
-			if(o.getCoords()[0].getX()-o.getCoords()[2].getX()==0){
-				if(o.getCoords()[0].getX()== centerBall.getX()&&distance(o.getCoords()[0],centerBall)<=dist2&&distance(o.getCoords()[2],centerBall)<=dist2){
-					return true;
-				}
-			}else{
-				double coefD2=(o.getCoords()[0].getY()-o.getCoords()[2].getY())/(o.getCoords()[0].getX()-o.getCoords()[2].getX());
-				double ordonneO2=o.getCoords()[0].getY()-coefD2*o.getCoords()[0].getX();
-				if(distance(o.getCoords()[0],centerBall)<=dist2&&distance(o.getCoords()[2],centerBall)<=dist2&&centerBall.getY()==coefD2*centerBall.getX()+ordonneO2){
-					return true;
-				}
-			}
-			//Troisième segment
-			double dist3=distance(o.getCoords()[1],o.getCoords()[3]);
-			if(o.getCoords()[1].getX()-o.getCoords()[3].getX()==0){
-				if(o.getCoords()[1].getX()== centerBall.getX()&&distance(o.getCoords()[1],centerBall)<=dist3&&distance(o.getCoords()[3],centerBall)<=dist3){
-					return true;
-				}
-			}else{
-				double coefD3=(o.getCoords()[1].getY()-o.getCoords()[3].getY())/(o.getCoords()[1].getX()-o.getCoords()[3].getX());
-				double ordonneO3=o.getCoords()[1].getY()-coefD3*o.getCoords()[1].getX();
-				if(distance(o.getCoords()[1],centerBall)<=dist3&&distance(o.getCoords()[3],centerBall)<=dist3&&centerBall.getY()==coefD3*centerBall.getX()+ordonneO3){
-					return true;
-				}
-			}
+			//Segment deuxième
+			Vecteur v21=new Vecteur(o.getCoords()[0],o.getCoords()[2]);
+			Vecteur v22=new Vecteur(o.getCoords()[0],centerBall);
+			if(produitVectoriel(v21,v22)==0&&produitScalaire(v21,v22)>0&&produitScalaire(v21,v22)<=produitScalaire(v21,v21)) return true;
 
-			//Quatrième segment
-			double dist4=distance(o.getCoords()[2],o.getCoords()[3]);
-			if(o.getCoords()[2].getX()-o.getCoords()[3].getX()==0){
-				if(o.getCoords()[2].getX()== centerBall.getX()&&distance(o.getCoords()[2],centerBall)<=dist4&&distance(o.getCoords()[3],centerBall)<=dist4){
-					return true;
-				}
-			}else{
-				double coefD4=(o.getCoords()[2].getY()-o.getCoords()[3].getY())/(o.getCoords()[2].getX()-o.getCoords()[3].getX());
-				double ordonneO4=o.getCoords()[2].getY()-coefD4*o.getCoords()[2].getX();
-				if(distance(o.getCoords()[2],centerBall)<=dist4&&distance(o.getCoords()[3],centerBall)<=dist4&&centerBall.getY()==coefD4*centerBall.getX()+ordonneO4){
-					return true;
-				}
-			}
+			//Segment troisième
+			Vecteur v31=new Vecteur(o.getCoords()[1],o.getCoords()[3]);
+			Vecteur v32=new Vecteur(o.getCoords()[1],centerBall);
+			if(produitVectoriel(v31,v32)==0&&produitScalaire(v31,v32)>0&&produitScalaire(v31,v32)<=produitScalaire(v31,v31)) return true;
 
+			//Segment quatrième
+			Vecteur v41=new Vecteur(o.getCoords()[2],o.getCoords()[3]);
+			Vecteur v42=new Vecteur(o.getCoords()[2],centerBall);
+			if(produitVectoriel(v41,v42)==0&&produitScalaire(v41,v42)>0&&produitScalaire(v41,v42)<=produitScalaire(v41,v41)) return true;
 			return false;
-			//La méthode marche uniquement pour des quadrilatère
 		}
 		
 	}
@@ -162,7 +121,7 @@ public class Wheel {
 		System.out.println("Ball 2 "+w.ball_2.centerBall.getX()+" "+w.ball_2.centerBall.getY());
 		System.out.println("Ball 1 "+w.ball_1.centerBall.getX()+" "+w.ball_1.centerBall.getY());
 		Point p=new Point(250,100);
-		Obstacle o=new Obstacle(100,50,p,0,0,0);
+		Obstacle o=new Obstacle(0,50,p,0,0,0);
 		System.out.println(o.getCoords()[0].getX()+" "+o.getCoords()[0].getY());
 		System.out.println(o.getCoords()[2].getX()+" "+o.getCoords()[2].getY());
 		System.out.println(w.isLose(o));
