@@ -4,15 +4,19 @@ public class Obstacle {
 	
 	private int width, height;
 	private Point[] coord; // représ. les 4 points (haut gauche, haut droit, bas gauche, bas droit) du rectangle formé
+	private Point center;
+	
 	private double velocity, rotationSpeed, angle = 0;
 	
 	public Obstacle(int width, int height, Point pos, double velocity, double rotationSpeed, double angle) {
 		this.width = width;
 		this.height = height;
+		coord=new Point[4];
 		coord[0] = pos; // position du Rectangle (en haut à gauche)
 		coord[1] = new Point(coord[0].getX() + width, coord[0].getY());
 		coord[2] = new Point(coord[0].getX(), coord[0].getY() + height);
 		coord[3] = new Point(coord[0].getX() + width, coord[0].getY() + height);
+		center = new Point(coord[0].getX() + width / 2, coord[0].getY() + height / 2);
 		
 		this.velocity = velocity;
 		this.rotationSpeed = rotationSpeed;
@@ -34,11 +38,14 @@ public class Obstacle {
 	
 	private void rotate(double a) { // la rotation se fait par rapport au centre de la figure
 		angle = a;
-		double angleRadians = Math.toRadians(a);
+		double angleRadians = Math.toRadians(a);		
 		
 		for (Point p : coord) {
-			p.setX((p.getX() * Math.cos(angleRadians) - p.getY() * Math.sin(angleRadians)));
-			p.setY((p.getX() * Math.sin(angleRadians) + p.getY() * Math.cos(angleRadians)));
+			double newX = center.getX() + (p.getX() - center.getX()) * Math.cos(angleRadians) - (p.getY() - center.getY()) * Math.sin(angleRadians);
+			double newY = center.getY() + (p.getX() - center.getX()) * Math.sin(angleRadians) + (p.getY() - center.getY()) * Math.cos(angleRadians);
+
+			p.setX(newX);
+			p.setY(newY);
 		}
 	}
 	
@@ -58,5 +65,6 @@ public class Obstacle {
 	
 	public double getAngle() { return angle; }
 	public void setAngle(double a) { angle = a; }
+	
 	
 }
