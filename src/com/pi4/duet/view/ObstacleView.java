@@ -5,6 +5,7 @@ import java.awt.Polygon;
 
 import javax.swing.JPanel;
 
+import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 
 public class ObstacleView extends JPanel {
@@ -43,21 +44,9 @@ public class ObstacleView extends JPanel {
 		
 	}
 	
-	public void rotate(double a) { // la rotation se fait par rapport au centre de la figure
-		double angleRadians = Math.toRadians(a);
-		
-		for (Point po : coord) {
-			System.out.print("pos en x avant: " + po.getX()+"   ");
-			System.out.print("pos en y avant: " + po.getY());
-			System.out.println();
-			po.setX((po.getX() * Math.cos(angleRadians) - po.getY() * Math.sin(angleRadians)));
-			po.setY((po.getX() * Math.sin(angleRadians) + po.getY() * Math.cos(angleRadians)));
-			System.out.print("pos en x apres: " + po.getX()+"   ");
-			System.out.print("pos en y apres: " + po.getY());
-			System.out.println();
-			System.out.println();
-		}
-		setPosition(coord);
+	public void rotate(Obstacle o,double a) { // la rotation se fait par rapport au centre de la figure
+		o.rotate(90);
+		setPosition(o.getCoords());
 	}
 	
 	public Polygon getPolygon() {

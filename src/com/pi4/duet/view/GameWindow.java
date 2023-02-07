@@ -17,7 +17,7 @@ public class GameWindow extends JFrame{
 	private static final long serialVersionUID = 8560843128781641255L;
 	
 	private Dimension size;
-	private double scaleX, scaleY, scaleXY; // reprÈsente le coef multiplicateur ‡ appliquer selon la rÈsolution de l'ecran
+	private double scaleX, scaleY; // reprÈsente le coef multiplicateur ‡ appliquer selon la rÈsolution de l'ecran
 	private JFrame frame;
 	private JPanel container;
 	
@@ -29,7 +29,6 @@ public class GameWindow extends JFrame{
 
 			scaleX = (double) size.width / 1360; // on suppose qu'on compare la rÈsolution du client ‡†1360x768 pixels (soit 1360x705 sans la barre des taches)
 			scaleY = (double) size.height / 705;
-			scaleXY = (double) (size.width * size.height) / (1360.0 * 705.0);
 			
 			EventQueue.invokeLater(() -> { // on programme de fa√ßon thread-safe
 				frame = new JFrame();		

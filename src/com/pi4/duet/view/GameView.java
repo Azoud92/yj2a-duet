@@ -2,13 +2,15 @@ package com.pi4.duet.view;
 
 
 
-import java.awt.Color; 
+import java.awt.Color;  
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.pi4.duet.controller.GameViewController;
+import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.model.Wheel;
 
@@ -79,13 +82,45 @@ public class GameView extends JPanel implements KeyListener{
         this.add(ballBlue);
         this.add(ballRed);
         this.add(centre);
-
-        
-        
-
         
 		this.setLayout(null);
 		
+		
+		/*
+		 * CETTE PARTIE EST JUSTE POUR TESTER LA FONCTION ISLOSE QUI NE MARCHE PAS POUR L'INSTANT
+		 * PLUS TARD IL FAUDRA SUPPRIMER CETTE PARTIE.
+		 *
+		Obstacle o1 =new Obstacle(this.size.width/3, 10, new Point(this.size.width/3,150), 1, 1, 0);
+		ObstacleView ov1 = new ObstacleView(o1.getCoords());
+		obstacles.add(ov1);
+		this.add(ov1);
+		
+		
+		
+		Timer t = new Timer();
+		
+		TimerTask task = new TimerTask() {
+	        public void run() {
+	        	if(o1.getCoords()[3].getY()<=w.getCenter().getY()) {
+	        		o1.update(5);
+	    			setPositionObstacle(ov1, o1.getCoords());
+	    			//System.out.print("task ");
+	    			for(Point p : o1.getCoords()) {
+	    				System.out.print("x " + p.getX()+" ");
+	    				System.out.print("y " + p.getY()+" ");
+	    				System.out.println();
+	    			}
+	    			System.out.println();
+	    		}
+	    		if(w.isLose(o1)) {
+	    			System.out.println("PERDU");
+	    			t.cancel();
+	    		}
+	        }
+	    };
+	    t.schedule(task, 10,10);
+		
+		*/
 
 	}
 	
@@ -96,8 +131,8 @@ public class GameView extends JPanel implements KeyListener{
 		this.repaint();
 	}
 	
-	public void rotateObstacle(ObstacleView ov, double rotation ) {
-		ov.rotate(rotation);
+	public void rotateObstacle(ObstacleView ov, Obstacle o, double rotation ) {
+		ov.rotate(o, rotation);
 		this.revalidate();
 		this.repaint();
 	}
