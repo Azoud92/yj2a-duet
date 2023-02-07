@@ -40,8 +40,24 @@ public class ObstacleView extends JPanel {
 			
 		}
 		p = new Polygon(x, y,coord.length);
-		this.repaint();
-		this.revalidate();
+		
+	}
+	
+	public void rotate(double a) { // la rotation se fait par rapport au centre de la figure
+		double angleRadians = Math.toRadians(a);
+		
+		for (Point po : coord) {
+			System.out.print("pos en x avant: " + po.getX()+"   ");
+			System.out.print("pos en y avant: " + po.getY());
+			System.out.println();
+			po.setX((po.getX() * Math.cos(angleRadians) - po.getY() * Math.sin(angleRadians)));
+			po.setY((po.getX() * Math.sin(angleRadians) + po.getY() * Math.cos(angleRadians)));
+			System.out.print("pos en x apres: " + po.getX()+"   ");
+			System.out.print("pos en y apres: " + po.getY());
+			System.out.println();
+			System.out.println();
+		}
+		setPosition(coord);
 	}
 	
 	public Polygon getPolygon() {

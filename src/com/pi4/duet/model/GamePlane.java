@@ -1,6 +1,6 @@
 package com.pi4.duet.model;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import javax.swing.Timer;
 
@@ -16,7 +16,7 @@ public class GamePlane {
 		// ...
 		this.p1 = null;//A MODIFIER
 		this.p2 = null;//A MODIFIER
-		wheel = new Wheel();//A MODIFIER
+		wheel = null;//A MODIFIER
 	}
 	
 	public void update() { // ajouter les param. nécessaires

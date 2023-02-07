@@ -47,19 +47,14 @@ public class GameWindow extends JFrame{
 				container = new JPanel(new GridLayout(1,3));
 				container.add(new JPanel());
 				GameView gw = new GameView(size, scaleX, scaleY);
+				gw.addKeyListener(gw);
+				gw.setFocusable(true);
 				container.add(gw);
 				container.add(new JPanel());
 				frame.add(container);
 				frame.setVisible(true);
 				
-				
-				Point[] tab = {new Point(100,100), new Point(200,100), new Point(200,200), new Point(100,200)};
-				ObstacleView ov1 = new ObstacleView(tab);
-				gw.addObstacle(ov1);
-				
-				Point[] tab1 = {new Point(300,300), new Point(400,300), new Point(400,400), new Point(300,400)};
-				ObstacleView ov2 = new ObstacleView(tab1);
-				gw.addObstacle(ov2);
+
 				
 				
 
