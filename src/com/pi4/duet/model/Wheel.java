@@ -85,6 +85,7 @@ public class Wheel {
 			return Math.sqrt((a.getX()-b.getX())*(a.getX()-b.getX())+(a.getY()-b.getY())*(a.getY()-b.getY()));
 		}
 
+		//Ici les produits vectoriels et scalaires sont uniquement fait dans R^2
 		public double produitVectoriel(Vecteur v1,Vecteur v2){
 			return v1.getX()*v2.getY()-v1.getY()*v2.getX();
 		}
@@ -113,7 +114,8 @@ public class Wheel {
 			if(produitVectoriel(v41,v42)==0&&produitScalaire(v41,v42)>0&&produitScalaire(v41,v42)<=produitScalaire(v41,v41)) return true;
 			return false;
 		}
-		
+		//Méthode intersecte
+
 	}
 
 	public static void main(String[] args) {
@@ -121,7 +123,7 @@ public class Wheel {
 		System.out.println("Ball 2 "+w.ball_2.centerBall.getX()+" "+w.ball_2.centerBall.getY());
 		System.out.println("Ball 1 "+w.ball_1.centerBall.getX()+" "+w.ball_1.centerBall.getY());
 		Point p=new Point(250,100);
-		Obstacle o=new Obstacle(0,50,p,0,0,0);
+		Obstacle o=new Obstacle(0,0,p,0,0,0);
 		System.out.println(o.getCoords()[0].getX()+" "+o.getCoords()[0].getY());
 		System.out.println(o.getCoords()[2].getX()+" "+o.getCoords()[2].getY());
 		System.out.println(w.isLose(o));
