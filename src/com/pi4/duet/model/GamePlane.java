@@ -1,4 +1,4 @@
-package com.pi4.duet.model;
+package model;
 
 import java.util.ArrayList;
 

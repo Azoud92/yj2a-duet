@@ -1,6 +1,13 @@
-package com.pi4.duet.model;
+package model;
 
-public class Obstacle {
+import java.io.Serializable;
+
+public class Obstacle implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1057503017254395944L;
 	
 	private int width, height;
 	private Point position; // représ. la position du centre du rectangle
