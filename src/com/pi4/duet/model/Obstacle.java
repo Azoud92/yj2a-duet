@@ -32,6 +32,18 @@ public class Obstacle implements Serializable {
 		rotate(angle);
 	}
 	
+	public Obstacle(Point[] points, Point center, double velocity, double rotationSpeed, double angle) {
+		for (int i = 0 ; i < points.length ; i++) {
+			coord[i] = points[i].clone();
+		}
+		
+		this.center = center.clone();
+		this.velocity = velocity;
+		this.rotationSpeed = rotationSpeed;
+		this.angle = angle;
+		rotate(angle);
+	}
+	
 	public void update(double d) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
 		setPosition(0, velocity * 1);
 		if (d != 0) rotate(d);

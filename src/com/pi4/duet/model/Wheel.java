@@ -109,34 +109,6 @@ public class Wheel {
 			return Math.sqrt((a.getX()-b.getX())*(a.getX()-b.getX())+(a.getY()-b.getY())*(a.getY()-b.getY()));
 		}
 
-		public double produitVectoriel(Vecteur v1,Vecteur v2){
-			return v1.getX()*v2.getY()-v1.getY()*v2.getX();
-		}
-		public double produitScalaire(Vecteur v1,Vecteur v2){
-			return v1.getX()*v2.getX()+v1.getY()*v2.getY();
-		}
-
-		public boolean isInCollisio1(Obstacle o){
-			//Segment premier
-			Vecteur v11=new Vecteur(o.getCoords()[0],o.getCoords()[1]);
-			Vecteur v12=new Vecteur(o.getCoords()[0],centerBall);
-			if(produitVectoriel(v11,v12)==0&&produitScalaire(v11,v12)>0&&produitScalaire(v11,v12)<=produitScalaire(v11,v11)) return true;
-
-
-			Vecteur v21=new Vecteur(o.getCoords()[0],o.getCoords()[2]);
-			Vecteur v22=new Vecteur(o.getCoords()[0],centerBall);
-			if(produitVectoriel(v21,v22)==0&&produitScalaire(v21,v22)>0&&produitScalaire(v21,v22)<=produitScalaire(v21,v21)) return true;
-
-			//Segment troisi�me
-			Vecteur v31=new Vecteur(o.getCoords()[1],o.getCoords()[3]);
-			Vecteur v32=new Vecteur(o.getCoords()[1],centerBall);
-			if(produitVectoriel(v31,v32)==0&&produitScalaire(v31,v32)>0&&produitScalaire(v31,v32)<=produitScalaire(v31,v31)) return true;
-
-			Vecteur v41=new Vecteur(o.getCoords()[2],o.getCoords()[3]);
-			Vecteur v42=new Vecteur(o.getCoords()[2],centerBall);
-			if(produitVectoriel(v41,v42)==0&&produitScalaire(v41,v42)>0&&produitScalaire(v41,v42)<=produitScalaire(v41,v41)) return true;
-			return false;
-		}
 		//Méthode intersecte
 		public boolean isInCollision(Obstacle o){
 			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[1],centerBall)<=distance(o.getCoords()[0],o.getCoords()[1])+5){
