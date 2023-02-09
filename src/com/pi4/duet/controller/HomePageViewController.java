@@ -1,4 +1,4 @@
-package controller;
+package com.pi4.duet.controller;
 
 public class HomePageViewController {
 

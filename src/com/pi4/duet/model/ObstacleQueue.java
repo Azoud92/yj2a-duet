@@ -1,4 +1,4 @@
-package model;
+package com.pi4.duet.model;
 
 import java.util.Timer;
 import java.util.TimerTask;

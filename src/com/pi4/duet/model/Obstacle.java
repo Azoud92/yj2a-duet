@@ -1,4 +1,4 @@
-package model;
+package com.pi4.duet.model;
 
 import java.io.Serializable;
 
@@ -32,9 +32,9 @@ public class Obstacle implements Serializable {
 		rotate(angle);
 	}
 	
-	public void update(int a) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
+	public void update(double d) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
 		setPosition(0, velocity * 1);
-		if (a != 0) rotate(a);
+		if (d != 0) rotate(d);
 	}
 	
 	public void setPosition(double xN, double yN) { // sert à faire bouger le rectangle du nombre de pixels souhaité par rapport à sa position actuelle

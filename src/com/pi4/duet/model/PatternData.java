@@ -1,4 +1,4 @@
-package model;
+package com.pi4.duet.model;
 
 import java.io.File;
 import java.io.FileInputStream;

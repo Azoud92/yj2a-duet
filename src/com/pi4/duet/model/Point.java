@@ -1,4 +1,4 @@
-package model;
+package com.pi4.duet.model;
 
 
 public class Point {
