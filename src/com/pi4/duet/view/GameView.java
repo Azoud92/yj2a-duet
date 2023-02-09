@@ -89,8 +89,7 @@ public class GameView extends JPanel implements KeyListener{
 		
 		TimerTask task = new TimerTask() {
 	        public void run() {
-	        	if(o1.getCoords()[3].getY()<= controller.getWheel().getCenter().getY()) {
-	        		o1.update(5);
+	        		o1.update(0.2);
 	        		refresh();
 	    			//setPositionObstacle(ov1, o1.getCoords());
 	    			//System.out.print("task ");
@@ -102,8 +101,7 @@ public class GameView extends JPanel implements KeyListener{
 	    			System.out.println();*/
 					System.out.println(ballBlue.getX()+" "+ballBlue.getY());
 					//System.out.println(controller.getWheel().ball_1.getCenterBall().getX()+" "+controller.getWheel().ball_1.getCenterBall().getY());
-					//System.out.println(controller.getWheel().ball_2.getCenterBall().getX()+" "+controller.getWheel().ball_2.getCenterBall().getY());
-	    		}
+					System.out.println(controller.getWheel().ball_2.getCenterBall().getX()+" "+controller.getWheel().ball_2.getCenterBall().getY());
 	    		if(controller.getWheel().isLose(o1)) {
 	    			System.out.println("PERDU");
 	    			t.cancel();

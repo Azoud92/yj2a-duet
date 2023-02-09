@@ -25,7 +25,7 @@ public class Obstacle {
 		rotate(angle);
 	}
 	
-	public void update(int a) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
+	public void update(double a) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
 		setPosition(0, velocity * 1);
 		if (a != 0) rotate(a);
 	}
