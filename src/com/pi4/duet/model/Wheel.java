@@ -1,7 +1,6 @@
 package com.pi4.duet.model;
 import java.lang.Math;
 
-
 public class Wheel {
 
 
@@ -128,6 +127,7 @@ public class Wheel {
 			Vecteur v22=new Vecteur(o.getCoords()[0],centerBall);
 			if(produitVectoriel(v21,v22)==0&&produitScalaire(v21,v22)>0&&produitScalaire(v21,v22)<=produitScalaire(v21,v21)) return true;
 
+			//Segment troisi�me
 			Vecteur v31=new Vecteur(o.getCoords()[1],o.getCoords()[3]);
 			Vecteur v32=new Vecteur(o.getCoords()[1],centerBall);
 			if(produitVectoriel(v31,v32)==0&&produitScalaire(v31,v32)>0&&produitScalaire(v31,v32)<=produitScalaire(v31,v31)) return true;
