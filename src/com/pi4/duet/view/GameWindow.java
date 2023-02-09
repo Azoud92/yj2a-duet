@@ -45,7 +45,7 @@ public class GameWindow extends JFrame{
 			container.add(new JPanel());
 			
 			GameController gc = new GameController();
-			GamePlane gp = new GamePlane(size.width, size.height, gc);
+			GamePlane gp = new GamePlane(size.width/3, size.height, gc);
 			gc.setModel(gp);
 			GameView gw = new GameView(size, scaleX, scaleY, gc);
 			gc.setView(gw);

@@ -49,8 +49,10 @@ public class Wheel {
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
 		//Changement coordonées Ball 1;
-		ball_1.getCenterBall().setX(ball_2.getCenterBall().getX());
-		ball_1.getCenterBall().setY(ball_2.getCenterBall().getY());
+		double dist1=ball_2.getCenterBall().getX()-center.getX();
+		double dist2=ball_2.getCenterBall().getY()-center.getY();
+		ball_1.getCenterBall().setX(center.getX()-dist1);
+		ball_1.getCenterBall().setY(center.getY()-dist2);
 	}
 	public void rotateContreHoraire(){
 		setAngle(getAngle()+0.017453292519943295*10);
@@ -58,8 +60,10 @@ public class Wheel {
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
 		//Changement coordonées Ball 1;
-		ball_1.getCenterBall().setX(ball_2.getCenterBall().getX());
-		ball_1.getCenterBall().setY(ball_2.getCenterBall().getY());
+		double dist1=ball_2.getCenterBall().getX()-center.getX();
+		double dist2=ball_2.getCenterBall().getY()-center.getY();
+		ball_1.getCenterBall().setX(center.getX()-dist1);
+		ball_1.getCenterBall().setY(center.getY()-dist2);
 
 	}
 	public boolean isLose(Obstacle o){
@@ -113,7 +117,7 @@ public class Wheel {
 			return v1.getX()*v2.getX()+v1.getY()*v2.getY();
 		}
 
-		public boolean isInCollision(Obstacle o){
+		public boolean isInCollisio1(Obstacle o){
 			//Segment premier
 			Vecteur v11=new Vecteur(o.getCoords()[0],o.getCoords()[1]);
 			Vecteur v12=new Vecteur(o.getCoords()[0],centerBall);
@@ -134,17 +138,17 @@ public class Wheel {
 			return false;
 		}
 		//Méthode intersecte
-		public boolean isInCollision1(Obstacle o){
-			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[1],centerBall)<=distance(o.getCoords()[0],o.getCoords()[1])+100){
+		public boolean isInCollision(Obstacle o){
+			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[1],centerBall)<=distance(o.getCoords()[0],o.getCoords()[1])+5){
 				return true;
 			}
-			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[2],centerBall)<=distance(o.getCoords()[0],o.getCoords()[2])+100){
+			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[2],centerBall)<=distance(o.getCoords()[0],o.getCoords()[2])+5){
 				return true;
 			}
-			if(distance(o.getCoords()[1],centerBall)+distance(o.getCoords()[3],centerBall)<=distance(o.getCoords()[1],o.getCoords()[3])+100){
+			if(distance(o.getCoords()[1],centerBall)+distance(o.getCoords()[3],centerBall)<=distance(o.getCoords()[1],o.getCoords()[3])+5){
 				return true;
 			}
-			if(distance(o.getCoords()[2],centerBall)+distance(o.getCoords()[3],centerBall)<=distance(o.getCoords()[2],o.getCoords()[3])+100){
+			if(distance(o.getCoords()[2],centerBall)+distance(o.getCoords()[3],centerBall)<=distance(o.getCoords()[2],o.getCoords()[3])+5){
 				return true;
 			}
 			return false;

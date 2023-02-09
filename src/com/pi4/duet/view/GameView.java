@@ -101,8 +101,8 @@ public class GameView extends JPanel implements KeyListener{
 	    			}
 	    			System.out.println();*/
 					System.out.println(ballBlue.getX()+" "+ballBlue.getY());
-					System.out.println(controller.getWheel().ball_1.getCenterBall().getX()+" "+controller.getWheel().ball_1.getCenterBall().getY());
-					System.out.println(controller.getWheel().ball_2.getCenterBall().getX()+" "+controller.getWheel().ball_2.getCenterBall().getY());
+					//System.out.println(controller.getWheel().ball_1.getCenterBall().getX()+" "+controller.getWheel().ball_1.getCenterBall().getY());
+					//System.out.println(controller.getWheel().ball_2.getCenterBall().getX()+" "+controller.getWheel().ball_2.getCenterBall().getY());
 	    		}
 	    		if(controller.getWheel().isLose(o1)) {
 	    			System.out.println("PERDU");
