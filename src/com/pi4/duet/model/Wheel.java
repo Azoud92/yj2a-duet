@@ -3,7 +3,9 @@ import java.lang.Math;
 
 
 public class Wheel {
-	
+
+
+
 	private int radius;
 	private Point center;
 	
@@ -11,9 +13,9 @@ public class Wheel {
 	
 	private double angle;
 	private double rotationSpeed;
-	
-	public Wheel() {
-		this.center=new Point(200,150);
+
+	public Wheel(Point center) {
+		this.center= center;
 		this.radius=50;
 		ball_2=new Ball(new Point(center.getX()+radius, center.getY()));
 		ball_1=new Ball(new Point(center.getX()-radius, center.getY()));
@@ -42,28 +44,46 @@ public class Wheel {
 	 */
 	
 	public void rotateHoraire() {
-		setAngle(getAngle()-0.01745*10);
+		setAngle(getAngle()-0.017453292519943295*10);
 		//Changement coordonées Ball 2;
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
 		//Changement coordonées Ball 1;
-		ball_1.getCenterBall().setX(-ball_2.getCenterBall().getX());
-		ball_1.getCenterBall().setY(-ball_2.getCenterBall().getY());
+		ball_1.getCenterBall().setX(ball_2.getCenterBall().getX());
+		ball_1.getCenterBall().setY(ball_2.getCenterBall().getY());
 	}
 	public void rotateContreHoraire(){
-		setAngle(getAngle()+0.01745*10);
+		setAngle(getAngle()+0.017453292519943295*10);
 		//Changement coordonées Ball 2;
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
 		//Changement coordonées Ball 1;
-		ball_1.getCenterBall().setX(-ball_2.getCenterBall().getX());
-		ball_1.getCenterBall().setY(-ball_2.getCenterBall().getY());
+		ball_1.getCenterBall().setX(ball_2.getCenterBall().getX());
+		ball_1.getCenterBall().setY(ball_2.getCenterBall().getY());
 
 	}
 	public boolean isLose(Obstacle o){
 		//Méthode à appeler chaque milliseconde pour vérifier si une des balle est en contact avec un des segments du quadrilatère
+
 		if(ball_1.isInCollision(o)|| ball_2.isInCollision(o)) return true;
+		if(ball_1.getCenterBall().getX()==370&&ball_1.getCenterBall().getY()==965) System.out.println("CHIEN");
+		if(ball_2.getCenterBall().getX()==370&&ball_2.getCenterBall().getY()==965) System.out.println("CHIEN");
 		return false;
+	}
+	public Ball getBall_1() {
+		return ball_1;
+	}
+
+	public void setBall_1(Ball ball_1) {
+		this.ball_1 = ball_1;
+	}
+
+	public Ball getBall_2() {
+		return ball_2;
+	}
+
+	public void setBall_2(Ball ball_2) {
+		this.ball_2 = ball_2;
 	}
 	
 	public class Ball {
@@ -79,59 +99,59 @@ public class Wheel {
 		int getRadius() { return radius; }
 		void setRadius(int r) { radius = r; }
 		
-		Point getCenterBall() { return centerBall; }
+		public Point getCenterBall() { return centerBall; }
 		void setCenter(Point c) { center = c; }
+
 		double distance(Point a,Point b){
 			return Math.sqrt((a.getX()-b.getX())*(a.getX()-b.getX())+(a.getY()-b.getY())*(a.getY()-b.getY()));
 		}
 
-		//Ici les produits vectoriels et scalaires sont uniquement fait dans R^2
 		public double produitVectoriel(Vecteur v1,Vecteur v2){
 			return v1.getX()*v2.getY()-v1.getY()*v2.getX();
 		}
 		public double produitScalaire(Vecteur v1,Vecteur v2){
 			return v1.getX()*v2.getX()+v1.getY()*v2.getY();
 		}
+
 		public boolean isInCollision(Obstacle o){
 			//Segment premier
 			Vecteur v11=new Vecteur(o.getCoords()[0],o.getCoords()[1]);
 			Vecteur v12=new Vecteur(o.getCoords()[0],centerBall);
 			if(produitVectoriel(v11,v12)==0&&produitScalaire(v11,v12)>0&&produitScalaire(v11,v12)<=produitScalaire(v11,v11)) return true;
 
-			//Segment deuxième
+
 			Vecteur v21=new Vecteur(o.getCoords()[0],o.getCoords()[2]);
 			Vecteur v22=new Vecteur(o.getCoords()[0],centerBall);
 			if(produitVectoriel(v21,v22)==0&&produitScalaire(v21,v22)>0&&produitScalaire(v21,v22)<=produitScalaire(v21,v21)) return true;
 
-			//Segment troisième
 			Vecteur v31=new Vecteur(o.getCoords()[1],o.getCoords()[3]);
 			Vecteur v32=new Vecteur(o.getCoords()[1],centerBall);
 			if(produitVectoriel(v31,v32)==0&&produitScalaire(v31,v32)>0&&produitScalaire(v31,v32)<=produitScalaire(v31,v31)) return true;
 
-			//Segment quatrième
 			Vecteur v41=new Vecteur(o.getCoords()[2],o.getCoords()[3]);
 			Vecteur v42=new Vecteur(o.getCoords()[2],centerBall);
 			if(produitVectoriel(v41,v42)==0&&produitScalaire(v41,v42)>0&&produitScalaire(v41,v42)<=produitScalaire(v41,v41)) return true;
 			return false;
 		}
 		//Méthode intersecte
+		public boolean isInCollision1(Obstacle o){
+			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[1],centerBall)<=distance(o.getCoords()[0],o.getCoords()[1])+100){
+				return true;
+			}
+			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[2],centerBall)<=distance(o.getCoords()[0],o.getCoords()[2])+100){
+				return true;
+			}
+			if(distance(o.getCoords()[1],centerBall)+distance(o.getCoords()[3],centerBall)<=distance(o.getCoords()[1],o.getCoords()[3])+100){
+				return true;
+			}
+			if(distance(o.getCoords()[2],centerBall)+distance(o.getCoords()[3],centerBall)<=distance(o.getCoords()[2],o.getCoords()[3])+100){
+				return true;
+			}
+			return false;
 
+		}
 	}
 
-	public static void main(String[] args) {
-		Wheel w=new Wheel();
-		System.out.println("Ball 2 "+w.ball_2.centerBall.getX()+" "+w.ball_2.centerBall.getY());
-		System.out.println("Ball 1 "+w.ball_1.centerBall.getX()+" "+w.ball_1.centerBall.getY());
-		Point p=new Point(250,100);
-		Obstacle o=new Obstacle(0,0,p,0,0,0);
-		System.out.println(o.getCoords()[0].getX()+" "+o.getCoords()[0].getY());
-		System.out.println(o.getCoords()[2].getX()+" "+o.getCoords()[2].getY());
-		System.out.println(w.isLose(o));
-
-
-
-
-	}
 
 	
 }

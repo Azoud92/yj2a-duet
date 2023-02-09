@@ -1,19 +1,27 @@
 package com.pi4.duet.model;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import javax.swing.Timer;
 
+import com.pi4.duet.controller.GameController;
+
 public class GamePlane {
 
-	public final Point p1=null, p2=null; // on peut aussi créer une classe Rectangle directement si on le souhaite
-	public final Wheel wheel=null;
+	public final Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
 	private Timer timer;
+	private GameController controller;
 	
-	public GamePlane() {
+	public GamePlane(int width, int height, GameController controller) {
 		// A FAIRE : Initialiser les différents composants ci-dessus
 		// ...
+		this.controller = controller;
+		Point centreR = new Point(width / 2 - 50, height - 100);
+        Point centreB = new Point(width / 2 + 50, height - 100);
+        wheel = new Wheel(new Point(width / 2, height - 100));
+        wheel.ball_1 = wheel.new Ball(centreR);
+        wheel.ball_2 = wheel.new Ball(centreB);
 	}
 	
 	public void update() { // ajouter les param. nécessaires
@@ -27,5 +35,5 @@ public class GamePlane {
 	}
 	
 	public ArrayList<Obstacle> getObstacles() { return obstacles; }
-	
+		
 }
