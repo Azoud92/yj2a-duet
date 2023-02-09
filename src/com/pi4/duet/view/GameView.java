@@ -77,7 +77,8 @@ public class GameView extends JPanel implements KeyListener{
 		 * CETTE PARTIE EST JUSTE POUR TESTER LA FONCTION ISLOSE QUI NE MARCHE PAS POUR L'INSTANT
 		 * PLUS TARD IL FAUDRA SUPPRIMER CETTE PARTIE.
 		 *
-		*/Obstacle o1 =new Obstacle(this.size.width/3, 10, new Point(this.size.width/3,150), 1, 1, 0);
+		*/
+		Obstacle o1 =new Obstacle(this.size.width/3, 10, new Point(this.size.width/3,150), 1, 1, 0);
 		ObstacleController oc1 = new ObstacleController(o1);
 		ObstacleView ov1 = new ObstacleView(oc1);
 		obstacles.add(ov1);

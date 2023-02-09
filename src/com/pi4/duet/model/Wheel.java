@@ -11,7 +11,7 @@ public class Wheel {
 	public  Ball ball_1, ball_2;
 	
 	private double angle;
-	private double rotationSpeed;
+	private double rotationSpeed; // elle est fixe, vous pouvez lui donner une inertie (acceleration + frein)
 
 	public Wheel(Point center) {
 		this.center= center;
@@ -43,7 +43,7 @@ public class Wheel {
 	 */
 	
 	public void rotateHoraire() {
-		setAngle(getAngle()-0.017453292519943295*10);
+		setAngle(getAngle()-0.017453292519943295*1); // moche, et rotation speed ?
 		//Changement coordonées Ball 2;
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
@@ -53,8 +53,9 @@ public class Wheel {
 		ball_1.getCenterBall().setX(center.getX()-dist1);
 		ball_1.getCenterBall().setY(center.getY()-dist2);
 	}
+	// moche (doublon)
 	public void rotateContreHoraire(){
-		setAngle(getAngle()+0.017453292519943295*10);
+		setAngle(getAngle()+0.017453292519943295*1);
 		//Changement coordonées Ball 2;
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
@@ -105,12 +106,14 @@ public class Wheel {
 		public Point getCenterBall() { return centerBall; }
 		void setCenter(Point c) { center = c; }
 
+		// static ailleur
 		double distance(Point a,Point b){
 			return Math.sqrt((a.getX()-b.getX())*(a.getX()-b.getX())+(a.getY()-b.getY())*(a.getY()-b.getY()));
 		}
 
 		//Méthode intersecte
 		public boolean isInCollision(Obstacle o){
+			// reformuler avec une iteration sur les points du polygone ...
 			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[1],centerBall)<=distance(o.getCoords()[0],o.getCoords()[1])+5){
 				return true;
 			}
