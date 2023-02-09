@@ -1,4 +1,4 @@
-package com.pi4.duet.view;
+package view;
 
 public class HomePageView {
 

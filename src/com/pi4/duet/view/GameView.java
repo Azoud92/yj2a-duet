@@ -1,4 +1,4 @@
-package com.pi4.duet.view;
+package view;
 
 import java.awt.Color;  
 import java.awt.Dimension;

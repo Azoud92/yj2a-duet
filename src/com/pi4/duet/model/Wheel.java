@@ -1,7 +1,6 @@
 package com.pi4.duet.model;
 import java.lang.Math;
 
-
 public class Wheel {
 	
 	private int radius;
@@ -36,32 +35,32 @@ public class Wheel {
 	public double getRotationSpeed() { return rotationSpeed; }
 	public void setRotationSpeed(double rs) { rotationSpeed = rs; }
 	/*
-	L'angle thêta correspond à l'angle entre l'axe des abcisses et le vecteur du part du point
+	L'angle thï¿½ta correspond ï¿½ l'angle entre l'axe des abcisses et le vecteur du part du point
 	central du volant vers la balle 2.
 	Par ex si on  rotateContreHoraire() l'angle est est positif, alors que si rotateHoraire() l'angle est positif
 	 */
 	
 	public void rotateHoraire() {
 		setAngle(getAngle()-0.01745*10);
-		//Changement coordonées Ball 2;
+		//Changement coordonï¿½es Ball 2;
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
-		//Changement coordonées Ball 1;
+		//Changement coordonï¿½es Ball 1;
 		ball_1.getCenterBall().setX(-ball_2.getCenterBall().getX());
 		ball_1.getCenterBall().setY(-ball_2.getCenterBall().getY());
 	}
 	public void rotateContreHoraire(){
 		setAngle(getAngle()+0.01745*10);
-		//Changement coordonées Ball 2;
+		//Changement coordonï¿½es Ball 2;
 		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
 		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
-		//Changement coordonées Ball 1;
+		//Changement coordonï¿½es Ball 1;
 		ball_1.getCenterBall().setX(-ball_2.getCenterBall().getX());
 		ball_1.getCenterBall().setY(-ball_2.getCenterBall().getY());
 
 	}
 	public boolean isLose(Obstacle o){
-		//Méthode à appeler chaque milliseconde pour vérifier si une des balle est en contact avec un des segments du quadrilatère
+		//Mï¿½thode ï¿½ appeler chaque milliseconde pour vï¿½rifier si une des balle est en contact avec un des segments du quadrilatï¿½re
 		if(ball_1.isInCollision(o)|| ball_2.isInCollision(o)) return true;
 		return false;
 	}
@@ -97,17 +96,17 @@ public class Wheel {
 			Vecteur v12=new Vecteur(o.getCoords()[0],centerBall);
 			if(produitVectoriel(v11,v12)==0&&produitScalaire(v11,v12)>0&&produitScalaire(v11,v12)<=produitScalaire(v11,v11)) return true;
 
-			//Segment deuxième
+			//Segment deuxiï¿½me
 			Vecteur v21=new Vecteur(o.getCoords()[0],o.getCoords()[2]);
 			Vecteur v22=new Vecteur(o.getCoords()[0],centerBall);
 			if(produitVectoriel(v21,v22)==0&&produitScalaire(v21,v22)>0&&produitScalaire(v21,v22)<=produitScalaire(v21,v21)) return true;
 
-			//Segment troisième
+			//Segment troisiï¿½me
 			Vecteur v31=new Vecteur(o.getCoords()[1],o.getCoords()[3]);
 			Vecteur v32=new Vecteur(o.getCoords()[1],centerBall);
 			if(produitVectoriel(v31,v32)==0&&produitScalaire(v31,v32)>0&&produitScalaire(v31,v32)<=produitScalaire(v31,v31)) return true;
 
-			//Segment quatrième
+			//Segment quatriï¿½me
 			Vecteur v41=new Vecteur(o.getCoords()[2],o.getCoords()[3]);
 			Vecteur v42=new Vecteur(o.getCoords()[2],centerBall);
 			if(produitVectoriel(v41,v42)==0&&produitScalaire(v41,v42)>0&&produitScalaire(v41,v42)<=produitScalaire(v41,v41)) return true;
