@@ -18,13 +18,14 @@ public class Obstacle implements Serializable {
 	public Obstacle(int width, int height, Point pos, double velocity, double rotationSpeed, double angle) {
 		this.width = width;
 		this.height = height;
-		coord = new Point[4];
+		coord=new Point[4];
+
 		coord[0] = pos; // position du Rectangle (en haut à gauche)
 		coord[1] = new Point(coord[0].getX() + width, coord[0].getY());
 		coord[2] = new Point(coord[0].getX() + width, coord[0].getY() + height);
 		coord[3] = new Point(coord[0].getX(), coord[0].getY() + height);
 		center = new Point(coord[0].getX() + width / 2, coord[0].getY() + height / 2);
-			
+
 		this.velocity = velocity;
 		this.rotationSpeed = rotationSpeed;
 		this.angle = angle;

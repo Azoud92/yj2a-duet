@@ -1,5 +1,6 @@
 package model;
 
+
 public class Point {
 
 	private double x;
@@ -12,7 +13,8 @@ public class Point {
 	
 	public double getX() { return x; }
 	public double getY() { return y; }
-	
-	public void setX(double d) { this.x = d; }
-	public void setY(double d) { this.y = d; }
+
+	public void setX(double x) { this.x = x; }
+	public void setY(double y ) { this.y = y; }
+
 }

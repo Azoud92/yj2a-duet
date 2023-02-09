@@ -1,5 +1,4 @@
-package view;
-
+package com.pi4.duet.view;
 import java.awt.Color;  
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -95,12 +94,15 @@ public class GameView extends JPanel implements KeyListener{
 	        		refresh();
 	    			//setPositionObstacle(ov1, o1.getCoords());
 	    			//System.out.print("task ");
-	    			for(Point p : o1.getCoords()) {
+	    			/*for(Point p : o1.getCoords()) {
 	    				System.out.print("x " + p.getX()+" ");
 	    				System.out.print("y " + p.getY()+" ");
 	    				System.out.println();
 	    			}
-	    			System.out.println();
+	    			System.out.println();*/
+					System.out.println(ballBlue.getX()+" "+ballBlue.getY());
+					//System.out.println(controller.getWheel().ball_1.getCenterBall().getX()+" "+controller.getWheel().ball_1.getCenterBall().getY());
+					//System.out.println(controller.getWheel().ball_2.getCenterBall().getX()+" "+controller.getWheel().ball_2.getCenterBall().getY());
 	    		}
 	    		if(controller.getWheel().isLose(o1)) {
 	    			System.out.println("PERDU");
@@ -155,8 +157,7 @@ public class GameView extends JPanel implements KeyListener{
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
             case 39 :
-                controller.getWheel().rotateHoraire();
-                
+				controller.getWheel().rotateContreHoraire();
                 angleR=angleR+10;
                 angleB=angleB+10;
                 radiasR=Math.toRadians(angleR);
@@ -166,9 +167,11 @@ public class GameView extends JPanel implements KeyListener{
                 break;
                 
             case 37 :
-            	controller.getWheel().rotateContreHoraire();
-               
-                angleR=angleR-10;
+
+				controller.getWheel().rotateHoraire();
+
+
+				angleR=angleR-10;
                 angleB=angleB-10;
                 radiasR=Math.toRadians(angleR);
                 radiasB=Math.toRadians(angleB);
@@ -180,6 +183,7 @@ public class GameView extends JPanel implements KeyListener{
 
     }
 
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -189,5 +193,4 @@ public class GameView extends JPanel implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 	}
-	
 }
