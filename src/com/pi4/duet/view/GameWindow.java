@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.pi4.duet.controller.GameController;
+import com.pi4.duet.controller.HomePageViewController;
 import com.pi4.duet.model.GamePlane;
 
 
@@ -44,20 +45,37 @@ public class GameWindow extends JFrame{
 			container = new JPanel(new GridLayout(1,3));
 			container.add(new JPanel());
 			
-			GameController gc = new GameController();
+			/*GameController gc = new GameController();
 			GamePlane gp = new GamePlane(size.width/3, size.height, gc);
 			gc.setModel(gp);
 			GameView gw = new GameView(size, scaleX, scaleY, gc);
 			gc.setView(gw);
 			gw.addKeyListener(gw);
 			gw.setFocusable(true);
-			container.add(gw);
+			container.add(gw);*/
+			
+			HomePageViewController hpc = new HomePageViewController();
+			HomePageView hpv = new HomePageView(size, scaleX, scaleY, frame, this, hpc);
+			hpc.setView(hpv);
+			container.add(hpv);
+			
 			container.add(new JPanel());
 			frame.add(container);
 			frame.setVisible(true);
 		});	
-			
-			
+		
+	
 	}
+	
+	public void setMainContainer(JPanel container){
+		this.container = container;
+		frame.add(container);
+		frame.setVisible(true);
+	}
+	public JPanel getMainContainer() {
+		return container;
+	}
+
+
 	
 }
