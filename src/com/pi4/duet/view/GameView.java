@@ -27,9 +27,8 @@ public class GameView extends JPanel implements KeyListener{
 	private Dimension size;
 	//private double scaleX, scaleY;
 	private ArrayList<ObstacleView> obstacles;
-	
-	private JLabel ballRed,ballBlue,centre;
-	//private ImageIcon imageR, imageB;
+	private BallView ballRed, ballBlue;
+	private JLabel centre;
     private double angleR = 180;
     private double angleB = 0;
     private double radiasR;
@@ -46,28 +45,24 @@ public class GameView extends JPanel implements KeyListener{
 		//this.scaleX = scaleX;
 		//this.scaleY = scaleY;
 		
-		//imageR = new ImageIcon("BallRed.png");
-        ballRed = new JLabel();
-        ballRed.setBounds(this.size.width / 2 - 50, this.size.height - 100, 10, 10);
-        ballRed.setBackground(Color.red);
-        ballRed.setOpaque(true);
-        //ballRed.setIcon(imageR);
-
-        //imageB = new ImageIcon("BallBlue.png");
-        ballBlue = new JLabel();
-        ballBlue.setBounds(this.size.width / 2 + 50, this.size.height - 100, 10, 10);
-        ballBlue.setBackground(Color.blue);
-        ballBlue.setOpaque(true);
-        //ballBlue.setIcon(imageB);
-
+		
+		
+		ballRed = new BallView(this.size.width / 2 - 50, this.size.height - 100, 10, 10, Color.red);
+		ballRed.setOpaque(true);
+		this.add(ballRed);
+		
+		ballBlue = new BallView(this.size.width / 2 + 50, this.size.height - 100, 10, 10, Color.blue);
+		ballBlue.setOpaque(true);
+		this.add(ballBlue);
+		
+		
         centre = new JLabel();
         centre.setBounds(this.size.width / 2, this.size.height - 100, 0, 0);
         centre.setBackground(Color.black);
         centre.setOpaque(true);        
         
         this.addKeyListener(this);
-        this.add(ballBlue);
-        this.add(ballRed);
+
         this.add(centre);
         
 		this.setLayout(null);
@@ -90,7 +85,7 @@ public class GameView extends JPanel implements KeyListener{
 		
 		TimerTask task = new TimerTask() {
 	        public void run() {
-	        	o1.update(0.2);
+	        	o1.update(0.4);
 	        	refresh();
 	    			//setPositionObstacle(ov1, o1.getCoords());
 	    			//System.out.print("task ");
@@ -100,7 +95,7 @@ public class GameView extends JPanel implements KeyListener{
 	    				System.out.println();
 	    			}
 	    			System.out.println();*/
-				System.out.println(ballBlue.getX()+" "+ballBlue.getY());
+				System.out.println(ballBlue.x+" "+ballBlue.y);
 					//System.out.println(controller.getWheel().ball_1.getCenterBall().getX()+" "+controller.getWheel().ball_1.getCenterBall().getY());
 					//System.out.println(controller.getWheel().ball_2.getCenterBall().getX()+" "+controller.getWheel().ball_2.getCenterBall().getY());
 	    		if(controller.getWheel().isLose(o1)) {
@@ -113,6 +108,29 @@ public class GameView extends JPanel implements KeyListener{
 		
 		
 
+	}
+	
+	public class BallView extends JPanel {
+		private int x, y, width, height;
+		private Color color;
+		
+		public BallView(int x, int y, int width, int height, Color color) {
+			this.x = x;
+			this.y = y;
+			this.width  = width;
+			this.height = height;
+			this.color = color;
+
+			
+		}
+		
+		public void setLocation(int x, int y) {
+			this.x = x;
+			this.y = y;
+			
+		}
+		
+		
 	}
 	
 	public void refresh() {
@@ -141,12 +159,20 @@ public class GameView extends JPanel implements KeyListener{
 		g.setColor(Color.white);
 		g.drawPolygon(ov.getController().getPolygon());
 		g.fillPolygon(ov.getController().getPolygon());
+		
+
 	}
 	
 	
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
+		g.setColor(ballBlue.color);
+		g.fillOval(ballBlue.x, ballBlue.y, ballBlue.width, ballBlue.height);
+		
+		g.setColor(ballRed.color);
+		g.fillOval(ballRed.x,ballRed.y, ballRed.width, ballRed.height);
+		
 		for (ObstacleView ov : obstacles) {
 			paintComponent(g, ov);
 		}
