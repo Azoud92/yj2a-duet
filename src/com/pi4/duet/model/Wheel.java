@@ -10,7 +10,6 @@ public class Wheel {
 	
 	private double angle = 0;
 	public final double rotationSpeed = 0.25; // elle est fixe, vous pouvez lui donner une inertie (acceleration + frein)
-	private double inertia = 0; // inertie du volant (représente l'accélération et le freinage lors de l'appui sur la touche)
 	public final int ballRadius = 5;
 	
 	public Wheel(Point center) {
@@ -57,11 +56,9 @@ public class Wheel {
 	
 	private class Ball {
 		
-		double radius;
 		Point centerBall;
 		
 		public Ball(Point centerBall, double radius) {
-			this.radius = radius;
 			this.centerBall = centerBall;
 		}
 		

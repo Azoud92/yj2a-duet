@@ -3,8 +3,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -18,7 +16,6 @@ public class GameView extends JPanel {
 	 */
 	private static final long serialVersionUID = -306594423077754361L;
 	
-	private ArrayList<ObstacleView> obstacles;	
 	private GameController controller;
 	private BallView ballRed, ballBlue;
 	private Dimension size;
@@ -28,7 +25,6 @@ public class GameView extends JPanel {
 	public GameView(Dimension size, GameController controller) {
 		this.size = size;
 		this.controller = controller;
-		obstacles = new ArrayList<ObstacleView>();
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.setPreferredSize(dim);
 		
@@ -80,22 +76,14 @@ public class GameView extends JPanel {
 		repaint();
 	}
 		
-	public void addObstacle(ObstacleView ov) {		
-		obstacles.add(ov);
+	public void addObstacle(ObstacleView ov) {
+		this.add(ov);
 	}
 	
 	
 	public void removeObstacle(ObstacleView ov) {
-		obstacles.remove(ov);
+		this.remove(ov);
 	}
-	
-	
-	public void paintComponent(Graphics g, ObstacleView ov) {
-		g.setColor(Color.white);
-		g.drawPolygon(ov.getPolygon());
-		g.fillPolygon(ov.getPolygon());
-	}
-	
 	
 	@Override
 	protected void paintComponent(Graphics g){
@@ -106,10 +94,6 @@ public class GameView extends JPanel {
 		
 		g.setColor(ballRed.color);
 		g.fillOval(ballRed.x,ballRed.y, ballRed.width, ballRed.height);
-		
-		for (ObstacleView ov : obstacles) {
-			paintComponent(g, ov);
-		}
 	}
 
 }

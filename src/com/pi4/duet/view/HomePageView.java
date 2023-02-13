@@ -40,13 +40,6 @@ public class HomePageView extends JPanel{
 		this.setPreferredSize(dim);
 		this.setLayout(null);
 		
-		/*title = new JLabel("DUET");
-		title.setBounds(this.size.width/5, this.size.height/24, this.size.width/5*3 , this.size.height/4);
-		title.setForeground(Color.WHITE);
-		title.setBackground(Color.BLACK);
-		title.setFont(new Font("Arial", Font.BOLD, (int) (99 * scaleX)));
-		this.add(title);*/
-		
 		title1 = new JLabel("DU");
 		title1.setBounds(this.size.width/5, this.size.height/24, this.size.width/3 , this.size.height/4);
 		title1.setForeground(Color.RED);

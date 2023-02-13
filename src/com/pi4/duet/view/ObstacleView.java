@@ -1,8 +1,12 @@
 package com.pi4.duet.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Polygon;
-
 import javax.swing.JPanel;
+
+import com.pi4.duet.controller.ObstacleController;
 
 public class ObstacleView extends JPanel {
 	/**
@@ -12,6 +16,14 @@ public class ObstacleView extends JPanel {
 	
 	private Polygon polygon;
 		
+	public ObstacleView(ObstacleController controller, int width, int height) {		
+		this.setOpaque(false);
+		
+		this.setSize(new Dimension(width, height));
+		
+		this.setVisible(true);
+	}
+		
 	public void setPolygon(Polygon polygon) {
 		// TODO Auto-generated method stub
 		this.polygon = polygon;
@@ -19,6 +31,12 @@ public class ObstacleView extends JPanel {
 	
 	public Polygon getPolygon() { return polygon; }
 	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);		
+		g.setColor(Color.white);
+		g.drawPolygon(polygon);
+		g.fillPolygon(polygon);
+	}
 	
-	// Essayer d'implémenter paintComponent ici plutôt
 }

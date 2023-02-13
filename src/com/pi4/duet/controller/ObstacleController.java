@@ -30,5 +30,5 @@ public class ObstacleController {
 		
 		view.setPolygon(new Polygon(x, y, coords.length));
 	}
-		
+			
 }

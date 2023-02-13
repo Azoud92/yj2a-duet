@@ -40,11 +40,11 @@ public class GameController implements KeyListener {
 				
 		ObstacleController oc = new ObstacleController();
 		Obstacle o = new Obstacle(rect, centerRect, oc);
-		ObstacleView ov = new ObstacleView();
-		model.addObstacle(o);
-		view.addObstacle(ov);
 		oc.setModel(o);
-		oc.setView(ov);		
+		ObstacleView ov = new ObstacleView(oc, model.width, model.height);
+		oc.setView(ov);	
+		model.addObstacle(o);
+		view.addObstacle(ov);		
 	}
 		
 	public void updateWheel(Point blue, Point red) {
