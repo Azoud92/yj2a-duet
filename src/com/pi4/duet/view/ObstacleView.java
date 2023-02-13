@@ -19,5 +19,6 @@ public class ObstacleView extends JPanel {
 	
 	public Polygon getPolygon() { return polygon; }
 	
+	
 	// Essayer d'implémenter paintComponent ici plutôt
 }

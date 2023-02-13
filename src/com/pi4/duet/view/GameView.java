@@ -23,7 +23,7 @@ public class GameView extends JPanel {
 	private BallView ballRed, ballBlue;
 	private Dimension size;
 	
-	private Image background = new ImageIcon(this.getClass().getResource("/background.png")).getImage();
+	private Image background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
 	
 	public GameView(Dimension size, GameController controller) {
 		this.size = size;
@@ -80,7 +80,7 @@ public class GameView extends JPanel {
 		repaint();
 	}
 		
-	public void addObstacle(ObstacleView ov) {
+	public void addObstacle(ObstacleView ov) {		
 		obstacles.add(ov);
 	}
 	

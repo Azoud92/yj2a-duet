@@ -30,7 +30,7 @@ public class HomePageView extends JPanel{
 	private JButton settings, quit;
 	private Icon settings_i, quit_i;	
 	
-	private Image background = new ImageIcon(this.getClass().getResource("/background.png")).getImage();
+	private Image background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
 	
 	
 	public HomePageView(Dimension size, JFrame frame, GameWindow window, HomePageViewController controller) {
@@ -104,14 +104,14 @@ public class HomePageView extends JPanel{
 		level5.setEnabled(false);
 		this.add(level5);
 		
-		settings_i = resizeImage(new ImageIcon(this.getClass().getResource("/settings.png")), this.size.width/13, this.size.width/13);
+		settings_i = resizeImage(new ImageIcon(this.getClass().getResource("/resources/settings.png")), this.size.width/13, this.size.width/13);
 		settings = new JButton(settings_i);
 		settings.setBounds(this.size.width - this.size.width/20 - this.size.width/10, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
 		settings.setBackground(Color.WHITE);
 		//settings.setFont(new Font("Arial", Font.BOLD, (int) (45 * scaleX)));
 		this.add(settings);
 		
-		quit_i = resizeImage(new ImageIcon(this.getClass().getResource("/quit.png")), this.size.width/10, this.size.width/10);
+		quit_i = resizeImage(new ImageIcon(this.getClass().getResource("/resources/quit.png")), this.size.width/10, this.size.width/10);
 		quit = new JButton(quit_i);
 		quit.setBounds(this.size.width/20, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
 		quit.setBackground(Color.WHITE);
