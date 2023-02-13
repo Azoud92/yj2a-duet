@@ -3,14 +3,14 @@ import java.lang.Math;
 
 public class Wheel {
 	
-	public final int radius = 50;
+	public final int radius = 100;
 	private Point center;
 	
 	private Ball ball_1, ball_2;
 	
 	private double angle = 0;
 	public final double rotationSpeed = 0.25; // elle est fixe, vous pouvez lui donner une inertie (acceleration + frein)
-	public final int ballRadius = 5;
+	public final int ballRadius = 10;
 	
 	public Wheel(Point center) {
 		this.center = center;

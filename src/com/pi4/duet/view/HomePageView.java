@@ -41,14 +41,14 @@ public class HomePageView extends JPanel{
 		this.setLayout(null);
 		
 		title1 = new JLabel("DU");
-		title1.setBounds(this.size.width/5, this.size.height/24, this.size.width/3 , this.size.height/4);
+		title1.setBounds(this.size.width/4, this.size.height/24, this.size.width/4 , this.size.height/4);
 		title1.setForeground(Color.RED);
 		title1.setBackground(Color.BLACK);
 		title1.setFont(new Font("Arial", Font.BOLD, (int) (104)));
 		this.add(title1);
 		
 		title2 = new JLabel("ET");
-		title2.setBounds(title1.getLocation().x + title1.getSize().width, this.size.height/24, this.size.width/3 , this.size.height/4);
+		title2.setBounds(title1.getLocation().x + title1.getSize().width - 10, this.size.height/24, this.size.width/4 , this.size.height/4);
 		title2.setForeground(Color.BLUE);
 		title2.setBackground(Color.BLACK);
 		title2.setFont(new Font("Arial", Font.BOLD, (int) (104)));

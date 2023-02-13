@@ -22,7 +22,7 @@ public class GamePlane {
 	public GamePlane(int width, int height, GameController controller) {		
 		this.width = width;
 		this.height = height;		
-        this.wheel = new Wheel(new Point(width / 2, height - 100));
+        this.wheel = new Wheel(new Point(width / 2, height - 150));
         this.controller = controller;
         this.obstacles = new ArrayList<Obstacle>();
         timer = new Timer();
