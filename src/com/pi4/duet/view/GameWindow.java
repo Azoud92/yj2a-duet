@@ -2,17 +2,13 @@ package com.pi4.duet.view;
 
 import java.awt.Dimension; 
 import java.awt.EventQueue;
-import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Rectangle;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.pi4.duet.controller.GameController;
-import com.pi4.duet.model.GamePlane;
+import com.pi4.duet.controller.HomePageViewController;
 
 public class GameWindow extends JFrame{
 
@@ -21,8 +17,6 @@ public class GameWindow extends JFrame{
 	private Dimension size;
 	private JFrame frame;
 	private JPanel container;
-	
-	private Image background = new ImageIcon(this.getClass().getResource("/background.png")).getImage();
 	
 	public GameWindow() {
 		// Taille de l'écran en soustrayant celle de la barre des taches et du haut de la fenetre
@@ -43,46 +37,31 @@ public class GameWindow extends JFrame{
 			frame.setMinimumSize(size);
 			frame.setMaximumSize(size);
 			
-			// Pour redéfinir la méthode "paintComponent" du container, on procède par bloc d'initialisation :
-			container = new JPanel() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;		
-				
-				@Override
-				protected void paintComponent(Graphics g) {
-					super.paintComponent(g);
-					g.drawImage(background, 0, 0, size.width, size.height, this);
-				}
-				
-			};
+			container = new JPanel();
 			container.setLayout(new GridLayout(1, 3));
-			container.setOpaque(false);
 			container.add(new JPanel());
+						
+			HomePageViewController hpc = new HomePageViewController();
+			HomePageView hpv = new HomePageView(size, frame, this, hpc);
+			hpc.setView(hpv);
+			container.add(hpv);
 			
-			GameController gc = new GameController();
-			GamePlane gp = new GamePlane(size.width / 3, size.height, gc);
-			gc.setModel(gp);
-			
-			GameView gw = new GameView(size, gc);
-			gc.setView(gw);
-			gw.addKeyListener(gc);
-			gw.setFocusable(true);
-			gw.setOpaque(false);
-			
-			container.add(gw);
 			container.add(new JPanel());
 			
 			frame.add(container);
-			frame.setVisible(true);
-			
-			gc.testObstacles();
-			gp.gameStart();
+			frame.setVisible(true);		
 		});	
-			
-			
+		
+	
+	}
+	
+	public void setMainContainer(JPanel container){
+		this.container = container;
+		frame.add(container);
+		frame.setVisible(true);
+	}
+	public JPanel getMainContainer() {
+		return container;
 	}
 	
 }

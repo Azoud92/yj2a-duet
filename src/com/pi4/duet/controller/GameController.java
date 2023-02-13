@@ -19,8 +19,6 @@ public class GameController implements KeyListener {
 	
 	public void setView(GameView view) { this.view = view; }
 	
-	
-	
 	public void refreshView() {
 		view.refresh();
 	}
@@ -106,8 +104,5 @@ public class GameController implements KeyListener {
 	
 	public Point getWheelCenter() {
 		return model.wheel.getCenter();
-	}
-
-	
-		
+	}	
 }
