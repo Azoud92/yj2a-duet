@@ -1,7 +1,9 @@
 package com.pi4.duet.model;
 
+import java.io.Serializable;
 
-public class Point {
+
+public class Point implements Serializable, Cloneable {
 
 	private double x;
 	private double y;
@@ -16,10 +18,9 @@ public class Point {
 
 	public void setX(double x) { this.x = x; }
 	public void setY(double y ) { this.y = y; }
-	
 
-	public static void main(String[] args) {
-
+	public Point clone() {
+		return new Point(x, y);
 	}
 
 }

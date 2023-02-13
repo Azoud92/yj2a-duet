@@ -9,7 +9,7 @@ public class Obstacle implements Serializable {
 	 */
 	private static final long serialVersionUID = 1057503017254395944L;
 	
-	private int width, height;
+	private int width, height;  // redondant ?
 	private Point[] coord; // représ. les 4 points (haut gauche, haut droit, bas gauche, bas droit) du rectangle formé
 	private Point center;
 		
@@ -31,6 +31,22 @@ public class Obstacle implements Serializable {
 		this.angle = angle;
 		rotate(angle);
 	}
+
+	
+	public Obstacle(Point[] points, Point center, double velocity, double rotationSpeed, double angle) {
+		for (int i = 0 ; i < points.length ; i++) {
+			coord[i] = points[i].clone();
+		}
+		
+		this.center = center.clone();
+		this.velocity = velocity;
+		this.rotationSpeed = rotationSpeed;
+		this.angle = angle;
+		rotate(angle);
+	}
+	
+	// update, verifiez que vous voulez un argument ...
+
 	public void update(double d) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
 
 		setPosition(0, velocity * 1);
@@ -46,6 +62,7 @@ public class Obstacle implements Serializable {
 		center.setY(center.getY() + yN);		
 	}
 	
+	// idem : l'argument est déjà apporté par angle et rotationSpeed ?
 	public void rotate(double a) { // la rotation se fait par rapport au centre de la figure
 		angle = (angle+a) % 360; // pour que l'angle ne depasse pas 360 degrés
 		double angleRadians = Math.toRadians(a);
