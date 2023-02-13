@@ -4,34 +4,31 @@ import java.awt.Polygon;
 
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
+import com.pi4.duet.view.ObstacleView;
 
 public class ObstacleController {
 
 	private Obstacle model;
-	
-	public ObstacleController(Obstacle model) {
-		this.model = model;
-	}
-	
-	public Polygon getPolygon() {
-		// TODO Auto-generated method stub
-		Point[] coord = model.getCoords();
+	private ObstacleView view;
 		
-		int[] x = new int[coord.length];
-		int[] y = new int [coord.length];
-		for (int i = 0; i< coord.length;i++) {
-			x[i] = (int) coord[i].getX();
-			y[i] = (int) coord[i].getY();
+	public void setModel(Obstacle model) { this.model = model; }
+	
+	public void setView(ObstacleView view) { this.view = view; }
+	
+	public void update() {
+		// TODO Auto-generated method stub
+		
+		Point[] coords = model.getCoords();
+		
+		int[] x = new int[coords.length];
+		int[] y = new int [coords.length];
+		for (int i = 0; i < coords.length; i++) {
+			x[i] = (int)coords[i].getX();
+			y[i] = (int)coords[i].getY();
 			
 		}
-		return new Polygon(x, y,coord.length);
+		
+		view.setPolygon(new Polygon(x, y, coords.length));
 	}
-	
-	public void rotate(double a) {
-		model.rotate(90);
-		getPolygon();	
-	}
-	
-	
-	
+		
 }

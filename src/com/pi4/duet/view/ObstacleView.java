@@ -1,8 +1,8 @@
 package com.pi4.duet.view;
 
-import javax.swing.JPanel;
+import java.awt.Polygon;
 
-import com.pi4.duet.controller.ObstacleController;
+import javax.swing.JPanel;
 
 public class ObstacleView extends JPanel {
 	/**
@@ -10,11 +10,14 @@ public class ObstacleView extends JPanel {
 	 */
 	private static final long serialVersionUID = -5265129255893879964L;
 	
-	private ObstacleController controller;
+	private Polygon polygon;
+		
+	public void setPolygon(Polygon polygon) {
+		// TODO Auto-generated method stub
+		this.polygon = polygon;
+	}
 	
-	public ObstacleView(ObstacleController controller){
-		this.controller = controller;
-	}	
+	public Polygon getPolygon() { return polygon; }
 	
-	public ObstacleController getController() { return controller; }
+	// Essayer d'implémenter paintComponent ici plutôt
 }
