@@ -88,37 +88,32 @@ public class GameView extends JPanel implements KeyListener{
 		Timer t = new Timer();
 		
 		TimerTask task = new TimerTask() {
-	        public void run() {
-	        		o1.update(0.2);
-	        		refresh();
-	    			//setPositionObstacle(ov1, o1.getCoords());
-	    			//System.out.print("task ");
+			public void run() {
+				o1.update(0.1);
+				refresh();
+				//setPositionObstacle(ov1, o1.getCoords());
+				//System.out.print("task ");
 	    			/*for(Point p : o1.getCoords()) {
 	    				System.out.print("x " + p.getX()+" ");
 	    				System.out.print("y " + p.getY()+" ");
 	    				System.out.println();
 	    			}
 	    			System.out.println();*/
-					System.out.println(ballBlue.getX()+" "+ballBlue.getY());
-					//System.out.println(controller.getWheel().ball_1.getCenterBall().getX()+" "+controller.getWheel().ball_1.getCenterBall().getY());
-					System.out.println(controller.getWheel().ball_2.getCenterBall().getX()+" "+controller.getWheel().ball_2.getCenterBall().getY());
-	    		if(controller.getWheel().isLose(o1)) {
-	    			System.out.println("PERDU");
-	    			t.cancel();
-	    		}
-	        }
-	    };
-	    t.schedule(task, 10,10);
-		
-		
-
+				System.out.println(ballBlue.getX()+" "+ballBlue.getY());
+				//System.out.println(controller.getWheel().ball_1.getCenterBall().getX()+" "+controller.getWheel().ball_1.getCenterBall().getY());
+				//System.out.println(controller.getWheel().ball_2.getCenterBall().getX()+" "+controller.getWheel().ball_2.getCenterBall().getY());
+				if(controller.getWheel().isLose(o1)) {
+					System.out.println("PERDU");
+					t.cancel();
+				}
+			}
+		};
+		t.schedule(task, 10,10);
 	}
-	
 	public void refresh() {
 		revalidate();
 		repaint();
 	}
-	
 	public void rotateObstacle(ObstacleView ov, double rotation ) {
 		ov.getController().rotate(rotation);
 		this.revalidate();

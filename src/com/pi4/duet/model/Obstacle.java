@@ -1,6 +1,13 @@
 package com.pi4.duet.model;
 
-public class Obstacle {
+import java.io.Serializable;
+
+public class Obstacle implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1057503017254395944L;
 	
 	private int width, height;
 	private Point[] coord; // représ. les 4 points (haut gauche, haut droit, bas gauche, bas droit) du rectangle formé
@@ -24,10 +31,10 @@ public class Obstacle {
 		this.angle = angle;
 		rotate(angle);
 	}
-	
-	public void update(double a) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
+	public void update(double d) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
+
 		setPosition(0, velocity * 1);
-		if (a != 0) rotate(a);
+		if (d != 0) rotate(d);
 	}
 	
 	public void setPosition(double xN, double yN) { // sert à faire bouger le rectangle du nombre de pixels souhaité par rapport à sa position actuelle
