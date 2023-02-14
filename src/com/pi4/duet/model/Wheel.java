@@ -62,15 +62,24 @@ public class Wheel {
 			this.centerBall = centerBall;
 		}
 		
-		public boolean isInCollision(Obstacle o) {			
-			boolean inside = false;
-			for (int i = 0, j = o.getCoords().length - 1; i < o.getCoords().length - 1; j = i++) {
-				if ((o.getCoords()[i].getY() > centerBall.getY() != o.getCoords()[j].getY() > centerBall.getY()) &&
-						(centerBall.getX() < (o.getCoords()[j].getX() - o.getCoords()[i].getX()) * (centerBall.getY() - o.getCoords()[i].getY()) / (o.getCoords()[j].getY() - o.getCoords()[i].getY()) + o.getCoords()[i].getX())) {
-					inside = !inside;
+		public boolean isInCollision(Obstacle o) {	
+			
+			for (int i = 0; i < o.getCoords().length; i++) {				
+				double distance1 = Math.sqrt(Math.pow(o.getCoords()[i].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[i].getY() - centerBall.getY(), 2));
+				double distance2 = 0;
+				
+				if (i + 1 >= o.getCoords().length) {
+					distance2 = Math.sqrt(Math.pow(o.getCoords()[0].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[0].getY() - centerBall.getY(), 2));
 				}
+				else {
+					distance2 = Math.sqrt(Math.pow(o.getCoords()[i + 1].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[i + 1].getY() - centerBall.getY(), 2));
+				}
+				
+				if (distance1 <= ballRadius || distance2 <= ballRadius) {
+		            return true;
+		        }				
 			}
-			if (inside) return true;
+			
 			return false;
 		}
 	}

@@ -35,6 +35,7 @@ public class GamePlane {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
+												
 				if (wheelRotatingAH && !wheelRotatingH) {
 					wheel.rotate(Direction.ANTI_HORAIRE);
 					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
