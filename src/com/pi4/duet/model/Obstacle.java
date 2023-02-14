@@ -2,72 +2,57 @@ package com.pi4.duet.model;
 
 import java.io.Serializable;
 
+import com.pi4.duet.controller.ObstacleController;
+
+// Représente n'importe quel polygone à représenter
 public class Obstacle implements Serializable {
-	
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1057503017254395944L;
+	private static final long serialVersionUID = -7132766134333288736L;
 	
-	private int width, height;  // redondant ?
-	private Point[] coord; // représ. les 4 points (haut gauche, haut droit, bas gauche, bas droit) du rectangle formé
-	private Point center;
-		
-	private double velocity, rotationSpeed, angle = 0;
-		
-	public Obstacle(int width, int height, Point pos, double velocity, double rotationSpeed, double angle) {
-		this.width = width;
-		this.height = height;
-		coord=new Point[4];
-
-		coord[0] = pos; // position du Rectangle (en haut à gauche)
-		coord[1] = new Point(coord[0].getX() + width, coord[0].getY());
-		coord[2] = new Point(coord[0].getX() + width, coord[0].getY() + height);
-		coord[3] = new Point(coord[0].getX(), coord[0].getY() + height);
-		center = new Point(coord[0].getX() + width / 2, coord[0].getY() + height / 2);
-
-		this.velocity = velocity;
-		this.rotationSpeed = rotationSpeed;
-		this.angle = angle;
-		rotate(angle);
-	}
-
+	private Point[] coords; // représente les différents points de l'obstacle
+	private Point center; // les coordonnées du centre de l'obstacle
 	
-	public Obstacle(Point[] points, Point center, double velocity, double rotationSpeed, double angle) {
-		for (int i = 0 ; i < points.length ; i++) {
-			coord[i] = points[i].clone();
+	private ObstacleController controller;
+
+	private double velocity = 0.1, rotationSpeed = 0.1, angle = 1;
+
+		
+	public Obstacle(Point[] points, Point center, ObstacleController controller) {
+		coords = new Point[points.length];
+		for (int i = 0; i < points.length ; i++) {
+			coords[i] = points[i].clone();
 		}
-		
 		this.center = center.clone();
-		this.velocity = velocity;
-		this.rotationSpeed = rotationSpeed;
-		this.angle = angle;
-		rotate(angle);
-	}
-	
-	// update, verifiez que vous voulez un argument ...
+		this.controller = controller;
 
-	public void update(double d) { // chaque appel de cette fonction par le Timer fera descendre l'obstacle et lui appliquera une rotation selon les vitesses définies
-
-		setPosition(0, velocity * 1);
-		if (d != 0) rotate(d);
+		rotate();
 	}
+
+
 	
-	public void setPosition(double xN, double yN) { // sert à faire bouger le rectangle du nombre de pixels souhaité par rapport à sa position actuelle
-		for (Point p : coord) {
-			p.setX(p.getX() + xN);
-			p.setY(p.getY() + yN);
+
+
+	
+	// Met à jour la pos. de l'obstacle pour un deltaX et deltaY données
+	public void update(double deltaX, double deltaY) {
+		for (Point p : coords) {
+			p.setX(p.getX() + deltaX * velocity);
+			p.setY(p.getY() + deltaY * velocity);
 		}
-		center.setX(center.getX() + xN);
-		center.setY(center.getY() + yN);		
-	}
-	
-	// idem : l'argument est déjà apporté par angle et rotationSpeed ?
-	public void rotate(double a) { // la rotation se fait par rapport au centre de la figure
-		angle = (angle+a) % 360; // pour que l'angle ne depasse pas 360 degrés
-		double angleRadians = Math.toRadians(a);
+		center.setX(center.getX() + deltaX * velocity);
+		center.setY(center.getY() + deltaY * velocity);
 		
-		for (Point p : coord) {
+		if (angle != 0) rotate(); // on met une condition pour éviter de faire des calculs inutiles
+		
+		controller.update();
+	}
+	// Effectue une rotation de l'obstacle par rapport à l'angle en degrés en argument
+	public void rotate() {
+		double angleRadians = Math.toRadians(angle * rotationSpeed);
+		for (Point p : coords) {
 			double newX = center.getX() + (p.getX() - center.getX()) * Math.cos(angleRadians) - (p.getY() - center.getY()) * Math.sin(angleRadians);
 			double newY = center.getY() + (p.getX() - center.getX()) * Math.sin(angleRadians) + (p.getY() - center.getY()) * Math.cos(angleRadians);
 
@@ -76,22 +61,6 @@ public class Obstacle implements Serializable {
 		}
 	}
 	
-	public int getWidth() { return width; }
-	public void setWidth(int w) { width = w; }
-	
-	public int getHeight() { return height; }
-	public void setHeight(int h) { height = h; }
-	
-	public Point[] getCoords() { return coord; }
-		
-	public double getVelocity() { return velocity; }
-	public void setVelocity(double v) { velocity = v; }
-	
-	public double getRotationSpeed() { return rotationSpeed; }
-	public void setRotationSpeed(double rs) { rotationSpeed = rs; }
-	
-	public double getAngle() { return angle; }
-	public void setAngle(double a) { angle = a; }
-	
+	public Point[] getCoords() { return coords; }
 	
 }

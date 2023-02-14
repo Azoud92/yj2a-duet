@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class ObstacleQueue extends Timer {
 	
-	//Lien vers un GamePlane pour faire apparaitre les obstacles
+	// Lien vers un GamePlane pour faire apparaitre les obstacles
 	private final GamePlane plane;
 	
 	public ObstacleQueue(GamePlane p) {
@@ -22,10 +22,10 @@ public class ObstacleQueue extends Timer {
 		this(p, PatternData.read(path));
 	}
 	
-	public void putObstacle(Obstacle o, long delay) {	//delay est en millisecondes
+	public void putObstacle(Obstacle o, long delay) { // delay est en millisecondes
 		this.schedule(new TimerTask() {
 			public void run() {
-				plane.testApparitionObstacle();	//Le but est de faire apparaitre l'obstacle o dans le jeu ; placeholder temporaire
+				//plane.testApparitionObstacle();	// Le but est de faire apparaitre l'obstacle o dans le jeu ; placeholder temporaire
 			}
 		}, delay);
 	}

@@ -3,8 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.pi4.duet.controller.GameController;
 import com.pi4.duet.model.Point;
@@ -21,12 +20,14 @@ public class GameView extends JPanel {
 	private Dimension size;
 
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
+	
 
 	public GameView(Dimension size, GameController controller) {
 		this.size = size;
 		this.controller = controller;
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.setPreferredSize(dim);
+
 
 		int ballRadius = controller.getBallRadius();
 		ballRed = new BallView((int) (controller.getCenterBall1().getX()) - ballRadius, (int) controller.getCenterBall1().getY(), 2 * ballRadius, 2 * ballRadius, Color.red);
@@ -40,18 +41,29 @@ public class GameView extends JPanel {
 		this.addKeyListener(controller);
 		this.add(ballBlue);
 		this.add(ballRed);
-
 		this.setLayout(null);
 	}
+	public void gameIsPaused(){
+
+	}
+
+
 
 	public void setBallsPosition(Point blue, Point red) {
 		this.ballBlue.setLocation((int) blue.getX() - controller.getBallRadius(), (int) blue.getY());
 		this.ballRed.setLocation((int) red.getX() - controller.getBallRadius(), (int) red.getY());
 	}
 
+
 	private class BallView extends JPanel {
 		/**
 		 *
+=======
+	
+	private class BallView extends JPanel {
+		/**
+		 * 
+>>>>>>> 8c5112e41eedb2aa83500bc4932394716ba36c77
 		 */
 		private static final long serialVersionUID = -8381550184021712931L;
 		private int x, y, width, height;
@@ -69,6 +81,7 @@ public class GameView extends JPanel {
 			this.x = x;
 			this.y = y;
 		}
+
 	}
 
 	public void refresh() {
@@ -76,14 +89,12 @@ public class GameView extends JPanel {
 		repaint();
 	}
 
+
 	public void addObstacle(ObstacleView ov) {
 		this.add(ov);
 	}
 
 
-	public void removeObstacle(ObstacleView ov) {
-		this.remove(ov);
-	}
 
 	@Override
 	protected void paintComponent(Graphics g){

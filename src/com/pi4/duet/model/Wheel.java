@@ -2,137 +2,93 @@ package com.pi4.duet.model;
 import java.lang.Math;
 
 public class Wheel {
-
-
-
-	private int radius;
+	
+	public final int radius = 100;
 	private Point center;
 	
-	public  Ball ball_1, ball_2;
-	
-	private double angle;
-	private double rotationSpeed; // elle est fixe, vous pouvez lui donner une inertie (acceleration + frein)
 
+	private Ball ball_1, ball_2;
+
+	
+	private double angle = 0;
+	public final double rotationSpeed = 0.25; // elle est fixe, vous pouvez lui donner une inertie (acceleration + frein)
+	public final int ballRadius = 10;
+	
 	public Wheel(Point center) {
-		this.center= center;
-		this.radius=50;
-		ball_2=new Ball(new Point(center.getX()+radius, center.getY()));
-		ball_1=new Ball(new Point(center.getX()-radius, center.getY()));
-		this.angle=0;
-		this.rotationSpeed=1;
-	}
-	
-	public int getRadius() { return radius; }
-	public void setRadius(int r) { radius = r; }
-	
-	public Point getCenter() { return center; }
-	public void setCenter(Point c) { center = c; }
-
-	public void setAngle(double angle) {
-		this.angle = angle;
+		this.center = center;
+		ball_2 = new Ball(new Point(center.getX() + radius, center.getY()), ballRadius);
+		ball_1 = new Ball(new Point(center.getX() - radius, center.getY()), ballRadius);
 	}
 
-	public double getAngle() { return angle; }
-	
-	public double getRotationSpeed() { return rotationSpeed; }
-	public void setRotationSpeed(double rs) { rotationSpeed = rs; }
-	/*
-	L'angle thêta correspond à l'angle entre l'axe des abcisses et le vecteur du part du point
-	central du volant vers la balle 2.
-	Par ex si on  rotateContreHoraire() l'angle est est positif, alors que si rotateHoraire() l'angle est positif
-	 */
-	
-	public void rotateHoraire() {
-		setAngle(getAngle()-0.017453292519943295*1); // moche, et rotation speed ?
-		//Changement coordonées Ball 2;
-		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
-		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
-		//Changement coordonées Ball 1;
-		double dist1=ball_2.getCenterBall().getX()-center.getX();
-		double dist2=ball_2.getCenterBall().getY()-center.getY();
-		ball_1.getCenterBall().setX(center.getX()-dist1);
-		ball_1.getCenterBall().setY(center.getY()-dist2);
+	public Point getCenter() {
+		// TODO Auto-generated method stub
+		return center;
 	}
-	// moche (doublon)
-	public void rotateContreHoraire(){
-		setAngle(getAngle()+0.017453292519943295*1);
-		//Changement coordonées Ball 2;
-		ball_2.getCenterBall().setX(radius*Math.cos(angle)+center.getX());
-		ball_2.getCenterBall().setY(radius*Math.sin(angle)+center.getY());
-		//Changement coordonées Ball 1;
-		double dist1=ball_2.getCenterBall().getX()-center.getX();
-		double dist2=ball_2.getCenterBall().getY()-center.getY();
-		ball_1.getCenterBall().setX(center.getX()-dist1);
-		ball_1.getCenterBall().setY(center.getY()-dist2);
-
-	}
-	public boolean isLose(Obstacle o){
-		//Méthode à appeler chaque milliseconde pour vérifier si une des balle est en contact avec un des segments du quadrilatère
-
-		if(ball_1.isInCollision(o)|| ball_2.isInCollision(o)) return true;
-		if(ball_1.getCenterBall().getX()==370&&ball_1.getCenterBall().getY()==965) System.out.println("CHIEN");
-		if(ball_2.getCenterBall().getX()==370&&ball_2.getCenterBall().getY()==965) System.out.println("CHIEN");
-		return false;
-	}
-	public Ball getBall_1() {
-		return ball_1;
-	}
-
-	public void setBall_1(Ball ball_1) {
-		this.ball_1 = ball_1;
-	}
-
-	public Ball getBall_2() {
-		return ball_2;
-	}
-
-	public void setBall_2(Ball ball_2) {
-		this.ball_2 = ball_2;
-	}
-	
-	public class Ball {
+			
+	public void rotate(Direction dir) {
+		if (dir == Direction.HORAIRE) {
+			angle -= Math.toRadians(1 * rotationSpeed);
+		}
+		else if (dir == Direction.ANTI_HORAIRE){
+			angle += Math.toRadians(1 * rotationSpeed);
+		}
 		
-		int radius;
+		// Changement coordonées Ball 2
+		ball_2.centerBall.setX(radius * Math.cos(angle) + center.getX());
+		ball_2.centerBall.setY(radius * Math.sin(angle) + center.getY());
+		// Changement coordonées Ball 1
+		
+		double dist1 = ball_2.centerBall.getX() - center.getX();
+		double dist2 = ball_2.centerBall.getY() - center.getY();
+		ball_1.centerBall.setX(center.getX() - dist1);
+		ball_1.centerBall.setY(center.getY() - dist2);
+
+	}
+	
+	public Point getCenterBall1() {
+		return ball_1.centerBall;
+	}
+	
+	public Point getCenterBall2() {
+		return ball_2.centerBall;
+	}
+	
+	public boolean isInCollision(Obstacle o) {
+		return ball_1.isInCollision(o) || ball_2.isInCollision(o);
+	}
+	public static double distance(Point p1,Point p2){
+		return Math.sqrt((p1.getX()-p2.getX())*(p1.getX()-p2.getX())+(p1.getY()-p2.getY())*(p1.getY()-p2.getY()));
+	}
+	
+	private class Ball {
+		
 		Point centerBall;
 		
-		public Ball(Point centerBall) {
-			this.radius=5;
-			this.centerBall=centerBall;
-		}
-		
-		int getRadius() { return radius; }
-		void setRadius(int r) { radius = r; }
-		
-		public Point getCenterBall() { return centerBall; }
-		void setCenter(Point c) { center = c; }
-
-		// static ailleur
-		double distance(Point a,Point b){
-			return Math.sqrt((a.getX()-b.getX())*(a.getX()-b.getX())+(a.getY()-b.getY())*(a.getY()-b.getY()));
+		public Ball(Point centerBall, double radius) {
+			this.centerBall = centerBall;
 		}
 
-		//Méthode intersecte
+
 		public boolean isInCollision(Obstacle o){
-
-			// reformuler avec une iteration sur les points du polygone ...
-			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[1],centerBall)<=distance(o.getCoords()[0],o.getCoords()[1])+5){
-
-				return true;
-			}
-			if(distance(o.getCoords()[0],centerBall)+distance(o.getCoords()[2],centerBall)<=distance(o.getCoords()[0],o.getCoords()[2])+1){
-				return true;
-			}
-			if(distance(o.getCoords()[1],centerBall)+distance(o.getCoords()[3],centerBall)<=distance(o.getCoords()[1],o.getCoords()[3])+1){
-				return true;
-			}
-			if(distance(o.getCoords()[2],centerBall)+distance(o.getCoords()[3],centerBall)<=distance(o.getCoords()[2],o.getCoords()[3])+1){
-				return true;
+			for(int i=0;i<o.getCoords().length-1;i++){
+				double d1=distance(o.getCoords()[i],centerBall);
+				double d2=distance(o.getCoords()[i+1],centerBall);
+				double d3=distance(o.getCoords()[i],o.getCoords()[i+1]);
+				if(d1+d2<=d3+0.01) return true;
 			}
 			return false;
+		}
 
+		public boolean isInCollision2(Obstacle o) {
+			boolean inside = false;
+			for (int i = 0, j = o.getCoords().length - 1; i < o.getCoords().length - 1; j = i++) {
+				if ((o.getCoords()[i].getY() > centerBall.getY() != o.getCoords()[j].getY() > centerBall.getY()) &&
+						(centerBall.getX() < (o.getCoords()[j].getX() - o.getCoords()[i].getX()) * (centerBall.getY() - o.getCoords()[i].getY()) / (o.getCoords()[j].getY() - o.getCoords()[i].getY()) + o.getCoords()[i].getX())) {
+					inside = !inside;
+				}
+			}
+			if (inside) return true;
+			return false;
 		}
 	}
-
-
-	
 }
