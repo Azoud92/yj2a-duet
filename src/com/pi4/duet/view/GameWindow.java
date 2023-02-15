@@ -48,14 +48,23 @@ public class GameWindow extends JFrame{
 			HomePageView hpv = new HomePageView(size, frame, this, hpc);
 			hpc.setView(hpv);
 			container.add(hpv);
-
+			
 			container.add(new JPanel());
-
+			
 			frame.add(container);
-			frame.setVisible(true);
-		});
-
-
+			frame.setVisible(true);		
+		});	
+		
+	
+	}
+	
+	public void setMainContainer(JPanel container){
+		this.container = container;
+		frame.add(container);
+		frame.setVisible(true);
+	}
+	public JPanel getMainContainer() {
+		return container;
 	}
 
 	public void setMainContainer(JPanel container){

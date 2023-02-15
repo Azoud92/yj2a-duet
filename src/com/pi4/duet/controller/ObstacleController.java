@@ -1,13 +1,20 @@
 package com.pi4.duet.controller;
 
+import java.io.Serializable;
+
 import java.awt.Polygon;
 
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.view.ObstacleView;
 
-public class ObstacleController {
+public class ObstacleController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7126796665402586980L;
+	
 	private Obstacle model;
 	private ObstacleView view;
 		

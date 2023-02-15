@@ -50,6 +50,24 @@ public class GameController implements KeyListener {
 		model.addObstacle(o);
 		view.addObstacle(ov);		
 	}
+	
+	public void testObstacles() {
+		Point[] rect = new Point[4];
+		rect[0] = new Point(model.width / 3, 100);
+		rect[1] = new Point(model.width / 3 + 100, 100);
+		rect[2] = new Point(model.width / 3 + 100, 120);
+		rect[3] = new Point(model.width / 3, 120);
+		
+		Point centerRect = new Point(model.width / 3 + 50, 110);
+				
+		ObstacleController oc = new ObstacleController();
+		Obstacle o = new Obstacle(rect, centerRect, oc);
+		oc.setModel(o);
+		ObstacleView ov = new ObstacleView(oc, model.width, model.height);
+		oc.setView(ov);	
+		model.addObstacle(o);
+		view.addObstacle(ov);		
+	}
 		
 	public void updateWheel(Point blue, Point red) {
 		// TODO Auto-generated method stub	

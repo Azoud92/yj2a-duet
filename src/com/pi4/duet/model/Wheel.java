@@ -6,9 +6,7 @@ public class Wheel {
 	public final int radius = 100;
 	private Point center;
 	
-
 	private Ball ball_1, ball_2;
-
 	
 	private double angle = 0;
 	public final double rotationSpeed = 0.25; // elle est fixe, vous pouvez lui donner une inertie (acceleration + frein)
@@ -19,7 +17,7 @@ public class Wheel {
 		ball_2 = new Ball(new Point(center.getX() + radius, center.getY()), ballRadius);
 		ball_1 = new Ball(new Point(center.getX() - radius, center.getY()), ballRadius);
 	}
-
+	
 	public Point getCenter() {
 		// TODO Auto-generated method stub
 		return center;
@@ -42,7 +40,6 @@ public class Wheel {
 		double dist2 = ball_2.centerBall.getY() - center.getY();
 		ball_1.centerBall.setX(center.getX() - dist1);
 		ball_1.centerBall.setY(center.getY() - dist2);
-
 	}
 	
 	public Point getCenterBall1() {
@@ -55,9 +52,6 @@ public class Wheel {
 	
 	public boolean isInCollision(Obstacle o) {
 		return ball_1.isInCollision(o) || ball_2.isInCollision(o);
-	}
-	public static double distance(Point p1,Point p2){
-		return Math.sqrt((p1.getX()-p2.getX())*(p1.getX()-p2.getX())+(p1.getY()-p2.getY())*(p1.getY()-p2.getY()));
 	}
 	
 	private class Ball {
@@ -76,6 +70,7 @@ public class Wheel {
 				double d3=distance(o.getCoords()[i],o.getCoords()[i+1]);
 				if(d1+d2<=d3+0.01) return true;
 			}
+			
 			return false;
 		}
 

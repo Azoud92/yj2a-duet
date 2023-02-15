@@ -25,9 +25,9 @@ public class Obstacle implements Serializable {
 		for (int i = 0; i < points.length ; i++) {
 			coords[i] = points[i].clone();
 		}
+		
 		this.center = center.clone();
 		this.controller = controller;
-
 		rotate();
 	}
 
@@ -49,9 +49,11 @@ public class Obstacle implements Serializable {
 		
 		controller.update();
 	}
+	
 	// Effectue une rotation de l'obstacle par rapport à l'angle en degrés en argument
 	public void rotate() {
 		double angleRadians = Math.toRadians(angle * rotationSpeed);
+		
 		for (Point p : coords) {
 			double newX = center.getX() + (p.getX() - center.getX()) * Math.cos(angleRadians) - (p.getY() - center.getY()) * Math.sin(angleRadians);
 			double newY = center.getY() + (p.getX() - center.getX()) * Math.sin(angleRadians) + (p.getY() - center.getY()) * Math.cos(angleRadians);
@@ -61,6 +63,28 @@ public class Obstacle implements Serializable {
 		}
 	}
 	
+	public String toString() {
+		String res = "[";
+		for (int i = 0 ; i < coords.length ; i++) {
+			res += coords[i];
+			if (i < coords.length - 1) res += " ";
+		}
+		res += "];" + center + ";" + velocity + ";"
+				+ rotationSpeed + ";" + angle;
+		return res;
+	}
+	
 	public Point[] getCoords() { return coords; }
+	
+	public Point getCenter() { return center; }
+		
+	public double getVelocity() { return velocity; }
+	public void setVelocity(double v) { velocity = v; }
+	
+	public double getRotationSpeed() { return rotationSpeed; }
+	public void setRotationSpeed(double rs) { rotationSpeed = rs; }
+	
+	public double getAngle() { return angle; }
+	public void setAngle(double a) { angle = a; }
 	
 }

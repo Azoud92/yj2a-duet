@@ -11,8 +11,6 @@ public class GamePlane {
 	public final int width, height;
 	
 	private GameController controller;
-
-
 	private Timer timer;
 	
 	public final Wheel wheel;
