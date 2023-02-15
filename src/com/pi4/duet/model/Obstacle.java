@@ -7,9 +7,6 @@ import com.pi4.duet.controller.ObstacleController;
 // Représente n'importe quel polygone à représenter
 public class Obstacle implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7132766134333288736L;
 	
 	private Point[] coords; // représente les différents points de l'obstacle
@@ -57,6 +54,28 @@ public class Obstacle implements Serializable {
 		}
 	}
 	
+	public String toString() {
+		String res = "[";
+		for (int i = 0 ; i < coords.length ; i++) {
+			res += coords[i];
+			if (i < coords.length - 1) res += " ";
+		}
+		res += "];" + center + ";" + velocity + ";"
+				+ rotationSpeed + ";" + angle;
+		return res;
+	}
+	
 	public Point[] getCoords() { return coords; }
+	
+	public Point getCenter() { return center; }
+		
+	public double getVelocity() { return velocity; }
+	public void setVelocity(double v) { velocity = v; }
+	
+	public double getRotationSpeed() { return rotationSpeed; }
+	public void setRotationSpeed(double rs) { rotationSpeed = rs; }
+	
+	public double getAngle() { return angle; }
+	public void setAngle(double a) { angle = a; }
 	
 }
