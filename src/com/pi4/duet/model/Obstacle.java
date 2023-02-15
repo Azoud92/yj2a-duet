@@ -7,18 +7,14 @@ import com.pi4.duet.controller.ObstacleController;
 // Représente n'importe quel polygone à représenter
 public class Obstacle implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7132766134333288736L;
 	
 	private Point[] coords; // représente les différents points de l'obstacle
 	private Point center; // les coordonnées du centre de l'obstacle
 	
 	private ObstacleController controller;
-
+	
 	private double velocity = 0.1, rotationSpeed = 0.1, angle = 1;
-
 		
 	public Obstacle(Point[] points, Point center, ObstacleController controller) {
 		coords = new Point[points.length];
@@ -30,11 +26,6 @@ public class Obstacle implements Serializable {
 		this.controller = controller;
 		rotate();
 	}
-
-
-	
-
-
 	
 	// Met à jour la pos. de l'obstacle pour un deltaX et deltaY données
 	public void update(double deltaX, double deltaY) {
