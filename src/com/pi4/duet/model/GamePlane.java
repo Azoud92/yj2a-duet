@@ -15,13 +15,9 @@ public class GamePlane {
 	
 	public final Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
-
-
-	private boolean paused=false;
 	
 	private boolean wheelRotatingAH = false; // rotation anti-horaire du volant en cours
 	private boolean wheelRotatingH = false; // rotation anti-horaire du volant en cours
-
 		
 	public GamePlane(int width, int height, GameController controller) {		
 		this.width = width;
@@ -31,49 +27,40 @@ public class GamePlane {
         this.obstacles = new ArrayList<Obstacle>();
         timer = new Timer();
 	}
-	public void gamePausedAndResume(){
-		paused=!paused;
-	}
 	
 	public void gameStart() {
+		
 		timer.schedule(new TimerTask() {
+			
 			@Override
 			public void run() {
-				if(!paused){
-					// TODO Auto-generated method stub
-					if (wheelRotatingAH && !wheelRotatingH) {
-						wheel.rotate(Direction.ANTI_HORAIRE);
-						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-					}
-					else if (!wheelRotatingAH && wheelRotatingH) {
-						wheel.rotate(Direction.HORAIRE);
-						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-					}
-					else {
-						stopWheelRotation();
-					}
-
-					for (Obstacle o : obstacles) {
-						o.update(0, 1);
-						controller.verifyCollision(o);
-						controller.refreshView();
-					}
+				// TODO Auto-generated method stub
+												
+				if (wheelRotatingAH && !wheelRotatingH) {
+					wheel.rotate(Direction.ANTI_HORAIRE);
+					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
 				}
-
-
-
-
+				else if (!wheelRotatingAH && wheelRotatingH) {
+					wheel.rotate(Direction.HORAIRE);
+					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+				}
+				else {
+					stopWheelRotation();
+				}
+				
+				for (Obstacle o : obstacles) {
+					o.update(0, 1);
+					controller.verifyCollision(o);
+					controller.refreshView();
+				}
 			}
 			
 		}, 0, 1);
 	}
-
-
 	
 	public void gameStop() {
 		timer.cancel();
 	}
-
 	
 	public void startWheelRotation(Direction dir) { 
 		switch(dir) {
@@ -96,13 +83,6 @@ public class GamePlane {
 	
 	public void removeObstacle(Obstacle o) {
 		this.obstacles.remove(o);
-	}
-	public boolean isPaused() {
-		return paused;
-	}
-
-	public void setPaused(boolean paused) {
-		this.paused = paused;
 	}
 		
 }
