@@ -30,5 +30,9 @@ public class Point implements Serializable, Cloneable {
 	public Point clone() {
 		return new Point(x, y);
 	}
+	
+	public String toString() {
+		return "(" + x + "," + y +")";
+	}
 
 }
