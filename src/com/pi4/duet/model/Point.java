@@ -2,6 +2,7 @@ package com.pi4.duet.model;
 
 import java.io.Serializable;
 
+
 public class Point implements Serializable, Cloneable {
 
 	/**
