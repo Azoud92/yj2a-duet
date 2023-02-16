@@ -15,6 +15,12 @@ public class GamePlane {
 	
 	public final Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	private boolean paused=false;
 	
 	private boolean wheelRotatingAH = false; // rotation anti-horaire du volant en cours
 	private boolean wheelRotatingH = false; // rotation anti-horaire du volant en cours
@@ -35,24 +41,26 @@ public class GamePlane {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-												
-				if (wheelRotatingAH && !wheelRotatingH) {
-					wheel.rotate(Direction.ANTI_HORAIRE);
-					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+				if(!paused){
+					if (wheelRotatingAH && !wheelRotatingH) {
+						wheel.rotate(Direction.ANTI_HORAIRE);
+						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+					}
+					else if (!wheelRotatingAH && wheelRotatingH) {
+						wheel.rotate(Direction.HORAIRE);
+						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+					}
+					else {
+						stopWheelRotation();
+					}
+
+					for (Obstacle o : obstacles) {
+						o.update(0, 1);
+						controller.verifyCollision(o);
+						controller.refreshView();
+					}
 				}
-				else if (!wheelRotatingAH && wheelRotatingH) {
-					wheel.rotate(Direction.HORAIRE);
-					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-				}
-				else {
-					stopWheelRotation();
-				}
-				
-				for (Obstacle o : obstacles) {
-					o.update(0, 1);
-					controller.verifyCollision(o);
-					controller.refreshView();
-				}
+
 			}
 			
 		}, 0, 1);
@@ -83,6 +91,9 @@ public class GamePlane {
 	
 	public void removeObstacle(Obstacle o) {
 		this.obstacles.remove(o);
+	}
+	public void gamePausedOrResumed(){
+		paused=!paused;
 	}
 		
 }
