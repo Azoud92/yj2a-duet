@@ -14,6 +14,7 @@ public class GameController implements KeyListener {
 
 	private GamePlane model;
 	private GameView view;
+	private boolean pause=false;
 		
 	public void setModel(GamePlane model) { this.model = model; }
 	
@@ -54,30 +55,37 @@ public class GameController implements KeyListener {
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		switch(e.getKeyCode()) {
-		case KeyEvent.VK_RIGHT:
-			model.stopWheelRotation();
-			break;
-		case KeyEvent.VK_LEFT:
-			model.stopWheelRotation();
-			break;
+		if(!pause){
+			// TODO Auto-generated method stub
+			if(!model.isPaused()){
+				switch(e.getKeyCode()) {
+					case KeyEvent.VK_RIGHT: model.stopWheelRotation();break;
+					case KeyEvent.VK_LEFT: model.stopWheelRotation();break;
+					case KeyEvent.VK_SPACE: model.gamePausedOrResumed();break;
+				}
+			}else{
+				if(KeyEvent.VK_SPACE==e.getKeyCode()) {
+					model.gamePausedOrResumed();
+				}
+			}
 		}
+		pause=!pause;
 	}
-	
+
+
+
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		switch(e.getKeyCode()) {
-        case KeyEvent.VK_RIGHT:
-        	model.startWheelRotation(Direction.ANTI_HORAIRE);
-        	break;
-            
-        case KeyEvent.VK_LEFT:
-        	model.startWheelRotation(Direction.HORAIRE);
-        	break;
+		if(!model.isPaused()){
+			switch (e.getKeyCode()){
+				case KeyEvent.VK_RIGHT: model.startWheelRotation(Direction.ANTI_HORAIRE); break;
+				case KeyEvent.VK_LEFT: model.startWheelRotation(Direction.HORAIRE); break;
+			}
 		}
 	}
+
 
 	@Override
 	public void keyTyped(KeyEvent e) {
