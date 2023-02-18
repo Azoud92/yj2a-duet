@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 import com.pi4.duet.controller.GameController;
+import com.pi4.duet.controller.HomePageViewController;
 import com.pi4.duet.model.Point;
 
 public class GameView extends JPanel {
@@ -14,7 +15,7 @@ public class GameView extends JPanel {
 	private static final long serialVersionUID = -306594423077754361L;
 	
 	private GameController controller;
-	private HomePageView homePageView;
+	private HomePageViewController homePageViewController;
 
 	private BallView ballRed, ballBlue;
 	private Dimension size;
@@ -49,7 +50,7 @@ public class GameView extends JPanel {
 		this.setLayout(null);
 	}
 	public void affichePause(){
-		String[] option={"Reprendre le jeu", "Quitter"};
+		String[] option={"Reprendre le jeu", "Quitter le jeu"};
 		JOptionPane jboite=new JOptionPane();
 		int indice=jboite.showOptionDialog(this,
 				"Le jeu est en pause, veuillez choisir une option",
@@ -66,7 +67,8 @@ public class GameView extends JPanel {
 				controller.getModel().gamePausedOrResumed();
 				break;
 			}
-			case 1: this.setVisible(false);
+			case 1: System.exit(0);
+
 
 		}
 	}
