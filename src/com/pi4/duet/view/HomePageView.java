@@ -116,7 +116,6 @@ public class HomePageView extends JPanel{
 			frame.dispose();
 		});
 		
-		
 	}
 	
 	public static ImageIcon resizeImage(ImageIcon i, int width, int height) {

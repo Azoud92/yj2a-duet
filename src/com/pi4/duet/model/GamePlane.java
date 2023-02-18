@@ -45,10 +45,12 @@ public class GamePlane {
 					if (wheelRotatingAH && !wheelRotatingH) {
 						wheel.rotate(Direction.ANTI_HORAIRE);
 						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+						controller.updateMvt(Direction.ANTI_HORAIRE);
 					}
 					else if (!wheelRotatingAH && wheelRotatingH) {
 						wheel.rotate(Direction.HORAIRE);
 						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+						controller.updateMvt(Direction.HORAIRE);
 					}
 					else {
 						stopWheelRotation();

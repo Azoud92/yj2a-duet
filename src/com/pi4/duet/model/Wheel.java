@@ -22,6 +22,7 @@ public class Wheel {
 		// TODO Auto-generated method stub
 		return center;
 	}
+	
 			
 	public void rotate(Direction dir) {
 		if (dir == Direction.HORAIRE) {
@@ -41,6 +42,8 @@ public class Wheel {
 		ball_1.centerBall.setX(center.getX() - dist1);
 		ball_1.centerBall.setY(center.getY() - dist2);
 	}
+	
+	
 	public static double distance(Point p1,Point p2) {
 		return Math.sqrt((p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) + (p1.getY() - p2.getY()) * (p1.getY() - p2.getY()));
 	}
@@ -50,6 +53,10 @@ public class Wheel {
 	
 	public Point getCenterBall2() {
 		return ball_2.centerBall;
+	}
+	
+	public double getAngle() {
+		return angle;
 	}
 	
 	public boolean isInCollision(Obstacle o) {

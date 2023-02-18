@@ -53,14 +53,25 @@ public class GameController implements KeyListener {
 		view.setBallsPosition(blue, red);
 	}
 	
+	public void updateMvt(Direction dir) {
+		view.MvtBlueRotate(Direction.ANTI_HORAIRE); 
+		view.MvtRedRotate(Direction.ANTI_HORAIRE);
+	}
+	
+	public void resetAngleMvt() {
+		view.resetAngleMvt();
+		
+	}
+	
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if(!pause){
 			// TODO Auto-generated method stub
 			if(!model.isPaused()){
 				switch(e.getKeyCode()) {
-					case KeyEvent.VK_RIGHT: model.stopWheelRotation();break;
-					case KeyEvent.VK_LEFT: model.stopWheelRotation();break;
+					case KeyEvent.VK_RIGHT: model.stopWheelRotation(); resetAngleMvt(); break;
+					case KeyEvent.VK_LEFT: model.stopWheelRotation(); resetAngleMvt(); break;
 					case KeyEvent.VK_SPACE: model.gamePausedOrResumed();break;
 				}
 			}else{
@@ -108,6 +119,13 @@ public class GameController implements KeyListener {
 	public int getBallRadius() {
 		// TODO Auto-generated method stub
 		return model.wheel.ballRadius;
+	}
+	public double getWheelSpeed() {
+		return model.wheel.rotationSpeed;
+	}
+	
+	public double getWheelangle() {
+		return model.wheel.getAngle();
 	}
 	
 	public Point getWheelCenter() {
