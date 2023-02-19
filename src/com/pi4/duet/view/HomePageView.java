@@ -65,6 +65,7 @@ public class HomePageView extends JPanel{
 		
 		level1.addActionListener((ActionEvent e) ->{
 			this.setVisible(false);
+			
 			controller.runParty(size, window);
 
 		});
@@ -72,14 +73,14 @@ public class HomePageView extends JPanel{
 		level2 = new JButton("2");
 		level2.setBounds(2 * tx1 + this.size.width/5, this.size.height/12*4, this.size.width/5, this.size.width/5);
 		level2.setBackground(Color.WHITE);
-		level2.setFont(new Font("Arial", Font.BOLD, (int) (45)));
+		level2.setFont(new Font("Arial", Font.BOLD, 45));
 		level2.setEnabled(false);
 		this.add(level2);
 		
 		level3 = new JButton("3");
 		level3.setBounds(3 * tx1 + 2 * this.size.width/5, this.size.height/12*4, this.size.width/5, this.size.width/5);
 		level3.setBackground(Color.WHITE);
-		level3.setFont(new Font("Arial", Font.BOLD, (int) (45)));
+		level3.setFont(new Font("Arial", Font.BOLD, 45));
 		level3.setEnabled(false);
 		this.add(level3);
 		

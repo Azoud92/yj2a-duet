@@ -1,9 +1,11 @@
 package com.pi4.duet.view;
 import java.awt.Color;   
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.pi4.duet.controller.GameController;
@@ -22,11 +24,12 @@ public class GameView extends JPanel {
 	private BallMvt mvtRed, mvtBlue;
 	private Dimension size;
 	
-	private Image background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
+	private Image background;
 	
 	public GameView(Dimension size, GameController controller) {
-		this.size = size;
+		this.size = new Dimension(size.width/3, size.height);
 		this.controller = controller;
+		background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.setPreferredSize(dim);
 		
@@ -44,7 +47,6 @@ public class GameView extends JPanel {
 		mvtBlue = new BallMvt(ballBlue,initCoordX(ballBlue), initCoordY(ballBlue), Color.blue);
 		this.add(mvtBlue);
 		        
-		this.setLayout(null);
         
         this.addKeyListener(controller);
         this.add(ballBlue);
@@ -53,6 +55,7 @@ public class GameView extends JPanel {
 		this.setLayout(null);
 	}
 	
+
 	
 	public int[] initCoordX(BallView b) {
 		int[] res = new int[62];
@@ -145,6 +148,7 @@ public class GameView extends JPanel {
 				else if (dir == Direction.ANTI_HORAIRE){
 					angle += Math.toRadians(controller.getWheelangle() * controller.getWheelSpeed());
 				}
+				System.out.println("wheeel angle : "+controller.getWheelangle()+" vitesse wheel : "+controller.getWheelSpeed());
 				coordX[i] = (int) (controller.getWheelCenter().getX() + r * Math.cos(angle));
 				coordY[i] = (int) (controller.getWheelCenter().getY() + r * Math.sin(angle));
 
@@ -170,6 +174,7 @@ public class GameView extends JPanel {
 		
 		
 	}
+	
 	
 	
 	
@@ -215,6 +220,48 @@ public class GameView extends JPanel {
 	public void resetAngleMvt() {
 		mvtRed.resetAngle();
 		mvtBlue.resetAngle();
+		
+	}
+	
+	
+	public void lostGame() {
+		background =  new ImageIcon(this.getClass().getResource("/resources/background_grey.png")).getImage();
+		ballRed.color = Color.gray;
+		ballBlue.color = Color.gray;
+		mvtRed.color = Color.gray;
+		mvtBlue.color = Color.gray;
+		
+		JButton quit = new JButton("BACK");
+		quit.setBounds(size.width/5, this.size.height/5 , this.size.width/5 * 3, this.size.height/5);
+		quit.setForeground(Color.red);
+		quit.setBackground(Color.gray);
+		quit.setFont(new Font("Arial", Font.BOLD, 50));
+		quit.setVisible(true);
+		quit.setOpaque(false);
+		this.add(quit);
+		
+		quit.addActionListener(e -> {
+			controller.affMenu();
+		});
+		
+		JButton replay = new JButton("REJOUER");
+		replay.setBounds(this.size.width/5, this.size.height/5 * 3, this.size.width/5 * 3, this.size.height/5);
+		replay.setBackground(Color.gray);
+		replay.setForeground(Color.blue);
+		replay.setFont(new Font("Arial", Font.BOLD, 50));
+		replay.setVisible(true);
+		replay.setOpaque(false);
+		add(replay);
+		
+		replay.addActionListener(e -> {
+			//rejouer
+			controller.replay();
+		});
+		this.setVisible(true);
+		this.revalidate();
+		this.repaint();
+		
+		
 		
 	}
 

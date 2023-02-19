@@ -1,20 +1,29 @@
 package com.pi4.duet.controller;
 
+import java.awt.Dimension;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 
 import com.pi4.duet.model.Direction;
 import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.view.GameView;
+
 import com.pi4.duet.view.ObstacleView;
 
 public class GameController implements KeyListener {
 
 	private GamePlane model;
 	private GameView view;
+	private HomePageViewController hpvC;
 	private boolean pause=false;
+	
+	public GameController(HomePageViewController hpvC){
+		this.hpvC = hpvC;
+	}
 		
 	public void setModel(GamePlane model) { this.model = model; }
 	
@@ -27,6 +36,7 @@ public class GameController implements KeyListener {
 	public void verifyCollision(Obstacle o) {
 		if (model.wheel.isInCollision(o)) {
 			model.gameStop();
+			view.lostGame();
 		}
 	}
 	
@@ -103,6 +113,22 @@ public class GameController implements KeyListener {
 		// TODO Auto-generated method stub		
 	}
 	
+	
+	public void affMenu() {
+		
+		hpvC.runHomePage(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow());
+		view.setVisible(false);
+
+
+	}
+	
+	
+	public void replay() {
+		hpvC.runParty(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow());
+		view.setVisible(false);
+	}
+
+	
 	public Point getCenterBall1() {
 		return model.wheel.getCenterBall1();
 	}
@@ -130,5 +156,11 @@ public class GameController implements KeyListener {
 	
 	public Point getWheelCenter() {
 		return model.wheel.getCenter();
-	}	
+	}
+
+	
+
+	
+
+		
 }

@@ -63,5 +63,9 @@ public class GameWindow extends JFrame{
 	public JPanel getMainContainer() {
 		return container;
 	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
 	
 }
