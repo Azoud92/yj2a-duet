@@ -6,19 +6,25 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 
+
 import com.pi4.duet.model.Direction;
 import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.view.GameView;
-
 import com.pi4.duet.view.ObstacleView;
+
+
+
+
 
 public class GameController implements KeyListener {
 
 	private GamePlane model;
 	private GameView view;
+
 	private HomePageViewController hpvC;
+
 	private boolean pause=false;
 	
 	public GameController(HomePageViewController hpvC){
@@ -62,6 +68,7 @@ public class GameController implements KeyListener {
 		// TODO Auto-generated method stub	
 		view.setBallsPosition(blue, red);
 	}
+
 	
 	public void updateMvt(Direction dir) {
 		view.MvtBlueRotate(Direction.ANTI_HORAIRE); 
@@ -74,15 +81,18 @@ public class GameController implements KeyListener {
 	}
 	
 	
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if(!pause){
 			// TODO Auto-generated method stub
 			if(!model.isPaused()){
 				switch(e.getKeyCode()) {
+
 					case KeyEvent.VK_RIGHT: model.stopWheelRotation(); resetAngleMvt(); break;
 					case KeyEvent.VK_LEFT: model.stopWheelRotation(); resetAngleMvt(); break;
-					case KeyEvent.VK_SPACE: model.gamePausedOrResumed();break;
+					case KeyEvent.VK_SPACE: model.gamePausedOrResumed(); view.affichePause(); break;
+
 				}
 			}else{
 				if(KeyEvent.VK_SPACE==e.getKeyCode()) {
@@ -136,10 +146,21 @@ public class GameController implements KeyListener {
 	public Point getCenterBall2() {
 		return model.wheel.getCenterBall2();
 	}
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
 
 	public int getWheelRadius() {
 		// TODO Auto-generated method stub
 		return model.wheel.radius;
+	}
+
+	public boolean isPause() {
+		return pause;
+	}
+
+	public GamePlane getModel() {
+		return model;
 	}
 
 	public int getBallRadius() {

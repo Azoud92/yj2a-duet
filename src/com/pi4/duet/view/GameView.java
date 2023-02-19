@@ -1,4 +1,5 @@
 package com.pi4.duet.view;
+
 import java.awt.Color;   
 import java.awt.Dimension;
 import java.awt.Font;
@@ -6,10 +7,13 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import com.pi4.duet.controller.GameController;
 import com.pi4.duet.model.Direction;
+
 import com.pi4.duet.model.Point;
 
 public class GameView extends JPanel {
@@ -20,14 +24,19 @@ public class GameView extends JPanel {
 	private static final long serialVersionUID = -306594423077754361L;
 	
 	private GameController controller;
+
+
 	private BallView ballRed, ballBlue;
 	private BallMvt mvtRed, mvtBlue;
 	private Dimension size;
+
 	
+
 	private Image background;
 	
 	public GameView(Dimension size, GameController controller) {
 		this.size = new Dimension(size.width/3, size.height);
+
 		this.controller = controller;
 		background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
 		Dimension dim = new Dimension(size.width / 3, size.height);
@@ -49,11 +58,54 @@ public class GameView extends JPanel {
 		        
         
         this.addKeyListener(controller);
+
+
         this.add(ballBlue);
         this.add(ballRed);
-        
+
 		this.setLayout(null);
 	}
+	public void affichePause(){
+		String[] option={"Reprendre le jeu", "Quitter le jeu"};
+		JOptionPane jboite=new JOptionPane();
+		int indice=jboite.showOptionDialog(this,
+				"Le jeu est en pause, veuillez choisir une option",
+				"Jeu en pause",
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				new ImageIcon(getClass().getResource("/resources/pause.png")),
+				option,
+				option[0]);
+		switch(indice){
+			case 0: {
+				decompte();
+				controller.setPause(controller.isPause());
+				controller.getModel().gamePausedOrResumed();
+				break;
+			}
+			case 1: System.exit(0);
+
+
+		}
+	}
+
+
+	public void decompte(){
+		String []resume={"Reprendre maintenant"};
+		JOptionPane jboite2 = new JOptionPane("Le jeu va reprendre automatiquement dans moins de 3 secondes",
+				JOptionPane.INFORMATION_MESSAGE,-1,
+				new ImageIcon(getClass().getResource("/resources/resume.jpg")));
+		jboite2.setOptions(resume);
+		final Timer timer = new Timer(3000, e -> {
+			jboite2.setValue(JOptionPane.CLOSED_OPTION);
+		});
+		timer.setRepeats(false);
+		timer.start();
+		jboite2.createDialog(this, "TENEZ VOUS PRÊT").setVisible(true);
+
+	}
+
+
 	
 
 	
