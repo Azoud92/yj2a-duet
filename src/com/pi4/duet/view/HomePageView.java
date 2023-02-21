@@ -65,7 +65,6 @@ public class HomePageView extends JPanel{
 		
 		level1.addActionListener((ActionEvent e) ->{
 			this.setVisible(false);
-			
 			controller.runParty(size, window);
 
 		});

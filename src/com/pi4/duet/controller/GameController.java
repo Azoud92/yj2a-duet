@@ -83,7 +83,12 @@ public class GameController implements KeyListener {
 				switch(e.getKeyCode()) {
 					case KeyEvent.VK_RIGHT: model.stopWheelRotation(); resetAngleMvt(); break;
 					case KeyEvent.VK_LEFT: model.stopWheelRotation(); resetAngleMvt(); break;
-					case KeyEvent.VK_SPACE: model.gamePausedOrResumed(); view.affichePause(); break;
+					case KeyEvent.VK_SPACE:{
+						model.stopWheelRotation();
+						model.gamePausedOrResumed();
+						view.affichePause();
+						break;
+					}
 				}
 			}
 			else {

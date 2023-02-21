@@ -60,7 +60,7 @@ public class GameView extends JPanel {
 	}
 	
 	public void affichePause(){
-		String[] option={"Reprendre le jeu", "Quitter le jeu"};
+		String[] option={"Reprendre le jeu","Revenir au menu","Quitter le jeu"};
 		int indice=JOptionPane.showOptionDialog(this,
 				"Le jeu est en pause, veuillez choisir une option",
 				"Jeu en pause",
@@ -76,7 +76,12 @@ public class GameView extends JPanel {
 				controller.getModel().gamePausedOrResumed();
 				break;
 			}
-			case 1: System.exit(0);
+			case 1:{
+				this.setVisible(false);
+				break;
+			}
+
+			case 2: System.exit(0);
 		}
 	}
 
