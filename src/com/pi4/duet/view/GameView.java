@@ -68,7 +68,7 @@ public class GameView extends JPanel {
 	public void affichePause(){
 		String[] option={"Reprendre le jeu", "Quitter le jeu"};
 		JOptionPane jboite=new JOptionPane();
-		int indice=jboite.showOptionDialog(this,
+		int indice=JOptionPane.showOptionDialog(this,
 				"Le jeu est en pause, veuillez choisir une option",
 				"Jeu en pause",
 				JOptionPane.YES_NO_CANCEL_OPTION,
@@ -109,8 +109,8 @@ public class GameView extends JPanel {
 	
 
 	
-	public int[] initCoordX(BallView b) {
-		int[] res = new int[62];
+	public double[] initCoordX(BallView b) {
+		double[] res = new double[62];
 		for (int i = 0; i<62; i++) {
 			res[i] = b.x;
 		}
@@ -118,11 +118,11 @@ public class GameView extends JPanel {
 	}
 	
 	
-	public int[] initCoordY(BallView b) {
-		int[] res = new int[62];
+	public double[] initCoordY(BallView b) {
+		double[] res = new double[62];
 		res[61] = b.y;
 		for (int i = 60; i>=0; i--) {
-			res[i] = res[i+1] + 1;
+			res[i] = res[i+1] + 0.5;
 		}
 		return res;
 	}
@@ -162,9 +162,10 @@ public class GameView extends JPanel {
 		private Color color;
 		private BallView ballV;
 
-		private int[] coordX, coordY;
+
+		private double[] coordX, coordY;
 		
-		public BallMvt(BallView ballV, int[] coordX, int[] coordY, Color color) {
+		public BallMvt(BallView ballV, double[] coordX, double[] coordY, Color color) {
 			this.setOpaque(false);
 			
 			this.setSize(new Dimension(size.width, size.height));
@@ -181,50 +182,63 @@ public class GameView extends JPanel {
 			super.paintComponent(g);		
 			g.setColor(color);
 			for (int i = 0; i < coordX.length; i++) { // On suppose que coordX ET coordY on toujours la meme taille.
-				g.drawOval(coordX[i], coordY[i], (ballV.width / (coordX.length/3)) * (i/3), (ballV.height / (coordX.length/3)) * (i/3));
-				g.fillOval(coordX[i], coordY[i], (ballV.width / (coordX.length/3)) * (i/3), (ballV.height / (coordX.length/3)) * (i/3));
-				//System.out.println("x : "+ coordX[i] +" y : " + coordY[i] + " width : " + (ballV.width / (coordX.length/3)) * (i/3) +" height : " +  (ballV.height / (coordX.length/3)) * (i/3));
+				g.drawOval((int) coordX[i],(int) coordY[i], (ballV.width / (coordX.length/3)) * (i/3), (ballV.height / (coordX.length/3)) * (i/3));
+				g.fillOval((int) coordX[i], (int) coordY[i], (ballV.width / (coordX.length/3)) * (i/3), (ballV.height / (coordX.length/3)) * (i/3));
+				
 			}
 			
 		}
 		
-		public void rotate(Direction dir) {
-			double r = Math.sqrt(Math.pow(ballV.x - controller.getWheelCenter().getX(), 2) + Math.pow(ballV.y - controller.getWheelCenter().getY(), 2));
-			double t0 = Math.atan2(ballV.y - controller.getWheelCenter().getY(), ballV.x - controller.getWheelCenter().getX());
-			double angle = Math.atan((ballV.y - controller.getWheelCenter().getY()) / (ballV.x - controller.getWheelCenter().getX())) + t0;
+		public void rotate(Direction dir, double angle) {
 			
-			for (int i = 0; i < coordX.length; i++) {
-				if (dir == Direction.HORAIRE) {
-					angle -= Math.toRadians(controller.getWheelangle() * controller.getWheelSpeed());
-				}
-				else if (dir == Direction.ANTI_HORAIRE){
-					angle += Math.toRadians(controller.getWheelangle() * controller.getWheelSpeed());
-				}
-				System.out.println("wheeel angle : "+controller.getWheelangle()+" vitesse wheel : "+controller.getWheelSpeed());
-				coordX[i] = (int) (controller.getWheelCenter().getX() + r * Math.cos(angle));
-				coordY[i] = (int) (controller.getWheelCenter().getY() + r * Math.sin(angle));
 
+			if(color == Color.blue) {
+				double angleTmp = angle;
+
+				for (int i = coordX.length - 1; i>=0; i--) {
+					if (i == 0) {
+					}
+						coordX[i] = (int) (controller.getWheelRadius() * Math.cos(angleTmp) + controller.getWheelCenter().getX()) - controller.getBallRadius();
+						coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY()) ;
+						if (dir == Direction.HORAIRE) {
+							angleTmp += Math.toRadians(1 * controller.getWheelSpeed());
+						}
+						else if (dir == Direction.ANTI_HORAIRE){
+							angleTmp -= Math.toRadians(1 * controller.getWheelSpeed());
+						}
+				}
+			}
+
+			else {
+				double angleTmp = angle+ Math.PI;
+			
+				for (int i = coordX.length - 1; i>=0; i--) {
+					if (i == 0) {
+					}
+					coordX[i] = (int) (controller.getWheelRadius() * Math.cos(angleTmp) + controller.getWheelCenter().getX()) - controller.getBallRadius();
+					coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY());
+					if (dir == Direction.HORAIRE) {
+						angleTmp += Math.toRadians(1 * controller.getWheelSpeed());
+					}
+					else if (dir == Direction.ANTI_HORAIRE){
+						angleTmp -= Math.toRadians(1 * controller.getWheelSpeed());
+						}
+					}
 				
 			}
 		}
 		
 		public void resetAngle() {
-			double r = Math.sqrt(Math.pow(ballV.x - ballV.x, 2) + Math.pow(ballV.y - ballV.y, 2));
-			double t0 = Math.atan2(ballV.y - ballV.y, ballV.x - ballV.x);
-			double angle = t0;
-			
-			for (int i = 0; i < coordX.length; i++) {
-				angle += Math.toRadians(controller.getWheelangle() * controller.getWheelSpeed());
+			for (int i = 0; i<coordX.length; i++) {
+				coordX[i] = ballV.x;
+			}
 
-				coordX[i] = (int) (ballV.x + r * Math.cos(angle));
-				coordY[i] = (int) (ballV.y + r * Math.sin(angle));
-
-				
+			coordY[coordY.length-1] = ballV.y;
+			for (int i = 60; i>=0; i--) {
+				coordY[i] = coordY[i+1] + 0.5;
 			}
 		}
-		
-		
-		
+
 	}
 	
 	
@@ -258,14 +272,14 @@ public class GameView extends JPanel {
 		mvtBlue.paintComponent(mvtBlue.getGraphics());
 	}
 	
-	public void MvtRedRotate(Direction dir) {
-		mvtRed.rotate(dir);
+	public void MvtRedRotate(Direction dir, double angle) {
+		mvtRed.rotate(dir, angle);
 		
 		
 	}
 	
-	public void MvtBlueRotate(Direction dir) {
-		mvtBlue.rotate(dir);
+	public void MvtBlueRotate(Direction dir, double angle) {
+		mvtBlue.rotate(dir, angle);
 	}
 
 
@@ -283,16 +297,16 @@ public class GameView extends JPanel {
 		mvtRed.color = Color.gray;
 		mvtBlue.color = Color.gray;
 		
-		JButton quit = new JButton("BACK");
-		quit.setBounds(size.width/5, this.size.height/5 , this.size.width/5 * 3, this.size.height/5);
-		quit.setForeground(Color.red);
-		quit.setBackground(Color.gray);
-		quit.setFont(new Font("Arial", Font.BOLD, 50));
-		quit.setVisible(true);
-		quit.setOpaque(false);
-		this.add(quit);
+		JButton back = new JButton("RETOUR");
+		back.setBounds(size.width/5, this.size.height/5 , this.size.width/5 * 3, this.size.height/5);
+		back.setForeground(Color.red);
+		back.setBackground(Color.gray);
+		back.setFont(new Font("Arial", Font.BOLD, 50));
+		back.setVisible(true);
+		back.setOpaque(false);
+		this.add(back);
 		
-		quit.addActionListener(e -> {
+		back.addActionListener(e -> {
 			controller.affMenu();
 		});
 		
