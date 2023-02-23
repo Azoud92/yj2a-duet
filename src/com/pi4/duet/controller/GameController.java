@@ -66,9 +66,10 @@ public class GameController implements KeyListener {
 	}
 
 	
-	public void updateMvt(Direction dir) {
-		view.mvtBlueRotate(dir); 
-		view.mvtRedRotate(dir);
+	public void updateMvt(Direction dir) { 
+		double angle = getWheelangle();
+		view.MvtBlueRotate(dir, angle ); 
+		view.MvtRedRotate(dir, angle);
 	}
 	
 	public void resetAngleMvt() {
