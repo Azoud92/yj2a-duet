@@ -61,7 +61,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		/*
 		 * Les lignes contiennent les données de cette façon ;
 		 * 1000:[(3,2) (2,5) (-4,9)];(7,4);1.4;.8;3
-		 * delay:[Points(x1,y1),(x2,y2),(x3,y3)];center(x,y);velocity;rotationSpeed;angle
+		 * delay:[Points(x1,y1) (x2,y2) (x3,y3)];center(x,y);velocity;rotationSpeed;angle
 		 * Selon le constructeur polygonal de Obstacle
 		 */
 		while (globalSc.hasNext()) {
@@ -105,7 +105,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 				}
 				
 				//Placement du résultat
-				res.put(key, new Obstacle(castedPoints, centre, new ObstacleController()));
+				res.put(key, new Obstacle(castedPoints, centre, null));
 			} catch (Exception e) {
 				//Arrêter de parser si l'on rencontre une ligne non conforme
 				break;
@@ -127,7 +127,19 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		return res;
 	}
 	
+	public String toHTMLString() {
+		String res = "";
+		int i = 0;
+		for (Long l : keySet()) {
+			res += l + ":" + get(l);
+			if (i < keySet().size() -1) res += "<br>";
+			i++;
+		}
+		return res;
+	}
+	
 	public static void main(String[] args) {
+		/*
 		PatternData d = parse("1000:[(3,2) (2,5) (-3,9.2)];(.4,8);1.4;.8;0\n" +
 							  "2000:[(.8,-.902) (3,-7)];(1,0);0;9;9");
 		System.out.println("Original : \n" + d);
@@ -138,11 +150,11 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
-		
+		*/
 		try {
-			PatternData d2 = readTxt("test.txt");
-			System.out.println("Lecture texte : \n" + d2);
-			d2 = read("test.ser");
+			PatternData d2 = readTxt("test2.txt");
+			//System.out.println("Lecture texte : \n" + d2);
+			d2 = read("test2.ser");
 			System.out.println("Lecture serie : \n" + d2);
 		} catch (Exception e) {
 			e.printStackTrace();

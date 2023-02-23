@@ -82,7 +82,7 @@ public class Wheel {
 		}
 
 
-		public boolean isInCollision2(Obstacle o) {
+		/*public boolean isInCollision2(Obstacle o) {
 			
 			for (int i = 0; i < o.getCoords().length; i++) {				
 				double distance1 = Math.sqrt(Math.pow(o.getCoords()[i].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[i].getY() - centerBall.getY(), 2));
@@ -101,6 +101,6 @@ public class Wheel {
 			}
 			
 			return false;
-		}
+		}*/
 	}
 }

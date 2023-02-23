@@ -14,10 +14,6 @@ import com.pi4.duet.model.Point;
 import com.pi4.duet.view.GameView;
 import com.pi4.duet.view.ObstacleView;
 
-
-
-
-
 public class GameController implements KeyListener {
 
 	private GamePlane model;
@@ -77,31 +73,32 @@ public class GameController implements KeyListener {
 	}
 	
 	public void resetAngleMvt() {
-		view.resetAngleMvt();
-		
+		view.resetAngleMvt();		
 	}
 	
-	
-
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(!pause){
+		if (!pause){
 			// TODO Auto-generated method stub
-			if(!model.isPaused()){
+			if (!model.isPaused()){
 				switch(e.getKeyCode()) {
-
 					case KeyEvent.VK_RIGHT: model.stopWheelRotation(); resetAngleMvt(); break;
 					case KeyEvent.VK_LEFT: model.stopWheelRotation(); resetAngleMvt(); break;
-					case KeyEvent.VK_SPACE: model.gamePausedOrResumed(); view.affichePause(); break;
-
+					case KeyEvent.VK_SPACE:{
+						model.stopWheelRotation();
+						model.gamePausedOrResumed();
+						view.affichePause();
+						break;
+					}
 				}
-			}else{
-				if(KeyEvent.VK_SPACE==e.getKeyCode()) {
+			}
+			else {
+				if (KeyEvent.VK_SPACE == e.getKeyCode()) {
 					model.gamePausedOrResumed();
 				}
 			}
 		}
-		pause=!pause;
+		pause = !pause;
 	}
 
 
@@ -110,7 +107,7 @@ public class GameController implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(!model.isPaused()){
+		if (!model.isPaused()){
 			switch (e.getKeyCode()){
 				case KeyEvent.VK_RIGHT: model.startWheelRotation(Direction.ANTI_HORAIRE); break;
 				case KeyEvent.VK_LEFT: model.startWheelRotation(Direction.HORAIRE); break;
@@ -125,12 +122,9 @@ public class GameController implements KeyListener {
 	}
 	
 	
-	public void affMenu() {
-		
+	public void affMenu() {		
 		hpvC.runHomePage(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow());
 		view.setVisible(false);
-
-
 	}
 	
 	
@@ -179,10 +173,5 @@ public class GameController implements KeyListener {
 	public Point getWheelCenter() {
 		return model.wheel.getCenter();
 	}
-
 	
-
-	
-
-		
 }

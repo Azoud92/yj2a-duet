@@ -14,7 +14,7 @@ public class Obstacle implements Serializable {
 	
 	private ObstacleController controller;
 	
-	private double velocity = 0.1, rotationSpeed = 0.1, angle = 1;
+	private double velocity = 0.1, rotationSpeed = 0.1, angle = 0;
 		
 	public Obstacle(Point[] points, Point center, ObstacleController controller) {
 		coords = new Point[points.length];

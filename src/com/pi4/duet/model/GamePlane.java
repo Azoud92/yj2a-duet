@@ -11,7 +11,8 @@ public class GamePlane {
 	public final int width, height;
 	
 	private GameController controller;
-	private Timer timer;
+	private Timer gameTimer;
+	private Timer wheelTimer;
 	
 	public final Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
@@ -20,10 +21,10 @@ public class GamePlane {
 		return paused;
 	}
 
-	private boolean paused=false;
+	private boolean paused = false;
 	
 	private boolean wheelRotatingAH = false; // rotation anti-horaire du volant en cours
-	private boolean wheelRotatingH = false; // rotation anti-horaire du volant en cours
+	private boolean wheelRotatingH = false; // rotation horaire du volant en cours
 		
 	public GamePlane(int width, int height, GameController controller) {		
 		this.width = width;
@@ -31,45 +32,52 @@ public class GamePlane {
         this.wheel = new Wheel(new Point(width / 2, height - 150));
         this.controller = controller;
         this.obstacles = new ArrayList<Obstacle>();
-        timer = new Timer();
+        gameTimer = new Timer();
+        wheelTimer = new Timer();
 	}
 	
 	public void gameStart() {
 		
-		timer.schedule(new TimerTask() {
-			
+		gameTimer.schedule(new TimerTask() {			
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				if(!paused){
-					if (wheelRotatingAH && !wheelRotatingH) {
-						wheel.rotate(Direction.ANTI_HORAIRE);
-						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-						controller.updateMvt(Direction.ANTI_HORAIRE);
-					}
-					else if (!wheelRotatingAH && wheelRotatingH) {
-						wheel.rotate(Direction.HORAIRE);
-						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-						controller.updateMvt(Direction.HORAIRE);
-					}
-					else {
-						stopWheelRotation();
-					}
-
+				if (!paused){
 					for (Obstacle o : obstacles) {
 						o.update(0, 1);
 						controller.verifyCollision(o);
 						controller.refreshView();
 					}
 				}
+			}			
+		}, 0, 1);
+		
+		wheelTimer.schedule(new TimerTask() {
 
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				if (wheelRotatingAH && !wheelRotatingH) {
+					wheel.rotate(Direction.ANTI_HORAIRE);
+					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+					controller.updateMvt(Direction.ANTI_HORAIRE);
+				}
+				else if (!wheelRotatingAH && wheelRotatingH) {
+					wheel.rotate(Direction.HORAIRE);
+					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+					controller.updateMvt(Direction.HORAIRE);
+				}
+				else {
+					stopWheelRotation();
+				}
 			}
 			
 		}, 0, 1);
 	}
 	
 	public void gameStop() {
-		timer.cancel();
+		gameTimer.cancel();
+		wheelTimer.cancel();
 	}
 	
 	public void startWheelRotation(Direction dir) { 

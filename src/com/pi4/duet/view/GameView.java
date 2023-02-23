@@ -25,12 +25,9 @@ public class GameView extends JPanel {
 	
 	private GameController controller;
 
-
 	private BallView ballRed, ballBlue;
 	private BallMvt mvtRed, mvtBlue;
 	private Dimension size;
-
-	
 
 	private Image background;
 	
@@ -46,28 +43,24 @@ public class GameView extends JPanel {
 		
 		ballRed = new BallView((int) (controller.getCenterBall1().getX()) - ballRadius, (int) controller.getCenterBall1().getY(), 2 * ballRadius, 2 * ballRadius, Color.red);
 		this.add(ballRed);
-		mvtRed = new BallMvt(ballRed,initCoordX(ballRed), initCoordY(ballRed), Color.red);
-		this.add(mvtRed);
-		
-		
+		mvtRed = new BallMvt(ballRed, initCoordX(ballRed), initCoordY(ballRed), Color.red);
+		this.add(mvtRed);	
 		
 		ballBlue = new BallView((int) (controller.getCenterBall2().getX() - ballRadius), (int) controller.getCenterBall2().getY(), 2 * ballRadius, 2 * ballRadius, Color.blue);
 		this.add(ballBlue);
-		mvtBlue = new BallMvt(ballBlue,initCoordX(ballBlue), initCoordY(ballBlue), Color.blue);
-		this.add(mvtBlue);
-		        
+		mvtBlue = new BallMvt(ballBlue, initCoordX(ballBlue), initCoordY(ballBlue), Color.blue);
+		this.add(mvtBlue);		        
         
         this.addKeyListener(controller);
-
 
         this.add(ballBlue);
         this.add(ballRed);
 
 		this.setLayout(null);
 	}
+	
 	public void affichePause(){
-		String[] option={"Reprendre le jeu", "Quitter le jeu"};
-		JOptionPane jboite=new JOptionPane();
+		String[] option={"Reprendre le jeu","Revenir au menu","Quitter le jeu"};
 		int indice=JOptionPane.showOptionDialog(this,
 				"Le jeu est en pause, veuillez choisir une option",
 				"Jeu en pause",
@@ -83,12 +76,14 @@ public class GameView extends JPanel {
 				controller.getModel().gamePausedOrResumed();
 				break;
 			}
-			case 1: System.exit(0);
+			case 1:{
+				this.setVisible(false);
+				break;
+			}
 
-
+			case 2: System.exit(0);
 		}
 	}
-
 
 	public void decompte(){
 		String []resume={"Reprendre maintenant"};
@@ -104,10 +99,6 @@ public class GameView extends JPanel {
 		jboite2.createDialog(this, "TENEZ VOUS PRÊT").setVisible(true);
 
 	}
-
-
-	
-
 	
 	public double[] initCoordX(BallView b) {
 		double[] res = new double[62];
@@ -133,8 +124,7 @@ public class GameView extends JPanel {
 	}
 	
 	private class BallView extends JPanel {
-
-
+		
 		private static final long serialVersionUID = -8381550184021712931L;
 		private int x, y, width, height;
 		private Color color;
@@ -153,9 +143,7 @@ public class GameView extends JPanel {
 		}		
 	}
 	
-	private class BallMvt extends JPanel {
-		
-		
+	private class BallMvt extends JPanel {	
 
 		private static final long serialVersionUID = -5296039916894329970L;
 		
@@ -225,6 +213,7 @@ public class GameView extends JPanel {
 						}
 					}
 				
+				System.out.println(coordX[i] + "; " + coordY[i]);
 			}
 		}
 		
@@ -240,8 +229,6 @@ public class GameView extends JPanel {
 		}
 
 	}
-	
-	
 	
 	
 	public void refresh() {
@@ -285,11 +272,9 @@ public class GameView extends JPanel {
 
 	public void resetAngleMvt() {
 		mvtRed.resetAngle();
-		mvtBlue.resetAngle();
-		
+		mvtBlue.resetAngle();		
 	}
-	
-	
+		
 	public void lostGame() {
 		background =  new ImageIcon(this.getClass().getResource("/resources/background_grey.png")).getImage();
 		ballRed.color = Color.gray;
@@ -325,10 +310,7 @@ public class GameView extends JPanel {
 		});
 		this.setVisible(true);
 		this.revalidate();
-		this.repaint();
-		
-		
-		
+		this.repaint();		
 	}
 
 }
