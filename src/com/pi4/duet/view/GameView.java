@@ -212,8 +212,6 @@ public class GameView extends JPanel {
 						angleTmp -= Math.toRadians(1 * controller.getWheelSpeed());
 						}
 					}
-				
-				System.out.println(coordX[i] + "; " + coordY[i]);
 			}
 		}
 		
