@@ -43,12 +43,12 @@ public class GameView extends JPanel {
 		
 		ballRed = new BallView((int) (controller.getCenterBall1().getX()) - ballRadius, (int) controller.getCenterBall1().getY(), 2 * ballRadius, 2 * ballRadius, Color.red);
 		this.add(ballRed);
-		mvtRed = new BallMvt(ballRed, initCoordX(ballRed), initCoordY(ballRed), Color.red);
+		mvtRed = new BallMvt(ballRed, Color.red);
 		this.add(mvtRed);	
 		
 		ballBlue = new BallView((int) (controller.getCenterBall2().getX() - ballRadius), (int) controller.getCenterBall2().getY(), 2 * ballRadius, 2 * ballRadius, Color.blue);
 		this.add(ballBlue);
-		mvtBlue = new BallMvt(ballBlue, initCoordX(ballBlue), initCoordY(ballBlue), Color.blue);
+		mvtBlue = new BallMvt(ballBlue, Color.blue);
 		this.add(mvtBlue);		        
         
         this.addKeyListener(controller);
@@ -100,23 +100,7 @@ public class GameView extends JPanel {
 
 	}
 	
-	public double[] initCoordX(BallView b) {
-		double[] res = new double[62];
-		for (int i = 0; i<62; i++) {
-			res[i] = b.x;
-		}
-		return res;
-	}
 	
-	
-	public double[] initCoordY(BallView b) {
-		double[] res = new double[62];
-		res[61] = b.y;
-		for (int i = 60; i>=0; i--) {
-			res[i] = res[i+1] + 0.5;
-		}
-		return res;
-	}
 	
 	public void setBallsPosition(Point blue, Point red) {
 		this.ballBlue.setLocation((int) blue.getX() - controller.getBallRadius(), (int) blue.getY());
@@ -153,16 +137,34 @@ public class GameView extends JPanel {
 
 		private double[] coordX, coordY;
 		
-		public BallMvt(BallView ballV, double[] coordX, double[] coordY, Color color) {
+		public BallMvt(BallView ballV, Color color) {
 			this.setOpaque(false);
 			
 			this.setSize(new Dimension(size.width, size.height));
 			
 			this.setVisible(true);
 			this.ballV = ballV;
-			this.coordX = coordX;
-			this.coordY = coordY;
+			this.coordX = initCoordX(ballV);
+			this.coordY = initCoordY(ballV);
 			this.color = color;
+		}
+		
+		public double[] initCoordX(BallView b) {
+			double[] res = new double[62];
+			for (int i = 0; i<62; i++) {
+				res[i] = b.x;
+			}
+			return res;
+		}
+		
+		
+		public double[] initCoordY(BallView b) {
+			double[] res = new double[62];
+			res[61] = b.y;
+			for (int i = 60; i>=0; i--) {
+				res[i] = res[i+1] + 0.5;
+			}
+			return res;
 		}
 		
 		@Override
