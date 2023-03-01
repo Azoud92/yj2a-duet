@@ -17,9 +17,10 @@ public class HomePageViewController {
 	private HomePageView view;
 	private GameWindow window;
 		
-	public void runParty(Dimension size, GameWindow window) {
+	public void runParty(Dimension size, GameWindow window,HomePageView view) {
+		this.view=view;
 		this.window = window;
-		gc = new GameController(this);
+		gc = new GameController(this,view);
 		gp = new GamePlane(size.width / 3, size.height, gc);
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
@@ -39,7 +40,14 @@ public class HomePageViewController {
 		gc.testObstacles();
 		gp.gameStart();
 	}
-	
+	public void continueParty(){
+		this.gv.setVisible(true);
+		this.gc.setPause(gc.isPause());
+		this.gc.getModel().gamePausedOrResumed();
+		this.gv.requestFocus();
+		this.gv.setFocusable(true);
+
+	}
 	public void runHomePage(Dimension dimension, GameWindow window2) {
 		view.setVisible(true);
 	}

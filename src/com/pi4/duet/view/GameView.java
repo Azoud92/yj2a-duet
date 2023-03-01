@@ -78,6 +78,7 @@ public class GameView extends JPanel {
 			}
 			case 1:{
 				this.setVisible(false);
+				controller.setHomePageViewVisible();
 				break;
 			}
 

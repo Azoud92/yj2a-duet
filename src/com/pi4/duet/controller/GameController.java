@@ -12,19 +12,22 @@ import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.view.GameView;
+import com.pi4.duet.view.HomePageView;
 import com.pi4.duet.view.ObstacleView;
 
 public class GameController implements KeyListener {
 
 	private GamePlane model;
 	private GameView view;
+	private HomePageView homePageView;
 
 	private HomePageViewController hpvC;
 
 	private boolean pause=false;
 	
-	public GameController(HomePageViewController hpvC){
+	public GameController(HomePageViewController hpvC,HomePageView homePageView){
 		this.hpvC = hpvC;
+		this.homePageView=homePageView;
 	}
 		
 	public void setModel(GamePlane model) { this.model = model; }
@@ -58,6 +61,9 @@ public class GameController implements KeyListener {
 		oc.setView(ov);	
 		model.addObstacle(o);
 		view.addObstacle(ov);		
+	}
+	public void setHomePageViewVisible(){
+		this.homePageView.setVisible(true);
 	}
 		
 	public void updateWheel(Point blue, Point red) {
@@ -129,7 +135,7 @@ public class GameController implements KeyListener {
 	
 	
 	public void replay() {
-		hpvC.runParty(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow());
+		hpvC.runParty(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow(),homePageView);
 		view.setVisible(false);
 	}
 
