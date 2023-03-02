@@ -57,7 +57,8 @@ public class GameWindow extends JFrame{
 	
 	public void setMainContainer(JPanel container){
 		this.container = container;
-		frame.add(container);
+		frame.repaint();
+		frame.add(container,0);
 		frame.setVisible(true);
 	}
 	public JPanel getMainContainer() {

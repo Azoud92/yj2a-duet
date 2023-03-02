@@ -8,6 +8,7 @@ import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.view.GameView;
 import com.pi4.duet.view.GameWindow;
 import com.pi4.duet.view.HomePageView;
+import com.pi4.duet.view.SettingsView;
 
 public class HomePageViewController {
 	
@@ -16,6 +17,8 @@ public class HomePageViewController {
 	private GamePlane gp;
 	private HomePageView view;
 	private GameWindow window;
+	private SettingsView sv;
+	private SettingsController sc;
 		
 	public void runParty(Dimension size, GameWindow window) {
 		this.window = window;
@@ -40,8 +43,33 @@ public class HomePageViewController {
 		gp.gameStart();
 	}
 	
-	public void runHomePage(Dimension dimension, GameWindow window2) {
+	public void runHomePage() {
+
 		view.setVisible(true);
+		
+		JPanel container = new JPanel(new GridLayout(1, 3));
+		container.add(new JPanel());	
+		container.add(view);
+		container.add(new JPanel());
+		window.setMainContainer(container);
+		
+	}
+	
+	public void runSettings(Dimension size, GameWindow window) {
+		this.window = window;
+		sc = new SettingsController(this);
+		sv = new SettingsView(size, sc);
+		sc.setView(sv);
+		sv.setVisible(true);
+
+		
+		JPanel container = new JPanel(new GridLayout(1, 3));
+		container.add(new JPanel());	
+		container.add(sv);
+		container.add(new JPanel());
+		window.setMainContainer(container);
+		
+		
 	}
 	
 	
@@ -56,6 +84,8 @@ public class HomePageViewController {
 	public GameWindow getWindow() {
 		return window;
 	}
+
+	
 
 
 	

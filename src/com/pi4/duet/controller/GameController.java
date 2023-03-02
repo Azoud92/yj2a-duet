@@ -122,8 +122,8 @@ public class GameController implements KeyListener {
 	}
 	
 	
-	public void affMenu() {		
-		hpvC.runHomePage(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow());
+	public void affMenu() {
+		hpvC.runHomePage();
 		view.setVisible(false);
 	}
 	

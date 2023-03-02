@@ -1,6 +1,6 @@
 package com.pi4.duet.view;
 
-import java.awt.Color;   
+import java.awt.Color;    
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -18,9 +18,7 @@ import com.pi4.duet.model.Point;
 
 public class GameView extends JPanel {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -306594423077754361L;
 	
 	private GameController controller;
@@ -157,7 +155,6 @@ public class GameView extends JPanel {
 			return res;
 		}
 		
-		
 		public double[] initCoordY(BallView b) {
 			double[] res = new double[62];
 			res[61] = b.y;
@@ -200,7 +197,7 @@ public class GameView extends JPanel {
 			}
 
 			else {
-				double angleTmp = angle+ Math.PI;
+				double angleTmp = angle + Math.PI;
 			
 				for (int i = coordX.length - 1; i>=0; i--) {
 					if (i == 0) {
@@ -284,11 +281,10 @@ public class GameView extends JPanel {
 		
 		JButton back = new JButton("RETOUR");
 		back.setBounds(size.width/5, this.size.height/5 , this.size.width/5 * 3, this.size.height/5);
-		back.setForeground(Color.red);
-		back.setBackground(Color.gray);
+		back.setForeground(Color.RED);
+		back.setBackground(Color.BLACK);
 		back.setFont(new Font("Arial", Font.BOLD, 50));
 		back.setVisible(true);
-		back.setOpaque(false);
 		this.add(back);
 		
 		back.addActionListener(e -> {
@@ -297,11 +293,10 @@ public class GameView extends JPanel {
 		
 		JButton replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/5 * 3, this.size.width/5 * 3, this.size.height/5);
-		replay.setBackground(Color.gray);
-		replay.setForeground(Color.blue);
+		replay.setBackground(Color.BLACK);
+		replay.setForeground(Color.BLUE);
 		replay.setFont(new Font("Arial", Font.BOLD, 50));
 		replay.setVisible(true);
-		replay.setOpaque(false);
 		add(replay);
 		
 		replay.addActionListener(e -> {
