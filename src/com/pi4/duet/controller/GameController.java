@@ -65,6 +65,17 @@ public class GameController implements KeyListener {
 	public void setHomePageViewVisible(){
 		this.homePageView.setVisible(true);
 	}
+	
+	public void putTestObstacle(Obstacle o) {
+		ObstacleController oc = new ObstacleController();
+		o.setController(oc);
+		oc.setModel(o);
+		ObstacleView ov = new ObstacleView(oc, model.width, model.height);
+		oc.setView(ov);	
+		model.addObstacle(o);
+		view.addObstacle(ov);		
+	}
+
 		
 	public void updateWheel(Point blue, Point red) {
 		// TODO Auto-generated method stub	

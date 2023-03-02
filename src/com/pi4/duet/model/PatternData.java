@@ -4,8 +4,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import com.pi4.duet.controller.ObstacleController;
-
 import java.util.ArrayList;
 
 public class PatternData extends HashMap<Long, Obstacle> {
@@ -105,7 +103,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 				}
 				
 				//Placement du résultat
-				res.put(key, new Obstacle(castedPoints, centre, null));
+				res.put(key, new Obstacle(castedPoints, centre, velocity, rotationSpeed, angle, null));
 			} catch (Exception e) {
 				//Arrêter de parser si l'on rencontre une ligne non conforme
 				break;
