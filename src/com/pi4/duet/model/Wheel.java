@@ -59,8 +59,12 @@ public class Wheel {
 		return angle;
 	}
 	
-	public boolean isInCollision(Obstacle o) {
-		return ball_1.isInCollision(o) || ball_2.isInCollision(o);
+	public int isInCollision(Obstacle o) {
+		if(ball_1.isInCollision(o) && ball_2.isInCollision(o))return 3;
+		if(ball_1.isInCollision(o))return 1;
+		if(ball_2.isInCollision(o))return 2;
+		return 0;
+
 	}
 	
 	private class Ball {

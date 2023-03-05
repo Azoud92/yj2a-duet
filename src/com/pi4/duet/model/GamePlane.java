@@ -32,12 +32,12 @@ public class GamePlane {
         this.wheel = new Wheel(new Point(width / 2, height - 150));
         this.controller = controller;
         this.obstacles = new ArrayList<Obstacle>();
-        gameTimer = new Timer();
-        wheelTimer = new Timer();
+       
+        
 	}
 	
 	public void gameStart() {
-		
+		gameTimer = new Timer();
 		gameTimer.schedule(new TimerTask() {			
 			@Override
 			public void run() {
@@ -52,6 +52,7 @@ public class GamePlane {
 			}			
 		}, 0, 1);
 		
+		wheelTimer = new Timer();
 		wheelTimer.schedule(new TimerTask() {
 
 			@Override
@@ -68,7 +69,7 @@ public class GamePlane {
 					controller.updateMvt(Direction.HORAIRE);
 				}
 				else {
-					stopWheelRotation();
+					controller.stopMvt();
 				}
 			}
 			
@@ -76,8 +77,9 @@ public class GamePlane {
 	}
 	
 	public void gameStop() {
-		gameTimer.cancel();
 		wheelTimer.cancel();
+		gameTimer.cancel();
+		
 	}
 	
 	public void startWheelRotation(Direction dir) { 
@@ -93,6 +95,14 @@ public class GamePlane {
 		}
 	}
 	
+	public void resetObstacle() {
+		for (Obstacle o : obstacles) {
+			o.update(0, - (o.getCoords()[0].getY() / o.getVelocity()));
+			controller.refreshView();
+		}
+		
+	}
+	
 	public void stopWheelRotation() { wheelRotatingAH = false; wheelRotatingH = false; }
 	
 	public void addObstacle(Obstacle o) {
@@ -105,5 +115,8 @@ public class GamePlane {
 	public void gamePausedOrResumed(){
 		paused=!paused;
 	}
+	
+
+	
 		
 }

@@ -218,11 +218,13 @@ public class GameView extends JPanel {
 			for (int i = 0; i<coordX.length; i++) {
 				coordX[i] = ballV.x;
 			}
-
 			coordY[coordY.length-1] = ballV.y;
 			for (int i = 60; i>=0; i--) {
 				coordY[i] = coordY[i+1] + 0.5;
 			}
+
+			
+			
 		}
 
 	}
@@ -267,11 +269,14 @@ public class GameView extends JPanel {
 	}
 
 
-	public void resetAngleMvt() {
-		mvtRed.resetAngle();
-		mvtBlue.resetAngle();		
-	}
+
 		
+	public void stopMvt() {
+		mvtRed.resetAngle();
+		mvtBlue.resetAngle();
+		
+	}
+	
 	public void lostGame() {
 		background =  new ImageIcon(this.getClass().getResource("/resources/background_grey.png")).getImage();
 		ballRed.color = Color.gray;
@@ -280,7 +285,7 @@ public class GameView extends JPanel {
 		mvtBlue.color = Color.gray;
 		
 		JButton back = new JButton("RETOUR");
-		back.setBounds(size.width/5, this.size.height/5 , this.size.width/5 * 3, this.size.height/5);
+		back.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
 		back.setForeground(Color.RED);
 		back.setBackground(Color.BLACK);
 		back.setFont(new Font("Arial", Font.BOLD, 50));
@@ -292,7 +297,7 @@ public class GameView extends JPanel {
 		});
 		
 		JButton replay = new JButton("REJOUER");
-		replay.setBounds(this.size.width/5, this.size.height/5 * 3, this.size.width/5 * 3, this.size.height/5);
+		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
 		replay.setBackground(Color.BLACK);
 		replay.setForeground(Color.BLUE);
 		replay.setFont(new Font("Arial", Font.BOLD, 50));
@@ -301,11 +306,29 @@ public class GameView extends JPanel {
 		
 		replay.addActionListener(e -> {
 			//rejouer
+			replay(back, replay);
 			controller.replay();
 		});
 		this.setVisible(true);
 		this.revalidate();
 		this.repaint();		
 	}
+
+	private void replay(JButton back, JButton replay) {
+		this.remove(back);
+		this.remove(replay);
+		background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
+		ballRed.color = Color.red;
+		ballBlue.color = Color.blue;
+		mvtRed.color = Color.red;
+		mvtBlue.color = Color.blue;
+		
+	}
+	
+	public Dimension getSize() {
+		return size;
+	}
+
+	
 
 }

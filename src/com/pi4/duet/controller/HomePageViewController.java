@@ -43,6 +43,15 @@ public class HomePageViewController {
 		gp.gameStart();
 	}
 	
+	public void runNewParty(Dimension size, GameWindow window) {
+		this.window = window;
+		gp.resetObstacle();
+		gp.gameStart();
+		
+				
+		
+	}
+	
 	public void runHomePage() {
 
 		view.setVisible(true);

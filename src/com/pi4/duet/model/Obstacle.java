@@ -78,4 +78,8 @@ public class Obstacle implements Serializable {
 	public double getAngle() { return angle; }
 	public void setAngle(double a) { angle = a; }
 	
+	public ObstacleController getController() {
+		return controller;
+	}
+	
 }

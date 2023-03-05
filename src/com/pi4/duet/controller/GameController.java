@@ -1,11 +1,12 @@
 package com.pi4.duet.controller;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-
+import javax.swing.JButton;
 
 import com.pi4.duet.model.Direction;
 import com.pi4.duet.model.GamePlane;
@@ -13,6 +14,7 @@ import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.view.GameView;
 import com.pi4.duet.view.ObstacleView;
+import com.pi4.duet.view.ObstacleView.CollisionView;
 
 public class GameController implements KeyListener {
 
@@ -30,31 +32,53 @@ public class GameController implements KeyListener {
 	public void setModel(GamePlane model) { this.model = model; }
 	
 	public void setView(GameView view) { this.view = view; }
+	public GameView getView() {
+		return view;
+	}
 	
 	public void refreshView() {
 		view.refresh();
 	}
-	
 	public void verifyCollision(Obstacle o) {
-		if (model.wheel.isInCollision(o)) {
+		int res = model.wheel.isInCollision(o);
+		ObstacleView ov = o.getController().getView();
+		double oX =  o.getCoords()[0].getX();
+		double oY = o.getCoords()[0].getY();
+
+		if (res == 1) {
 			model.gameStop();
+			System.out.println(getCenterBall1().getX()+" "+ oX);
+			ov.addCollision(ov.new CollisionView(getCenterBall1().getX() - oX, getCenterBall1().getY() - oY, Color.red));
 			view.lostGame();
 		}
+		else if (res == 2) {
+			model.gameStop();
+			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));
+			view.lostGame();
+		}
+		else if (res == 3) {
+			model.gameStop();
+			ov.addCollision(ov.new CollisionView(getCenterBall1().getX()- oX,getCenterBall1().getY() - oY, Color.red));
+			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));	
+			view.lostGame();
+		}
+		
 	}
+	
 	
 	public void testObstacles() {
 		Point[] rect = new Point[4];
-		rect[0] = new Point(model.width / 3, 100);
-		rect[1] = new Point(model.width / 3 + 100, 100);
-		rect[2] = new Point(model.width / 3 + 100, 120);
-		rect[3] = new Point(model.width / 3, 120);
+		rect[0] = new Point(model.width / 2, 100);
+		rect[1] = new Point(model.width / 2 + 100, 100);
+		rect[2] = new Point(model.width / 2 + 100, 120);
+		rect[3] = new Point(model.width / 2, 120);
 		
-		Point centerRect = new Point(model.width / 3 + 50, 110);
+		Point centerRect = new Point(model.width / 2 + 50, 110);
 				
 		ObstacleController oc = new ObstacleController();
 		Obstacle o = new Obstacle(rect, centerRect, oc);
 		oc.setModel(o);
-		ObstacleView ov = new ObstacleView(oc, model.width, model.height);
+		ObstacleView ov = new ObstacleView(oc, (int)(rect[1].getX() - rect[0].getX()),(int)(rect[3].getY() - rect[0].getY()),(int) rect[0].getX(), (int) rect[0].getY(),this);
 		oc.setView(ov);	
 		model.addObstacle(o);
 		view.addObstacle(ov);		
@@ -68,13 +92,11 @@ public class GameController implements KeyListener {
 	
 	public void updateMvt(Direction dir) { 
 		double angle = getWheelangle();
-		view.MvtBlueRotate(dir, angle ); 
+		view.MvtBlueRotate(dir, angle); 
 		view.MvtRedRotate(dir, angle);
 	}
 	
-	public void resetAngleMvt() {
-		view.resetAngleMvt();		
-	}
+
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -82,8 +104,8 @@ public class GameController implements KeyListener {
 			// TODO Auto-generated method stub
 			if (!model.isPaused()){
 				switch(e.getKeyCode()) {
-					case KeyEvent.VK_RIGHT: model.stopWheelRotation(); resetAngleMvt(); break;
-					case KeyEvent.VK_LEFT: model.stopWheelRotation(); resetAngleMvt(); break;
+					case KeyEvent.VK_RIGHT: model.stopWheelRotation(); break;
+					case KeyEvent.VK_LEFT: model.stopWheelRotation(); break;
 					case KeyEvent.VK_SPACE:{
 						model.stopWheelRotation();
 						model.gamePausedOrResumed();
@@ -129,8 +151,16 @@ public class GameController implements KeyListener {
 	
 	
 	public void replay() {
-		hpvC.runParty(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow());
-		view.setVisible(false);
+		hpvC.runNewParty(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow());
+	}
+	
+	public void stopMvt() {
+		view.stopMvt();
+		
+	}
+	
+	public Dimension getSize() {
+		return view.getSize();
 	}
 
 	
@@ -173,5 +203,9 @@ public class GameController implements KeyListener {
 	public Point getWheelCenter() {
 		return model.wheel.getCenter();
 	}
+
+	
+
+	
 	
 }
