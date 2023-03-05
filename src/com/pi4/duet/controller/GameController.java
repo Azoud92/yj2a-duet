@@ -13,6 +13,7 @@ import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.view.GameView;
+import com.pi4.duet.view.HomePageView;
 import com.pi4.duet.view.ObstacleView;
 import com.pi4.duet.view.ObstacleView.CollisionView;
 
@@ -20,6 +21,7 @@ public class GameController implements KeyListener {
 
 	private GamePlane model;
 	private GameView view;
+
 
 	private HomePageViewController hpvC;
 
@@ -83,6 +85,18 @@ public class GameController implements KeyListener {
 		model.addObstacle(o);
 		view.addObstacle(ov);		
 	}
+
+	
+	public void putTestObstacle(Obstacle o) {
+		ObstacleController oc = new ObstacleController();
+		o.setController(oc);
+		oc.setModel(o);
+		ObstacleView ov = new ObstacleView(oc, (int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), this);
+		oc.setView(ov);
+		model.addObstacle(o);
+		view.addObstacle(ov);		
+	}
+
 		
 	public void updateWheel(Point blue, Point red) {
 		// TODO Auto-generated method stub	
@@ -151,7 +165,7 @@ public class GameController implements KeyListener {
 	
 	
 	public void replay() {
-		hpvC.runNewParty(new Dimension(view.getSize().width * 3 , view.getSize().height), hpvC.getWindow());
+		hpvC.runNewParty(hpvC.getWindow());
 	}
 	
 	public void stopMvt() {
@@ -161,6 +175,7 @@ public class GameController implements KeyListener {
 	
 	public Dimension getSize() {
 		return view.getSize();
+
 	}
 
 	

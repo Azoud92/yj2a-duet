@@ -27,6 +27,14 @@ public class Obstacle implements Serializable {
 		rotate();
 	}
 	
+	public Obstacle(Point[] points, Point center, double velocity, double rotationSpeed, double angle, ObstacleController controller) {
+		this(points, center, controller);
+		this.velocity = velocity;
+		this.rotationSpeed = rotationSpeed;
+		this.angle = angle;
+	}
+
+	
 	// Met à jour la pos. de l'obstacle pour un deltaX et deltaY données
 	public void update(double deltaX, double deltaY) {
 		for (Point p : coords) {
@@ -78,8 +86,23 @@ public class Obstacle implements Serializable {
 	public double getAngle() { return angle; }
 	public void setAngle(double a) { angle = a; }
 	
+	public double getWidth() {
+		return (coords[1].getX() - coords[0].getX());
+	}
+	
+	public double getHeight() {
+		return (coords[3].getY() - coords[0].getY());
+	}
+	
+	public Point getPos() {
+		return coords[0];
+	}
+
 	public ObstacleController getController() {
 		return controller;
 	}
+
+	public void setController(ObstacleController c) { controller = c; }
+
 	
 }

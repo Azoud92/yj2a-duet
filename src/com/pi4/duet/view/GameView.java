@@ -76,6 +76,7 @@ public class GameView extends JPanel {
 			}
 			case 1:{
 				this.setVisible(false);
+				controller.affMenu();
 				break;
 			}
 
@@ -292,9 +293,7 @@ public class GameView extends JPanel {
 		back.setVisible(true);
 		this.add(back);
 		
-		back.addActionListener(e -> {
-			controller.affMenu();
-		});
+		
 		
 		JButton replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
@@ -304,9 +303,14 @@ public class GameView extends JPanel {
 		replay.setVisible(true);
 		add(replay);
 		
+		back.addActionListener(e -> {
+			reset(back, replay);
+			controller.affMenu();
+		});
+		
 		replay.addActionListener(e -> {
 			//rejouer
-			replay(back, replay);
+			reset(back, replay);
 			controller.replay();
 		});
 		this.setVisible(true);
@@ -314,7 +318,7 @@ public class GameView extends JPanel {
 		this.repaint();		
 	}
 
-	private void replay(JButton back, JButton replay) {
+	private void reset(JButton back, JButton replay) {
 		this.remove(back);
 		this.remove(replay);
 		background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
