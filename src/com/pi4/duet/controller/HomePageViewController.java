@@ -82,7 +82,9 @@ public class HomePageViewController {
 		points[2] = new Point(gp.width / 3 + 200, 200);
 		points[3] = new Point(gp.width / 3 + 100, 200);
 		
-		Obstacle test = new Obstacle(points, points[0], null);
+		Point center = new Point(gp.width / 3 + 150, 150);
+		
+		Obstacle test = new Obstacle(points, center, null);
 		
 		gc.testObstacles();
 		gc.putTestObstacle(test);
@@ -92,6 +94,8 @@ public class HomePageViewController {
 	
 	public void runNewParty(GameWindow window) {
 		this.window = window;
+		gp.wheel.resetBallPosition();
+		gv.setBallsPosition(gp.wheel.getCenterBall2(),gp.wheel.getCenterBall1());
 		gp.resetObstacle();
 		gp.gameStart();
 		

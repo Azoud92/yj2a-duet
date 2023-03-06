@@ -39,12 +39,12 @@ public class GameView extends JPanel {
 		
 		int ballRadius = controller.getBallRadius();
 		
-		ballRed = new BallView((int) (controller.getCenterBall1().getX()) - ballRadius, (int) controller.getCenterBall1().getY(), 2 * ballRadius, 2 * ballRadius, Color.red);
+		ballRed = new BallView((int) (controller.getCenterBall1().getX()) - ballRadius, (int) controller.getCenterBall1().getY() - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.red);
 		this.add(ballRed);
 		mvtRed = new BallMvt(ballRed, Color.red);
 		this.add(mvtRed);	
 		
-		ballBlue = new BallView((int) (controller.getCenterBall2().getX() - ballRadius), (int) controller.getCenterBall2().getY(), 2 * ballRadius, 2 * ballRadius, Color.blue);
+		ballBlue = new BallView((int) (controller.getCenterBall2().getX() - ballRadius), (int) controller.getCenterBall2().getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.blue);
 		this.add(ballBlue);
 		mvtBlue = new BallMvt(ballBlue, Color.blue);
 		this.add(mvtBlue);		        
@@ -293,6 +293,9 @@ public class GameView extends JPanel {
 		back.setVisible(true);
 		this.add(back);
 		
+		this.revalidate();
+		this.repaint();	
+		
 		
 		
 		JButton replay = new JButton("REJOUER");
@@ -302,6 +305,9 @@ public class GameView extends JPanel {
 		replay.setFont(new Font("Arial", Font.BOLD, 50));
 		replay.setVisible(true);
 		add(replay);
+		
+		this.revalidate();
+		this.repaint();	
 		
 		back.addActionListener(e -> {
 			reset(back, replay);

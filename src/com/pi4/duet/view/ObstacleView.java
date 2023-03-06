@@ -3,9 +3,12 @@ package com.pi4.duet.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,7 +47,6 @@ public class ObstacleView extends JPanel {
 	public Polygon getPolygon() { return polygon; }
 	
 	public void addCollision(CollisionView collision) {
-		this.add(collision);
 		listCol.add(collision);
 	}
 	
@@ -54,20 +56,35 @@ public class ObstacleView extends JPanel {
 		g.setColor(Color.white);
 		g.drawPolygon(polygon);
 		g.fillPolygon(polygon);
+		
+		Graphics2D g2d = (Graphics2D) g.create();
+	    g2d.clip(polygon);
+	    for(CollisionView cv : listCol) {
+	    	g2d.drawImage(cv.icon, cv.x, cv.y, cv.width, cv.height, null);
+	    }
+	    g2d.dispose();
 
 	}
 	
-	public class CollisionView extends JLabel{
+	public class CollisionView{
 
-		private static final long serialVersionUID = -9103682417105599832L;
-		
+		Image icon;
+		int x,y,width,height;
 
 		public CollisionView(double x, double y, Color color) {
-			this.setOpaque(false);
-			this.setBounds((int) x - (gvC.getBallRadius()*3/2), (int) y - (gvC.getBallRadius()*3/2), gvC.getBallRadius()*3, gvC.getBallRadius()*3);
+			this.x = (int) x - (gvC.getBallRadius()*3/2);
+			this.y = (int) y - (gvC.getBallRadius()*3/2);
+			this.width =  gvC.getBallRadius()*3;
+			this.height =  gvC.getBallRadius()*3;
+			
 
-			if(color == Color.blue) this.setIcon(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_blue.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3));
-			if(color == Color.red) this.setIcon(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_red.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3));
+			if(color == Color.blue) {
+				this.icon = (Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_blue.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3)).getImage();
+			}
+			
+			if(color == Color.red) {
+				this.icon = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_red.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3).getImage();
+			}
 			
 			
 		}

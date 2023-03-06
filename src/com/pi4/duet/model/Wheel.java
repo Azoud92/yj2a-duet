@@ -23,7 +23,7 @@ public class Wheel {
 		return center;
 	}
 	
-			
+		
 	public void rotate(Direction dir) {
 		if (dir == Direction.HORAIRE) {
 			angle -= Math.toRadians(1 * rotationSpeed);
@@ -58,6 +58,10 @@ public class Wheel {
 	public double getAngle() {
 		return angle;
 	}
+	public void resetBallPosition() {
+		ball_2.setCenterBall(new Point(center.getX() + radius, center.getY()));
+		ball_1.setCenterBall(new Point(center.getX() - radius, center.getY()));
+	}
 	
 	public int isInCollision(Obstacle o) {
 		if(ball_1.isInCollision(o) && ball_2.isInCollision(o))return 3;
@@ -73,6 +77,11 @@ public class Wheel {
 		
 		public Ball(Point centerBall, double radius) {
 			this.centerBall = centerBall;
+		}
+		
+		public void setCenterBall(Point centerBall) {
+			this.centerBall = centerBall;
+			
 		}
 		public boolean isInCollision(Obstacle o){
 			for(int i=0;i<o.getCoords().length-1;i++){
