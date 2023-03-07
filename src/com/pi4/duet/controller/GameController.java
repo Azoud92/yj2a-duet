@@ -94,7 +94,7 @@ public class GameController implements KeyListener {
 		ObstacleView ov = new ObstacleView(oc, (int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), this);
 		oc.setView(ov);
 		model.addObstacle(o);
-		view.addObstacle(ov);		
+		view.addObstacle(ov);	
 	}
 
 		

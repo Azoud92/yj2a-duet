@@ -2,6 +2,10 @@ package com.pi4.duet.model;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.pi4.duet.controller.ObstacleController;
+import com.pi4.duet.view.ObstacleView;
+
 import java.io.IOException;
 
 public class ObstacleQueue extends Timer {
@@ -25,7 +29,12 @@ public class ObstacleQueue extends Timer {
 	public void putObstacle(Obstacle o, long delay) { // delay est en millisecondes
 		this.schedule(new TimerTask() {
 			public void run() {
-				//plane.testApparitionObstacle();	// Le but est de faire apparaitre l'obstacle o dans le jeu ; placeholder temporaire
+				ObstacleController oc = new ObstacleController();
+				o.setController(oc);
+				oc.setModel(o);
+				ObstacleView ov = new ObstacleView(oc, (int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), plane.getController());
+				oc.setView(ov);
+				plane.addObstacle(o);
 			}
 		}, delay);
 	}

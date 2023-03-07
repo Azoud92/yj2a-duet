@@ -137,9 +137,38 @@ public class HomePageView extends JPanel{
 		level3.setForeground(Color.white);
 		level3.setFocusable(false);
 		level3.setFont(new Font("Arial", Font.BOLD, 45));
-		level3.setEnabled(false);
+		level3.setEnabled(true);
 		this.add(level3);
-		
+
+		level3.addActionListener((ActionEvent e) -> {
+			if(!level3.isButton()){
+				level3.setButton(true);
+				this.setVisible(false);
+				controller.runLvl3(size, window,this);
+			}else{
+				String[] option={"Reprendre votre progression","Relancer depuis le début"};
+				int indice= JOptionPane.showOptionDialog(this,
+						"Veuillez choisir",
+						"Progression en cours",
+						JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						new ImageIcon(getClass().getResource("/resources/reset.png")),
+						option,
+						option[0]);
+				switch(indice){
+					case 0: {
+						this.setVisible(false);
+						controller.continueParty();
+					}
+					case 1:{
+						this.setVisible(false);
+						controller.runLvl3(size, window,this);
+						break;
+					}
+				}
+			}
+		});
+
 		level4 = new BooleanButton("4");
 		level4.setBounds(tx2, this.size.height/12*6 + this.size.width/10, this.size.width/5, this.size.width/5);
 		level4.setBackground(Color.BLACK);

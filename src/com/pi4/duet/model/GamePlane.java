@@ -11,7 +11,7 @@ public class GamePlane {
 	public final int width, height;
 	
 	private GameController controller;
-	private Timer gameTimer;
+	private ObstacleQueue gameTimer = new ObstacleQueue(this);
 	private Timer wheelTimer;
 	
 	public final Wheel wheel;
@@ -37,7 +37,7 @@ public class GamePlane {
 	}
 	
 	public void gameStart() {
-		gameTimer = new Timer();
+		gameTimer = new ObstacleQueue(this);
 		gameTimer.schedule(new TimerTask() {			
 			@Override
 			public void run() {
@@ -109,12 +109,22 @@ public class GamePlane {
 		this.obstacles.add(o);
 	}
 	
+	public void addObstacleTestDelay(Obstacle o, long delay) {
+		this.gameTimer.putObstacle(o, delay);
+	}
+	
+	public void addPattern(PatternData d) {
+		gameTimer.putPattern(d);
+	}
+	
 	public void removeObstacle(Obstacle o) {
 		this.obstacles.remove(o);
 	}
 	public void gamePausedOrResumed(){
 		paused=!paused;
 	}
+	
+	public GameController getController() { return this.controller; }
 	
 
 	
