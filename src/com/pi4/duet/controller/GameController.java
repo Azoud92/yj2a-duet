@@ -39,6 +39,7 @@ public class GameController implements KeyListener {
 	public void refreshView() {
 		view.refresh();
 	}
+	
 	public void verifyCollision(Obstacle o) {
 		int res = model.wheel.isInCollision(o);
 		ObstacleView ov = o.getController().getView();

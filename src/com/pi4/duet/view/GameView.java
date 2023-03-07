@@ -185,7 +185,7 @@ public class GameView extends JPanel {
 					if (i == 0) {
 					}
 						coordX[i] = (int) (controller.getWheelRadius() * Math.cos(angleTmp) + controller.getWheelCenter().getX()) - controller.getBallRadius();
-						coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY()) ;
+						coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY()) - controller.getBallRadius();
 						if (dir == Direction.HORAIRE) {
 							angleTmp += Math.toRadians(1 * controller.getWheelSpeed());
 						}
@@ -202,7 +202,7 @@ public class GameView extends JPanel {
 					if (i == 0) {
 					}
 					coordX[i] = (int) (controller.getWheelRadius() * Math.cos(angleTmp) + controller.getWheelCenter().getX()) - controller.getBallRadius();
-					coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY());
+					coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY()) - controller.getBallRadius();
 					if (dir == Direction.HORAIRE) {
 						angleTmp += Math.toRadians(1 * controller.getWheelSpeed());
 					}
