@@ -74,37 +74,98 @@ public class Wheel {
 		public Ball(Point centerBall, double radius) {
 			this.centerBall = centerBall;
 		}
-		public boolean isInCollision(Obstacle o){
-			for(int i=0;i<o.getCoords().length-1;i++){
-				double d1=distance(o.getCoords()[i],centerBall);
-				double d2=distance(o.getCoords()[i+1],centerBall);
-				double d3=distance(o.getCoords()[i],o.getCoords()[i+1]);
-				if(d1+d2<=d3+0.01) return true;
+		
+		public boolean isInCollision1(Obstacle o){
+			for(int i=0;i<o.getCoords().length;i++){
+				
+				int j = (i + 1) % o.getCoords().length;
+				
+				double d1= distance(o.getCoords()[i],centerBall);
+				double d2= distance(o.getCoords()[j],centerBall);
+				double d3= distance(o.getCoords()[i],o.getCoords()[j]);
+				//System.out.println("d1 : " + (int) d1 + "; d2 : " + (int) d2 + ", d3 : " + (int) d3 + "; d1 + d2 = " + (int) (d1 + d2));
+				if(d1+d2<=d3 + 0.01) return true;
 			}
-
+			
 			return false;
 		}
+		
+		public boolean isInCollision(Obstacle o) {			
+			// Vérifier d'abord si le cercle est dans le polygone
+	        if (isInside(centerBall.getX(), centerBall.getY(), o)) {
+	            return true;
+	        }
+
+	        // Projet des points sur les axes perpendiculaires aux côtés du polygone
+	        double[] polygonNormalsX = new double[o.getCoords().length];
+	        double[] polygonNormalsY = new double[o.getCoords().length];
+	        for (int i = 0; i < o.getCoords().length; i++) {
+	            double dx = o.getCoords()[(i + 1) % o.getCoords().length].getX() - o.getCoords()[i].getX();
+	            double dy = o.getCoords()[(i + 1) % o.getCoords().length].getY() - o.getCoords()[i].getY();
+	            double len = Math.sqrt(dx*dx + dy*dy);
+	            polygonNormalsX[i] = dy / len;
+	            polygonNormalsY[i] = -dx / len;
+	        }
+
+	        // Projeter le cercle sur chaque axe et vérifier s'il y a une collision
+	        double[] circleProjection = project(centerBall.getX(), centerBall.getY(), polygonNormalsX[0], polygonNormalsY[0]);
+	        double minOverlap = circleProjection[1] - circleProjection[0];
+	        for (int i = 1; i < o.getCoords().length; i++) {
+	            circleProjection = project(centerBall.getX(), centerBall.getY(), polygonNormalsX[i], polygonNormalsY[i]);
+	            double overlap = circleProjection[1] - circleProjection[0];
+	            if (overlap < 0) {
+	                return false;  // Aucune collision possible
+	            } else if (overlap < minOverlap) {
+	                minOverlap = overlap;
+	            }
+	        }
+
+	        // Projeter le polygone sur chaque axe et vérifier s'il y a une collision
+	        for (int i = 0; i < o.getCoords().length; i++) {
+	            double[] polygonProjection = project(o.getCoords()[i].getX(), o.getCoords()[i].getY(), polygonNormalsX[i], polygonNormalsY[i]);
+	            double overlap = getOverlap(circleProjection, polygonProjection);
+	            if (overlap < 0) {
+	                return false;  // Aucune collision possible
+	            } else if (overlap < minOverlap) {
+	                minOverlap = overlap;
+	            }
+	        }
+
+	        return true;  // Collision détectée
+	    
+		}
+		
+		// Vérifier si un point est à l'intérieur d'un polygone
+	    private boolean isInside(double x, double y, Obstacle o) {
+	    	int intersections = 0;
+	        for (int i = 0; i < o.getCoords().length; i++) {
+	            int j = (i + 1) % o.getCoords().length;
+	            if ((o.getCoords()[i].getY() > centerBall.getY()) != (o.getCoords()[j].getY() > centerBall.getY())) {
+	                double slope = (o.getCoords()[j].getX() - o.getCoords()[i].getX()) / (o.getCoords()[j].getY() - o.getCoords()[i].getY());
+	                double intersectionX = (centerBall.getY() - o.getCoords()[i].getY()) * slope + o.getCoords()[i].getX();
+	                if (centerBall.getX() < intersectionX) {
+	                    intersections++;
+	                }
+	            }
+	        }
+	        return intersections % 2 == 1;
+	    }
+	    
+	    // Projet d'un point sur un axe
+	    private static double[] project(double x, double y, double axisX, double axisY) {
+	    	double dotProduct = x * axisX + y * axisY;
+	        double projectionX = dotProduct * axisX;
+	        double projectionY = dotProduct * axisY;
+	        return new double[] { projectionX, projectionY };
+	    }
 
 
-		/*public boolean isInCollision2(Obstacle o) {
-			
-			for (int i = 0; i < o.getCoords().length; i++) {				
-				double distance1 = Math.sqrt(Math.pow(o.getCoords()[i].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[i].getY() - centerBall.getY(), 2));
-				double distance2 = 0;
-				
-				if (i + 1 >= o.getCoords().length) {
-					distance2 = Math.sqrt(Math.pow(o.getCoords()[0].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[0].getY() - centerBall.getY(), 2));
-				}
-				else {
-					distance2 = Math.sqrt(Math.pow(o.getCoords()[i + 1].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[i + 1].getY() - centerBall.getY(), 2));
-				}
-				
-				if (distance1 <= ballRadius || distance2 <= ballRadius) {
-		            return true;
-		        }				
-			}
-			
-			return false;
-		}*/
+	    // Calculer le chevauchement entre deux projections
+	    private static double getOverlap(double[] projection1, double[] projection2) {
+	        return Math.min(projection1[1], projection2[1]) - Math.max(projection1[0], projection2[0]);
+	    }
+
+		
+		
 	}
 }

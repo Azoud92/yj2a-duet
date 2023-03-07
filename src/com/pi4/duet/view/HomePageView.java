@@ -24,7 +24,7 @@ public class HomePageView extends JPanel{
 	private JButton settings, quit;
 	private Icon settings_i, quit_i;	
 	
-	private Image background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
+	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 	
 	
 	public HomePageView(Dimension size, JFrame frame, GameWindow window, HomePageViewController controller) {
@@ -72,7 +72,7 @@ public class HomePageView extends JPanel{
 						"Progression en cours",
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE,
-						new ImageIcon(getClass().getResource("/resources/reset.png")),
+						new ImageIcon(getClass().getResource("/resources/img/reset.png")),
 						option,
 						option[0]);
 				switch(indice){
@@ -114,7 +114,7 @@ public class HomePageView extends JPanel{
 						"Progression en cours",
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE,
-						new ImageIcon(getClass().getResource("/resources/reset.png")),
+						new ImageIcon(getClass().getResource("/resources/img/reset.png")),
 						option,
 						option[0]);
 				switch(indice){
@@ -158,7 +158,7 @@ public class HomePageView extends JPanel{
 		level5.setEnabled(false);
 		this.add(level5);
 		
-		settings_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/settings.png")), this.size.width/13, this.size.width/13);
+		settings_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/settings.png")), this.size.width/13, this.size.width/13);
 		settings = new JButton(settings_i);
 		settings.setBounds(this.size.width - this.size.width/20 - this.size.width/10, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
 		settings.setBackground(Color.BLACK);
@@ -169,7 +169,7 @@ public class HomePageView extends JPanel{
 			controller.runSettings(size, window);
 		});
 		
-		quit_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/quit.png")), this.size.width/10, this.size.width/10);
+		quit_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/quit.png")), this.size.width/10, this.size.width/10);
 		quit = new JButton(quit_i);
 		quit.setBounds(this.size.width/20, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
 		quit.setBackground(Color.BLACK);

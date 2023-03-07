@@ -40,6 +40,7 @@ public class Obstacle implements Serializable {
 		for (Point p : coords) {
 			p.setX(p.getX() + deltaX * velocity);
 			p.setY(p.getY() + deltaY * velocity);
+			System.out.println("Obstacle : point (" + p.getX() + "; " + p.getY() + ")");
 		}
 		center.setX(center.getX() + deltaX * velocity);
 		center.setY(center.getY() + deltaY * velocity);
@@ -47,6 +48,8 @@ public class Obstacle implements Serializable {
 		if (angle != 0) rotate(); // on met une condition pour éviter de faire des calculs inutiles
 		
 		controller.update();
+		System.out.println();
+		
 	}
 	
 	// Effectue une rotation de l'obstacle par rapport à l'angle en degrés en argument

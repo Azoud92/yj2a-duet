@@ -23,7 +23,10 @@ public class ObstacleView extends JPanel {
 	private Polygon polygon;
 	private ArrayList<CollisionView> listCol;
 	private GameController gvC;
-		
+	
+	private ImageIcon collisionBlue;
+	private ImageIcon collisionRed;
+			
 	public ObstacleView(ObstacleController controller, int width, int height, int x, int y, GameController gc) {
 		listCol = new ArrayList<CollisionView>();
 		this.setOpaque(false);
@@ -33,6 +36,10 @@ public class ObstacleView extends JPanel {
 		this.gvC = gc;
 		this.setVisible(true);
 		this.setLayout(null);
+		
+		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3);
+		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3);
+		
 	}
 		
 	public void setPolygon(Polygon polygon) {
@@ -54,22 +61,18 @@ public class ObstacleView extends JPanel {
 		g.setColor(Color.white);
 		g.drawPolygon(polygon);
 		g.fillPolygon(polygon);
-
 	}
 	
 	public class CollisionView extends JLabel{
 
 		private static final long serialVersionUID = -9103682417105599832L;
 		
-
 		public CollisionView(double x, double y, Color color) {
 			this.setOpaque(false);
 			this.setBounds((int) x - (gvC.getBallRadius()*3/2), (int) y - (gvC.getBallRadius()*3/2), gvC.getBallRadius()*3, gvC.getBallRadius()*3);
 
-			if(color == Color.blue) this.setIcon(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_blue.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3));
-			if(color == Color.red) this.setIcon(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_red.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3));
-			
-			
+			if(color == Color.blue) this.setIcon(collisionBlue);
+			if(color == Color.red) this.setIcon(collisionRed);			
 		}
 	}
 	

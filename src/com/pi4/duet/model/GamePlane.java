@@ -12,7 +12,6 @@ public class GamePlane {
 	
 	private GameController controller;
 	private Timer gameTimer;
-	private Timer wheelTimer;
 	
 	public final Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
@@ -48,36 +47,27 @@ public class GamePlane {
 						controller.verifyCollision(o);
 						controller.refreshView();
 					}
+					
+					if (wheelRotatingAH && !wheelRotatingH) {
+						wheel.rotate(Direction.ANTI_HORAIRE);
+						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+						controller.updateMvt(Direction.ANTI_HORAIRE);
+					}
+					else if (!wheelRotatingAH && wheelRotatingH) {
+						wheel.rotate(Direction.HORAIRE);
+						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+						controller.updateMvt(Direction.HORAIRE);
+					}
+					else {
+						controller.stopMvt();
+					}
+				
 				}
 			}			
-		}, 0, 1);
-		
-		wheelTimer = new Timer();
-		wheelTimer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				if (wheelRotatingAH && !wheelRotatingH) {
-					wheel.rotate(Direction.ANTI_HORAIRE);
-					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-					controller.updateMvt(Direction.ANTI_HORAIRE);
-				}
-				else if (!wheelRotatingAH && wheelRotatingH) {
-					wheel.rotate(Direction.HORAIRE);
-					controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-					controller.updateMvt(Direction.HORAIRE);
-				}
-				else {
-					controller.stopMvt();
-				}
-			}
-			
 		}, 0, 1);
 	}
 	
 	public void gameStop() {
-		wheelTimer.cancel();
 		gameTimer.cancel();
 		
 	}
