@@ -8,9 +8,7 @@ import java.awt.Image;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.pi4.duet.Auxiliaire;
@@ -26,7 +24,10 @@ public class ObstacleView extends JPanel {
 	private Polygon polygon;
 	private ArrayList<CollisionView> listCol;
 	private GameController gvC;
-		
+	
+	private Image collisionBlue;
+	private Image collisionRed;
+			
 	public ObstacleView(ObstacleController controller, int width, int height, int x, int y, GameController gc) {
 		listCol = new ArrayList<CollisionView>();
 		this.setOpaque(false);
@@ -36,6 +37,10 @@ public class ObstacleView extends JPanel {
 		this.gvC = gc;
 		this.setVisible(true);
 		this.setLayout(null);
+		
+		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3).getImage();
+		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3).getImage();
+		
 	}
 		
 	public void setPolygon(Polygon polygon) {
@@ -63,7 +68,6 @@ public class ObstacleView extends JPanel {
 	    	g2d.drawImage(cv.icon, cv.x, cv.y, cv.width, cv.height, null);
 	    }
 	    g2d.dispose();
-
 	}
 	
 	public class CollisionView{
@@ -77,16 +81,8 @@ public class ObstacleView extends JPanel {
 			this.width =  gvC.getBallRadius()*3;
 			this.height =  gvC.getBallRadius()*3;
 			
-
-			if(color == Color.blue) {
-				this.icon = (Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_blue.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3)).getImage();
-			}
-			
-			if(color == Color.red) {
-				this.icon = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_red.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3).getImage();
-			}
-			
-			
+			if(color == Color.blue) this.icon = collisionBlue;
+			if(color == Color.red) this.icon = collisionRed;
 		}
 	}
 	

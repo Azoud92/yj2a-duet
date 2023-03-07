@@ -26,7 +26,7 @@ public class SettingsView extends JPanel{
 	private JButton son_on, son_off, music_on, music_off, inertie_on, inertie_off, fond_on, fond_off;
 	private JLabel son, music, inertie, fond;
 	private Icon back_img;
-	private Image background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
+	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 	
 	public SettingsView(Dimension size, SettingsController controller) {
 		this.setBackground(Color.black);
@@ -35,7 +35,7 @@ public class SettingsView extends JPanel{
 		this.setPreferredSize(this.size);
 		this.setLayout(null);
 		
-		back_img = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/back.png")), this.size.width/10, this.size.width/10);
+		back_img = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/back.png")), this.size.width/10, this.size.width/10);
 		back = new JButton(back_img);
 		back.setBounds(this.size.width/20, this.size.width/20 ,this.size.width/10, this.size.width/10);
 		back.setBackground(Color.BLACK);
@@ -47,7 +47,7 @@ public class SettingsView extends JPanel{
 		
 		int count = 0;
 		
-		son = new JLabel("Activer/Désactiver les effets sonores :", SwingConstants.CENTER);
+		son = new JLabel("Activer/Dï¿½sactiver les effets sonores :", SwingConstants.CENTER);
 		son.setBounds(0, (int) (this.size.width/20 + this.size.width/10 * 1.5), this.size.width, this.size.height/9);
 		son.setFont(new Font("Arial", Font.BOLD, 30));
 		son.setForeground(Color.LIGHT_GRAY);
@@ -78,7 +78,7 @@ public class SettingsView extends JPanel{
 		
 		count++;
 		
-		music = new JLabel("Activer/Désactiver la musique :", SwingConstants.CENTER);
+		music = new JLabel("Activer/Dï¿½sactiver la musique :", SwingConstants.CENTER);
 		music.setBounds(0, (int) (this.size.width/20 + this.size.width/10 * 1.5) + count * this.size.height/5, this.size.width, this.size.height/9);
 		music.setFont(new Font("Arial", Font.BOLD, 30));
 		music.setForeground(Color.LIGHT_GRAY);
@@ -109,7 +109,7 @@ public class SettingsView extends JPanel{
 
 		count++;
 		
-		inertie = new JLabel("Activer/Désactiver l'inertie du volant :", SwingConstants.CENTER);
+		inertie = new JLabel("Activer/Dï¿½sactiver l'inertie du volant :", SwingConstants.CENTER);
 		inertie.setBounds(0, (int) (this.size.width/20 + this.size.width/10 * 1.5) + count * this.size.height/5, this.size.width, this.size.height/9);
 		inertie.setFont(new Font("Arial", Font.BOLD, 30));
 		inertie.setForeground(Color.LIGHT_GRAY);
@@ -140,7 +140,7 @@ public class SettingsView extends JPanel{
 
 		count++;
 		
-		fond = new JLabel("Activer/Désactiver l'arrière plan du jeu :", SwingConstants.CENTER);
+		fond = new JLabel("Activer/Dï¿½sactiver l'arriï¿½re plan du jeu :", SwingConstants.CENTER);
 		fond.setBounds(0, (int) (this.size.width/20 + this.size.width/10 * 1.5) + count * this.size.height/5, this.size.width, this.size.height/9);
 		fond.setFont(new Font("Arial", Font.BOLD, 30));
 		fond.setForeground(Color.LIGHT_GRAY);
