@@ -38,8 +38,8 @@ public class ObstacleView extends JPanel {
 		this.setVisible(true);
 		this.setLayout(null);
 		
-		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3).getImage();
-		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3).getImage();
+		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), gvC.getBallRadius()*7, gvC.getBallRadius()*7).getImage();
+		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius()*7, gvC.getBallRadius()*7).getImage();
 		
 	}
 		
@@ -73,13 +73,14 @@ public class ObstacleView extends JPanel {
 	public class CollisionView{
 
 		Image icon;
-		int x,y,width,height;
+		int x, y, width, height;
 
 		public CollisionView(double x, double y, Color color) {
-			this.x = (int) x - (gvC.getBallRadius()*3/2);
-			this.y = (int) y - (gvC.getBallRadius()*3/2);
-			this.width =  gvC.getBallRadius()*3;
-			this.height =  gvC.getBallRadius()*3;
+			this.width =  gvC.getBallRadius()*7;
+			this.height =  gvC.getBallRadius()*7;
+			this.x = (int) x - width/2;
+			this.y = (int) y - height/2;
+			
 			
 			if(color == Color.blue) this.icon = collisionBlue;
 			if(color == Color.red) this.icon = collisionRed;

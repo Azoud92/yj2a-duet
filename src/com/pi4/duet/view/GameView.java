@@ -104,6 +104,14 @@ public class GameView extends JPanel {
 		this.ballRed.setLocation((int) red.getX() - controller.getBallRadius(), (int) red.getY() - controller.getBallRadius());
 	}
 	
+	public Point getBallRedPos() {
+		return new Point(ballRed.x, ballRed.y);
+	}
+	
+	public Point getBallBluePos() {
+		return new Point(ballBlue.x, ballBlue.y);
+	}
+	
 	private class BallView extends JPanel {
 		
 		private static final long serialVersionUID = -8381550184021712931L;
@@ -121,7 +129,14 @@ public class GameView extends JPanel {
 		public void setLocation(int x, int y) {
 			this.x = x;
 			this.y = y;			
-		}		
+		}	
+		public int getX() {
+			return x;
+		}
+		public int getY() {
+			return y;
+		}
+		
 	}
 	
 	private class BallMvt extends JPanel {	
@@ -319,6 +334,8 @@ public class GameView extends JPanel {
 	private void reset(JButton back, JButton replay) {
 		this.remove(back);
 		this.remove(replay);
+		this.repaint();
+		
 		background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 		ballRed.color = Color.red;
 		ballBlue.color = Color.blue;

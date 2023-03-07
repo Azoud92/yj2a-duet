@@ -58,6 +58,10 @@ public class Wheel {
 	public double getAngle() {
 		return angle;
 	}
+	
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
 	public void resetBallPosition() {
 		ball_2.setCenterBall(new Point(center.getX() + radius, center.getY()));
 		ball_1.setCenterBall(new Point(center.getX() - radius, center.getY()));

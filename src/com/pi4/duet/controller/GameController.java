@@ -45,12 +45,11 @@ public class GameController implements KeyListener {
 		ObstacleView ov = o.getController().getView();
 		double oX =  o.getCoords()[0].getX();
 		double oY = o.getCoords()[0].getY();
-
 		if (res == 1) {
 			
 			model.gameStop();
 			
-			System.out.println(getCenterBall1().getX()+" "+ getCenterBall1().getY());
+
 			ov.addCollision(ov.new CollisionView(getCenterBall1().getX() - oX, getCenterBall1().getY() - oY, Color.red));
 			defeatSound.play();
 			view.lostGame();
@@ -59,14 +58,14 @@ public class GameController implements KeyListener {
 		else if (res == 2) {
 			
 			model.gameStop();
-			System.out.println(getCenterBall1().getX()+" "+ getCenterBall1().getY());
+
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));
 			defeatSound.play();
 			view.lostGame();
 			
 		}
 		else if (res == 3) {
-			System.out.println(getCenterBall1().getX()+" "+ getCenterBall1().getY());
+
 			model.gameStop();
 			ov.addCollision(ov.new CollisionView(getCenterBall1().getX()- oX,getCenterBall1().getY() - oY, Color.red));
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));	
