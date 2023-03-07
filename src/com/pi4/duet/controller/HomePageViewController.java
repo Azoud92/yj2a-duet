@@ -96,11 +96,9 @@ public class HomePageViewController {
 		this.window = window;
 		gp.wheel.resetBallPosition();
 		double radius = gp.wheel.ballRadius;
-		Point centerball2 = new Point(gp.wheel.getCenterBall2().getX(), gp.wheel.getCenterBall2().getY()+radius);
-		Point centerball1 = new Point(gp.wheel.getCenterBall1().getX(), gp.wheel.getCenterBall1().getY()+radius);
+		Point centerball2 = new Point(gp.wheel.getCenterBall2().getX()+radius, gp.wheel.getCenterBall2().getY()+radius);
+		Point centerball1 = new Point(gp.wheel.getCenterBall1().getX()+radius, gp.wheel.getCenterBall1().getY()+radius);
 		gv.setBallsPosition(centerball2, centerball1);
-		System.out.println(gp.wheel.getCenterBall1()+" "+gv.getBallRedPos());
-		System.out.println(gp.wheel.getCenterBall2()+" "+gv.getBallBluePos());
 		gp.wheel.setAngle(0);
 		gp.resetObstacle();
 		gp.gameStart();
