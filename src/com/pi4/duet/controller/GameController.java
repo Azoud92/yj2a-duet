@@ -30,9 +30,7 @@ public class GameController implements KeyListener {
 	
 	private Timer gameTimer;
 	
-	private HomePageViewController hpvC;	
-
-	private double i = 1;
+	private HomePageViewController hpvC;
 	
 	public GameController(HomePageViewController hpvC, Settings settings){
 		this.hpvC = hpvC;
@@ -74,23 +72,37 @@ public class GameController implements KeyListener {
 					
 					// animation du volant selon la direction souhaitée
 					if (model.getWheelRotating() == null) stopMvt();
-														
-					if (model.getWheelBreaking() == false) i += 0.05;					
-					else {
-						if (i > 0) i -= 0.2;
+					double in = model.getWheel().getInertia();
+					
+					if (model.getWheelBreaking()) {
+						if (in > 0) {
+							model.getWheel().setInertia(in - 0.0004);
+							model.getWheel().rotate(model.getLastRotation());
+							updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
+							updateMvt(model.getLastRotation());
+						}
 						else {
 							model.stopWheelBreaking();
-							i = 1;
+							model.getWheel().setInertia(0);
+							model.setLastRotation(null);
+						}						
+					}
+					
+					if (model.getWheelRotating() != null) {
+						if (model.getWheelBreaking() == false) {
+							if (in < model.getWheel().rotationSpeed) {
+								model.getWheel().setInertia(in + 0.0004);
+							}
 						}
 					}
 						
-					if (model.getWheelRotating() == Direction.ANTI_HORAIRE) {
-						model.getWheel().rotate(Direction.ANTI_HORAIRE, i);
+					if (model.getWheelRotating() == Direction.ANTI_HORAIRE) {					
+						model.getWheel().rotate(Direction.ANTI_HORAIRE);
 						updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
 						updateMvt(Direction.ANTI_HORAIRE);
 					}
-					else if (model.getWheelRotating() == Direction.HORAIRE) {
-						model.getWheel().rotate(Direction.HORAIRE, i);
+					else if (model.getWheelRotating() == Direction.HORAIRE) {					
+						model.getWheel().rotate(Direction.HORAIRE);
 						updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
 						updateMvt(Direction.HORAIRE);
 					}			

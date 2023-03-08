@@ -11,6 +11,7 @@ public class Wheel { // représente le volant du jeu
 	public final int ballRadius = 10; // rayon de la balle
 	
 	private double angle = 0; // angle des balles
+	private double inertia = 0; // inertie pour donner l'illusion d'accélération / freinage
 	
 	public Wheel(Point center) {
 		this.center = center;
@@ -18,12 +19,12 @@ public class Wheel { // représente le volant du jeu
 		ball_2 = new Ball(new Point(center.getX() + radius, center.getY()));
 	}	
 		
-	public void rotate(Direction dir, double i) {
+	public void rotate(Direction dir) {
 		if (dir == Direction.HORAIRE) {
-			angle -= Math.toRadians(i * rotationSpeed);
+			angle -= Math.toRadians(inertia);
 		}
 		else if (dir == Direction.ANTI_HORAIRE){
-			angle += Math.toRadians(i * rotationSpeed);
+			angle += Math.toRadians(inertia);
 		}
 		
 		// Changement coordonées Ball 2
@@ -43,8 +44,6 @@ public class Wheel { // représente le volant du jeu
 		ball_1.setCenterBall(new Point(center.getX() - radius, center.getY()));
 	}
 
-
-	
 	// méthode auxiliaire servant à déterminer une collision et renvoyant un entier servant à l'effet "tâche"
 	public int isInCollision(Obstacle o) {
 		if (ball_1.isInCollision(o) && ball_2.isInCollision(o)) return 3;
@@ -73,6 +72,12 @@ public class Wheel { // représente le volant du jeu
 		// TODO Auto-generated method stub
 		return center;
 	}
+	
+	public void setInertia(double inertia) {
+		this.inertia = inertia;
+	}
+	
+	public double getInertia() { return inertia; }
 	
 	private class Ball { // représente une balle rattachée au volant
 		

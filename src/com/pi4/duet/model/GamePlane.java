@@ -14,6 +14,7 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	private State gameState = State.READY;
 	
 	private Direction wheelRotating = null;
+	private Direction lastRotation = null;
 	private boolean wheelBreaking = false;
 		
 	public GamePlane(int width, int height, GameController controller) {		
@@ -37,6 +38,7 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	}
 	
 	public void stopWheelRotation() {
+		if (wheelRotating != null) lastRotation = wheelRotating;
 		wheelRotating = null;
 	}
 
@@ -78,6 +80,13 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	public boolean getWheelBreaking() {
 		// TODO Auto-generated method stub
 		return wheelBreaking;
+	}
+	
+	public Direction getLastRotation() { return lastRotation; }
+
+	public void setLastRotation(Direction dir) {
+		// TODO Auto-generated method stub
+		this.lastRotation = dir;
 	}
 		
 }
