@@ -4,7 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.io.IOException;
 
-public class ObstacleQueue extends Timer {
+public class ObstacleQueue extends Timer { // représente la liste avec les délais d'apparition des obstacles
 	
 	// Lien vers un GamePlane pour faire apparaitre les obstacles
 	private final GamePlane plane;

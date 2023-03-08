@@ -4,13 +4,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 
+import com.pi4.duet.Sound;
 import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
-import com.pi4.duet.view.GameView;
-import com.pi4.duet.view.GameWindow;
-import com.pi4.duet.view.HomePageView;
-import com.pi4.duet.view.SettingsView;
+import com.pi4.duet.model.Settings;
+import com.pi4.duet.model.State;
+import com.pi4.duet.view.Scale;
+import com.pi4.duet.view.game.GameView;
+import com.pi4.duet.view.game.GameWindow;
+import com.pi4.duet.view.home.HomePageView;
+import com.pi4.duet.view.home.SettingsView;
 
 public class HomePageViewController {
 	
@@ -19,13 +23,24 @@ public class HomePageViewController {
 	private GamePlane gp;
 	private HomePageView view;
 	private GameWindow window;
+	private Settings sm;
 	private SettingsView sv;
 	private SettingsController sc;
-		
+	
+	private Sound homeMusic = new Sound("homeMusic.wav", true);
+	
+	public HomePageViewController(Dimension size, Scale scale) {
+		sm = new Settings();
+		sc = new SettingsController(this);
+		sv = new SettingsView(size, sc, scale);
+		sc.setModel(sm);
+		sc.setView(sv);
+	}
+			
 	public void runParty(Dimension size, GameWindow window,HomePageView view) {
 		this.view=view;
 		this.window = window;
-		gc = new GameController(this);
+		gc = new GameController(this, sm);
 		gp = new GamePlane(size.width / 3, size.height, gc);
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
@@ -43,23 +58,23 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 						
 		gc.testObstacles();
-		gp.gameStart();
+		gc.gameStart();
+		homeMusic.stop();
 	}
 	
 	
 	public void continueParty(){
 		this.gv.setVisible(true);
-		this.gc.setPause(gc.isPause());
-		this.gc.getModel().gamePausedOrResumed();
+		this.gc.getModel().setState(State.ON_GAME);
 		this.gv.requestFocus();
 		this.gv.setFocusable(true);
-
+		homeMusic.stop();
 	}
 	
 	public void runLvl2(Dimension size, GameWindow window, HomePageView view) {
 		this.view=view;
 		this.window = window;
-		gc = new GameController(this);
+		gc = new GameController(this, sm);
 		gp = new GamePlane(size.width / 3, size.height, gc);
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
@@ -88,52 +103,46 @@ public class HomePageViewController {
 		
 		gc.testObstacles();
 		gc.putTestObstacle(test);
-		gp.gameStart();
+		gc.gameStart();
+		homeMusic.stop();
 	}
 
 	
 	public void runNewParty(GameWindow window) {
 		this.window = window;
-		gp.wheel.resetBallPosition();
-		double radius = gp.wheel.ballRadius;
-		Point centerball2 = new Point(gp.wheel.getCenterBall2().getX()+radius, gp.wheel.getCenterBall2().getY()+radius);
-		Point centerball1 = new Point(gp.wheel.getCenterBall1().getX()+radius, gp.wheel.getCenterBall1().getY()+radius);
+		gp.getWheel().resetBallPosition();
+		double radius = gp.getWheel().ballRadius;
+		Point centerball2 = new Point(gp.getWheel().getCenterBall2().getX()+radius, gp.getWheel().getCenterBall2().getY()+radius);
+		Point centerball1 = new Point(gp.getWheel().getCenterBall1().getX()+radius, gp.getWheel().getCenterBall1().getY()+radius);
 		gv.setBallsPosition(centerball2, centerball1);
-		gp.wheel.setAngle(0);
-		gp.resetObstacle();
-		gp.gameStart();
-		
-				
-		
+		gp.getWheel().setAngle(0);
+		gp.resetObstacles();
+		gp.setState(State.READY);
+		gc.gameStart();		
+		homeMusic.stop();
 	}
 	
 	public void runHomePage() {
-
+		if (sm.getMusic()) homeMusic.play();
 		view.setVisible(true);
 		
 		JPanel container = new JPanel(new GridLayout(1, 3));
 		container.add(new JPanel());	
 		container.add(view);
 		container.add(new JPanel());
-		window.setMainContainer(container);
-		
+		window.setMainContainer(container);		
 	}
 	
 	public void runSettings(Dimension size, GameWindow window) {
-		this.window = window;
-		sc = new SettingsController(this);
-		sv = new SettingsView(size, sc);
-		sc.setView(sv);
+		this.window = window;		
 		sv.setVisible(true);
-
 		
 		JPanel container = new JPanel(new GridLayout(1, 3));
 		container.add(new JPanel());	
 		container.add(sv);
 		container.add(new JPanel());
 		window.setMainContainer(container);
-		
-		
+		homeMusic.stop();
 	}
 	
 	
@@ -148,9 +157,7 @@ public class HomePageViewController {
 	public GameWindow getWindow() {
 		return window;
 	}
-
 	
-
-
+	public Settings getSettings() { return sm; }
 	
 }

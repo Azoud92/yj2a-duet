@@ -1,6 +1,6 @@
 package com.pi4.duet;
 
-import com.pi4.duet.view.GameWindow;
+import com.pi4.duet.view.game.GameWindow;
 
 public class Runner {
 

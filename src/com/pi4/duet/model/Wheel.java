@@ -1,28 +1,22 @@
 package com.pi4.duet.model;
 import java.lang.Math;
 
-public class Wheel {
+public class Wheel { // représente le volant du jeu
+		
+	private Point center;	
+	private Ball ball_1, ball_2; // resp. balle rouge & balle bleue
 	
-	public final int radius = 100;
-	private Point center;
+	public final int radius = 100; // rayon du volant	
+	public final double rotationSpeed = 0.25;
+	public final int ballRadius = 10; // rayon de la balle
 	
-	private Ball ball_1, ball_2;
-	
-	private double angle = 0;
-	public final double rotationSpeed = 0.25; // elle est fixe, vous pouvez lui donner une inertie (acceleration + frein)
-	public final int ballRadius = 10;
+	private double angle = 0; // angle des balles
 	
 	public Wheel(Point center) {
 		this.center = center;
-		ball_2 = new Ball(new Point(center.getX() + radius, center.getY()), ballRadius);
-		ball_1 = new Ball(new Point(center.getX() - radius, center.getY()), ballRadius);
-	}
-	
-	public Point getCenter() {
-		// TODO Auto-generated method stub
-		return center;
-	}
-	
+		ball_1 = new Ball(new Point(center.getX() - radius, center.getY()));
+		ball_2 = new Ball(new Point(center.getX() + radius, center.getY()));
+	}	
 		
 	public void rotate(Direction dir) {
 		if (dir == Direction.HORAIRE) {
@@ -35,18 +29,28 @@ public class Wheel {
 		// Changement coordonées Ball 2
 		ball_2.centerBall.setX(radius * Math.cos(angle) + center.getX());
 		ball_2.centerBall.setY(radius * Math.sin(angle) + center.getY());
-		// Changement coordonées Ball 1
 		
+		// Changement coordonées Ball 1		
 		double dist1 = ball_2.centerBall.getX() - center.getX();
 		double dist2 = ball_2.centerBall.getY() - center.getY();
 		ball_1.centerBall.setX(center.getX() - dist1);
 		ball_1.centerBall.setY(center.getY() - dist2);
+	}	
+		
+	// on remet les balles à leur position initiale (droites)
+	public void resetBallPosition() {
+		ball_2.setCenterBall(new Point(center.getX() + radius, center.getY()));
+		ball_1.setCenterBall(new Point(center.getX() - radius, center.getY()));
 	}
 	
-	
-	public static double distance(Point p1,Point p2) {
-		return Math.sqrt((p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) + (p1.getY() - p2.getY()) * (p1.getY() - p2.getY()));
+	// méthode auxiliaire servant à déterminer une collision et renvoyant un entier servant à l'effet "tâche"
+	public int isInCollision(Obstacle o) {
+		if (ball_1.isInCollision(o) && ball_2.isInCollision(o)) return 3;
+		if (ball_1.isInCollision(o)) return 1;
+		if (ball_2.isInCollision(o)) return 2;
+		return 0;
 	}
+	
 	public Point getCenterBall1() {
 		return ball_1.centerBall;
 	}
@@ -62,32 +66,25 @@ public class Wheel {
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}
-	public void resetBallPosition() {
-		ball_2.setCenterBall(new Point(center.getX() + radius, center.getY()));
-		ball_1.setCenterBall(new Point(center.getX() - radius, center.getY()));
+		
+	public Point getCenter() {
+		// TODO Auto-generated method stub
+		return center;
 	}
 	
-	public int isInCollision(Obstacle o) {
-		if(ball_1.isInCollision(o) && ball_2.isInCollision(o))return 3;
-		if(ball_1.isInCollision(o))return 1;
-		if(ball_2.isInCollision(o))return 2;
-		return 0;
-
-	}
-	
-	private class Ball {
+	private class Ball { // représente une balle rattachée au volant
 		
 		Point centerBall;
 		
-		public Ball(Point centerBall, double radius) {
+		public Ball(Point centerBall) {
 			this.centerBall = centerBall;
 		}
 		
 		public void setCenterBall(Point centerBall) {
-			this.centerBall = centerBall;
-			
+			this.centerBall = centerBall;			
 		}
 
+		// Méthode principale servant à déterminer si il y a collision entre le volant et l'obstacle par le biais de calculs
 		public boolean isInCollision(Obstacle o) {
 	        int n = o.getCoords().length;
 	        double[] distances = new double[n];
@@ -96,7 +93,7 @@ public class Wheel {
 	        for (int i = 0; i < n; i++) {
 	            double dx = o.getCoords()[i].getX() - centerBall.getX();
 	            double dy = o.getCoords()[i].getY() - centerBall.getY();
-	            distances[i] = Math.sqrt(dx*dx + dy*dy);
+	            distances[i] = Math.sqrt(dx * dx + dy * dy);
 	        }
 
 	        // vérification de la collision en comparant la distance minimale à la rayon du cercle
@@ -110,7 +107,7 @@ public class Wheel {
 	            Point intersection = new Point(o.getCoords()[i].getX() + u * (o.getCoords()[j].getX() - o.getCoords()[i].getX()), o.getCoords()[i].getY() + u * (o.getCoords()[j].getY() - o.getCoords()[i].getY()));
 	            double dx = intersection.getX() - centerBall.getX();
 	            double dy = intersection.getY() - centerBall.getY();
-	            if (Math.sqrt(dx*dx + dy*dy) < ballRadius) {
+	            if (Math.sqrt(dx * dx + dy * dy) < ballRadius) {
 	                return true;
 	            }
 	        }
@@ -120,9 +117,7 @@ public class Wheel {
 	                return true;
 	            }
 	        }
-
 	        return false;
-	    }
-	
+	    }	
 	}
 }

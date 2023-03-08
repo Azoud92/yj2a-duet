@@ -6,7 +6,7 @@ import java.awt.Polygon;
 
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
-import com.pi4.duet.view.ObstacleView;
+import com.pi4.duet.view.game.ObstacleView;
 
 public class ObstacleController implements Serializable {
 
