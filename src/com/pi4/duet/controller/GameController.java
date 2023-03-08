@@ -6,23 +6,21 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JButton;
-
+import com.pi4.duet.Sound;
 import com.pi4.duet.model.Direction;
 import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.view.GameView;
-import com.pi4.duet.view.HomePageView;
 import com.pi4.duet.view.ObstacleView;
-import com.pi4.duet.view.ObstacleView.CollisionView;
 
 public class GameController implements KeyListener {
 
 	private GamePlane model;
 	private GameView view;
-
-
+	private Sound defeatSound = new Sound("defeat.wav");
+	
+	
 	private HomePageViewController hpvC;
 
 	private boolean pause=false;
@@ -41,28 +39,39 @@ public class GameController implements KeyListener {
 	public void refreshView() {
 		view.refresh();
 	}
+	
 	public void verifyCollision(Obstacle o) {
 		int res = model.wheel.isInCollision(o);
 		ObstacleView ov = o.getController().getView();
 		double oX =  o.getCoords()[0].getX();
 		double oY = o.getCoords()[0].getY();
-
 		if (res == 1) {
+			
 			model.gameStop();
-			System.out.println(getCenterBall1().getX()+" "+ oX);
+			
+
 			ov.addCollision(ov.new CollisionView(getCenterBall1().getX() - oX, getCenterBall1().getY() - oY, Color.red));
+			defeatSound.play();
 			view.lostGame();
+			
 		}
 		else if (res == 2) {
+			
 			model.gameStop();
+
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));
+			defeatSound.play();
 			view.lostGame();
+			
 		}
 		else if (res == 3) {
+
 			model.gameStop();
 			ov.addCollision(ov.new CollisionView(getCenterBall1().getX()- oX,getCenterBall1().getY() - oY, Color.red));
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));	
+			defeatSound.play();
 			view.lostGame();
+			
 		}
 		
 	}
@@ -81,6 +90,8 @@ public class GameController implements KeyListener {
 		Obstacle o = new Obstacle(rect, centerRect, oc);
 		oc.setModel(o);
 		ObstacleView ov = new ObstacleView(oc, (int)(rect[1].getX() - rect[0].getX()),(int)(rect[3].getY() - rect[0].getY()),(int) rect[0].getX(), (int) rect[0].getY(),this);
+		//ObstacleView ov = new ObstacleView(oc, model.width, model.height, 0, 0, this);
+		
 		oc.setView(ov);	
 		model.addObstacle(o);
 		view.addObstacle(ov);		
@@ -218,9 +229,5 @@ public class GameController implements KeyListener {
 	public Point getWheelCenter() {
 		return model.wheel.getCenter();
 	}
-
-	
-
-	
-	
+		
 }

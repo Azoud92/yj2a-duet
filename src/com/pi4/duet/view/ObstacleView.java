@@ -3,11 +3,12 @@ package com.pi4.duet.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.pi4.duet.Auxiliaire;
@@ -23,7 +24,10 @@ public class ObstacleView extends JPanel {
 	private Polygon polygon;
 	private ArrayList<CollisionView> listCol;
 	private GameController gvC;
-		
+	
+	private Image collisionBlue;
+	private Image collisionRed;
+			
 	public ObstacleView(ObstacleController controller, int width, int height, int x, int y, GameController gc) {
 		listCol = new ArrayList<CollisionView>();
 		this.setOpaque(false);
@@ -33,6 +37,10 @@ public class ObstacleView extends JPanel {
 		this.gvC = gc;
 		this.setVisible(true);
 		this.setLayout(null);
+		
+		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), gvC.getBallRadius()*7, gvC.getBallRadius()*7).getImage();
+		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius()*7, gvC.getBallRadius()*7).getImage();
+		
 	}
 		
 	public void setPolygon(Polygon polygon) {
@@ -44,7 +52,6 @@ public class ObstacleView extends JPanel {
 	public Polygon getPolygon() { return polygon; }
 	
 	public void addCollision(CollisionView collision) {
-		this.add(collision);
 		listCol.add(collision);
 	}
 	
@@ -54,22 +61,29 @@ public class ObstacleView extends JPanel {
 		g.setColor(Color.white);
 		g.drawPolygon(polygon);
 		g.fillPolygon(polygon);
-
+		
+		Graphics2D g2d = (Graphics2D) g.create();
+	    g2d.clip(polygon);
+	    for(CollisionView cv : listCol) {
+	    	g2d.drawImage(cv.icon, cv.x, cv.y, cv.width, cv.height, null);
+	    }
+	    g2d.dispose();
 	}
 	
-	public class CollisionView extends JLabel{
+	public class CollisionView{
 
-		private static final long serialVersionUID = -9103682417105599832L;
-		
+		Image icon;
+		int x, y, width, height;
 
 		public CollisionView(double x, double y, Color color) {
-			this.setOpaque(false);
-			this.setBounds((int) x - (gvC.getBallRadius()*3/2), (int) y - (gvC.getBallRadius()*3/2), gvC.getBallRadius()*3, gvC.getBallRadius()*3);
-
-			if(color == Color.blue) this.setIcon(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_blue.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3));
-			if(color == Color.red) this.setIcon(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/collision_red.png")), gvC.getBallRadius()*3, gvC.getBallRadius()*3));
+			this.width =  gvC.getBallRadius()*7;
+			this.height =  gvC.getBallRadius()*7;
+			this.x = (int) x - width/2;
+			this.y = (int) y - height/2;
 			
 			
+			if(color == Color.blue) this.icon = collisionBlue;
+			if(color == Color.red) this.icon = collisionRed;
 		}
 	}
 	

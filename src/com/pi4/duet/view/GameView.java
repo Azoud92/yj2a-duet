@@ -20,7 +20,7 @@ public class GameView extends JPanel {
 
 	
 	private static final long serialVersionUID = -306594423077754361L;
-	
+		
 	private GameController controller;
 
 	private BallView ballRed, ballBlue;
@@ -33,7 +33,7 @@ public class GameView extends JPanel {
 		this.size = new Dimension(size.width/3, size.height);
 
 		this.controller = controller;
-		background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
+		background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.setPreferredSize(dim);
 		
@@ -64,7 +64,7 @@ public class GameView extends JPanel {
 				"Jeu en pause",
 				JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
-				new ImageIcon(getClass().getResource("/resources/pause.png")),
+				new ImageIcon(getClass().getResource("/resources/img/pause.png")),
 				option,
 				option[0]);
 		switch(indice){
@@ -88,7 +88,7 @@ public class GameView extends JPanel {
 		String []resume={"Reprendre maintenant"};
 		JOptionPane jboite2 = new JOptionPane("Le jeu va reprendre automatiquement dans moins de 3 secondes",
 				JOptionPane.INFORMATION_MESSAGE,-1,
-				new ImageIcon(getClass().getResource("/resources/resume.jpg")));
+				new ImageIcon(getClass().getResource("/resources/img/resume.jpg")));
 		jboite2.setOptions(resume);
 		final Timer timer = new Timer(3000, e -> {
 			jboite2.setValue(JOptionPane.CLOSED_OPTION);
@@ -98,12 +98,18 @@ public class GameView extends JPanel {
 		jboite2.createDialog(this, "TENEZ VOUS PRÊT").setVisible(true);
 
 	}
-	
-	
-	
+		
 	public void setBallsPosition(Point blue, Point red) {
-		this.ballBlue.setLocation((int) blue.getX() - controller.getBallRadius(), (int) blue.getY());
-		this.ballRed.setLocation((int) red.getX() - controller.getBallRadius(), (int) red.getY());
+		this.ballBlue.setLocation((int) blue.getX() - controller.getBallRadius(), (int) blue.getY() - controller.getBallRadius());
+		this.ballRed.setLocation((int) red.getX() - controller.getBallRadius(), (int) red.getY() - controller.getBallRadius());
+	}
+	
+	public Point getBallRedPos() {
+		return new Point(ballRed.x, ballRed.y);
+	}
+	
+	public Point getBallBluePos() {
+		return new Point(ballBlue.x, ballBlue.y);
 	}
 	
 	private class BallView extends JPanel {
@@ -123,7 +129,14 @@ public class GameView extends JPanel {
 		public void setLocation(int x, int y) {
 			this.x = x;
 			this.y = y;			
-		}		
+		}	
+		public int getX() {
+			return x;
+		}
+		public int getY() {
+			return y;
+		}
+		
 	}
 	
 	private class BallMvt extends JPanel {	
@@ -187,7 +200,7 @@ public class GameView extends JPanel {
 					if (i == 0) {
 					}
 						coordX[i] = (int) (controller.getWheelRadius() * Math.cos(angleTmp) + controller.getWheelCenter().getX()) - controller.getBallRadius();
-						coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY()) ;
+						coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY()) - controller.getBallRadius();
 						if (dir == Direction.HORAIRE) {
 							angleTmp += Math.toRadians(1 * controller.getWheelSpeed());
 						}
@@ -204,7 +217,7 @@ public class GameView extends JPanel {
 					if (i == 0) {
 					}
 					coordX[i] = (int) (controller.getWheelRadius() * Math.cos(angleTmp) + controller.getWheelCenter().getX()) - controller.getBallRadius();
-					coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY());
+					coordY[i] = (int) (controller.getWheelRadius() * Math.sin(angleTmp) + controller.getWheelCenter().getY()) - controller.getBallRadius();
 					if (dir == Direction.HORAIRE) {
 						angleTmp += Math.toRadians(1 * controller.getWheelSpeed());
 					}
@@ -279,7 +292,7 @@ public class GameView extends JPanel {
 	}
 	
 	public void lostGame() {
-		background =  new ImageIcon(this.getClass().getResource("/resources/background_grey.png")).getImage();
+		background =  new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
 		ballRed.color = Color.gray;
 		ballBlue.color = Color.gray;
 		mvtRed.color = Color.gray;
@@ -321,7 +334,9 @@ public class GameView extends JPanel {
 	private void reset(JButton back, JButton replay) {
 		this.remove(back);
 		this.remove(replay);
-		background = new ImageIcon(this.getClass().getResource("/resources/background.png")).getImage();
+		this.repaint();
+		
+		background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 		ballRed.color = Color.red;
 		ballBlue.color = Color.blue;
 		mvtRed.color = Color.red;

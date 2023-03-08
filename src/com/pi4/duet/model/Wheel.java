@@ -23,7 +23,7 @@ public class Wheel {
 		return center;
 	}
 	
-			
+		
 	public void rotate(Direction dir) {
 		if (dir == Direction.HORAIRE) {
 			angle -= Math.toRadians(1 * rotationSpeed);
@@ -59,6 +59,14 @@ public class Wheel {
 		return angle;
 	}
 	
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
+	public void resetBallPosition() {
+		ball_2.setCenterBall(new Point(center.getX() + radius, center.getY()));
+		ball_1.setCenterBall(new Point(center.getX() - radius, center.getY()));
+	}
+	
 	public int isInCollision(Obstacle o) {
 		if(ball_1.isInCollision(o) && ball_2.isInCollision(o))return 3;
 		if(ball_1.isInCollision(o))return 1;
@@ -74,37 +82,47 @@ public class Wheel {
 		public Ball(Point centerBall, double radius) {
 			this.centerBall = centerBall;
 		}
-		public boolean isInCollision(Obstacle o){
-			for(int i=0;i<o.getCoords().length-1;i++){
-				double d1=distance(o.getCoords()[i],centerBall);
-				double d2=distance(o.getCoords()[i+1],centerBall);
-				double d3=distance(o.getCoords()[i],o.getCoords()[i+1]);
-				if(d1+d2<=d3+0.01) return true;
-			}
-
-			return false;
+		
+		public void setCenterBall(Point centerBall) {
+			this.centerBall = centerBall;
+			
 		}
 
+		public boolean isInCollision(Obstacle o) {
+	        int n = o.getCoords().length;
+	        double[] distances = new double[n];
 
-		/*public boolean isInCollision2(Obstacle o) {
-			
-			for (int i = 0; i < o.getCoords().length; i++) {				
-				double distance1 = Math.sqrt(Math.pow(o.getCoords()[i].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[i].getY() - centerBall.getY(), 2));
-				double distance2 = 0;
-				
-				if (i + 1 >= o.getCoords().length) {
-					distance2 = Math.sqrt(Math.pow(o.getCoords()[0].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[0].getY() - centerBall.getY(), 2));
-				}
-				else {
-					distance2 = Math.sqrt(Math.pow(o.getCoords()[i + 1].getX() - centerBall.getX(), 2) + Math.pow(o.getCoords()[i + 1].getY() - centerBall.getY(), 2));
-				}
-				
-				if (distance1 <= ballRadius || distance2 <= ballRadius) {
-		            return true;
-		        }				
-			}
-			
-			return false;
-		}*/
+	        // calcul de la distance entre le centre du cercle et chaque sommet du polygone
+	        for (int i = 0; i < n; i++) {
+	            double dx = o.getCoords()[i].getX() - centerBall.getX();
+	            double dy = o.getCoords()[i].getY() - centerBall.getY();
+	            distances[i] = Math.sqrt(dx*dx + dy*dy);
+	        }
+
+	        // vérification de la collision en comparant la distance minimale à la rayon du cercle
+	        for (int i = 0; i < n; i++) {
+	            int j = (i + 1) % n;
+	            double edgeLength = Math.sqrt(Math.pow(o.getCoords()[j].getX() - o.getCoords()[i].getX(), 2) + Math.pow(o.getCoords()[j].getY() - o.getCoords()[i].getY(), 2));
+	            double u = ((centerBall.getX() - o.getCoords()[i].getX()) * (o.getCoords()[j].getX() - o.getCoords()[i].getX()) + (centerBall.getY() - o.getCoords()[i].getY()) * (o.getCoords()[j].getY() - o.getCoords()[i].getY())) / Math.pow(edgeLength, 2);
+	            if (u < 0 || u > 1) {
+	                continue;
+	            }
+	            Point intersection = new Point(o.getCoords()[i].getX() + u * (o.getCoords()[j].getX() - o.getCoords()[i].getX()), o.getCoords()[i].getY() + u * (o.getCoords()[j].getY() - o.getCoords()[i].getY()));
+	            double dx = intersection.getX() - centerBall.getX();
+	            double dy = intersection.getY() - centerBall.getY();
+	            if (Math.sqrt(dx*dx + dy*dy) < ballRadius) {
+	                return true;
+	            }
+	        }
+
+	        for (double distance : distances) {
+	            if (distance < ballRadius) {
+	                return true;
+	            }
+	        }
+
+	        return false;
+	    }
+	
 	}
 }
