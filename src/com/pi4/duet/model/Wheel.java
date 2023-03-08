@@ -18,12 +18,12 @@ public class Wheel { // représente le volant du jeu
 		ball_2 = new Ball(new Point(center.getX() + radius, center.getY()));
 	}	
 		
-	public void rotate(Direction dir) {
+	public void rotate(Direction dir, double i) {
 		if (dir == Direction.HORAIRE) {
-			angle -= Math.toRadians(1 * rotationSpeed);
+			angle -= Math.toRadians(i * rotationSpeed);
 		}
 		else if (dir == Direction.ANTI_HORAIRE){
-			angle += Math.toRadians(1 * rotationSpeed);
+			angle += Math.toRadians(i * rotationSpeed);
 		}
 		
 		// Changement coordonées Ball 2
@@ -42,6 +42,8 @@ public class Wheel { // représente le volant du jeu
 		ball_2.setCenterBall(new Point(center.getX() + radius, center.getY()));
 		ball_1.setCenterBall(new Point(center.getX() - radius, center.getY()));
 	}
+
+
 	
 	// méthode auxiliaire servant à déterminer une collision et renvoyant un entier servant à l'effet "tâche"
 	public int isInCollision(Obstacle o) {

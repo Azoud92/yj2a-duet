@@ -71,5 +71,11 @@ public class GameWindow extends JFrame { // fenêtre principale
 	public JFrame getFrame() {
 		return frame;
 	}
+
+	public static void main(String[] args) {
+
+		new GameWindow();
+
+	}
 	
 }

@@ -14,15 +14,17 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	private State gameState = State.READY;
 	
 	private Direction wheelRotating = null;
+	private boolean wheelBreaking = false;
 		
 	public GamePlane(int width, int height, GameController controller) {		
 		this.width = width;
 		this.height = height;		
         this.wheel = new Wheel(new Point(width / 2, height - 150));
         this.controller = controller;
-        this.obstacles = new ArrayList<Obstacle>();        
-	}	
-	
+
+        this.obstacles = new ArrayList<Obstacle>();
+	}
+
 	public void startWheelRotation(Direction dir) { 
 		wheelRotating = dir;
 	}
@@ -37,6 +39,12 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	public void stopWheelRotation() {
 		wheelRotating = null;
 	}
+
+	public void startWheelBreaking() {
+		wheelBreaking = true;
+	}
+	
+	public void stopWheelBreaking() { wheelBreaking = false; }
 	
 	public void addObstacle(Obstacle o) {
 		this.obstacles.add(o);
@@ -65,6 +73,11 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	@SuppressWarnings("unchecked")
 	public ArrayList<Obstacle> getObstacles() {
 		return (ArrayList<Obstacle>) obstacles.clone();
+	}
+
+	public boolean getWheelBreaking() {
+		// TODO Auto-generated method stub
+		return wheelBreaking;
 	}
 		
 }

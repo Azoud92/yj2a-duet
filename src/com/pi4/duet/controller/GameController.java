@@ -30,7 +30,9 @@ public class GameController implements KeyListener {
 	
 	private Timer gameTimer;
 	
-	private HomePageViewController hpvC;
+	private HomePageViewController hpvC;	
+
+	private double i = 1;
 	
 	public GameController(HomePageViewController hpvC, Settings settings){
 		this.hpvC = hpvC;
@@ -54,6 +56,7 @@ public class GameController implements KeyListener {
 	public void gameStart() {
 		if (model.getState() != State.READY) return;
 		model.setState(State.ON_GAME);
+		model.setWheelRotating(null);
 		if (settings.getMusic()) music.play();
 		
 		gameTimer = new Timer();
@@ -70,14 +73,24 @@ public class GameController implements KeyListener {
 					}
 					
 					// animation du volant selon la direction souhaitée
-					if (model.getWheelRotating() == null) stopMvt();					 
+					if (model.getWheelRotating() == null) stopMvt();
+														
+					if (model.getWheelBreaking() == false) i += 0.05;					
+					else {
+						if (i > 0) i -= 0.2;
+						else {
+							model.stopWheelBreaking();
+							i = 1;
+						}
+					}
+						
 					if (model.getWheelRotating() == Direction.ANTI_HORAIRE) {
-						model.getWheel().rotate(Direction.ANTI_HORAIRE);
+						model.getWheel().rotate(Direction.ANTI_HORAIRE, i);
 						updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
 						updateMvt(Direction.ANTI_HORAIRE);
 					}
 					else if (model.getWheelRotating() == Direction.HORAIRE) {
-						model.getWheel().rotate(Direction.HORAIRE);
+						model.getWheel().rotate(Direction.HORAIRE, i);
 						updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
 						updateMvt(Direction.HORAIRE);
 					}			
@@ -189,8 +202,8 @@ public class GameController implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == State.ON_GAME){
 			switch(e.getKeyCode()) {
-				case KeyEvent.VK_RIGHT: model.stopWheelRotation(); break;
-				case KeyEvent.VK_LEFT: model.stopWheelRotation(); break;
+				case KeyEvent.VK_RIGHT: model.stopWheelRotation(); model.startWheelBreaking(); break;
+				case KeyEvent.VK_LEFT: model.stopWheelRotation(); model.startWheelBreaking(); break;
 				case KeyEvent.VK_SPACE:{
 					model.stopWheelRotation();
 					model.setState(State.PAUSED);
