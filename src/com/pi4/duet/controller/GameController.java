@@ -129,8 +129,8 @@ public class GameController implements KeyListener {
 			// TODO Auto-generated method stub
 			if (!model.isPaused()){
 				switch(e.getKeyCode()) {
-					case KeyEvent.VK_RIGHT: model.stopWheelRotation(); break;
-					case KeyEvent.VK_LEFT: model.stopWheelRotation(); break;
+					case KeyEvent.VK_RIGHT: model.stopWheelRotation();model.startWheelFreinage(Direction.ANTI_HORAIRE); break;
+					case KeyEvent.VK_LEFT: model.stopWheelRotation(); model.startWheelFreinage(Direction.HORAIRE);break;
 					case KeyEvent.VK_SPACE:{
 						model.stopWheelRotation();
 						model.gamePausedOrResumed();

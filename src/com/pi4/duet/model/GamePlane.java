@@ -21,9 +21,14 @@ public class GamePlane {
 	}
 
 	private boolean paused = false;
+
 	
 	private boolean wheelRotatingAH = false; // rotation anti-horaire du volant en cours
 	private boolean wheelRotatingH = false; // rotation horaire du volant en cours
+
+	private boolean wheelFreinageAH = false;
+	private static double i = 1;
+	private boolean wheelFreinageH = false;
 		
 	public GamePlane(int width, int height, GameController controller) {		
 		this.width = width;
@@ -47,24 +52,48 @@ public class GamePlane {
 						controller.verifyCollision(o);
 						controller.refreshView();
 					}
-					
-					if (wheelRotatingAH && !wheelRotatingH) {
-						wheel.rotate(Direction.ANTI_HORAIRE);
+
+					if (wheelRotatingAH && !wheelRotatingH && !wheelFreinageAH && !wheelFreinageH) {
+						i=i+0.05;
+						wheel.rotate(Direction.ANTI_HORAIRE,i);
 						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
 						controller.updateMvt(Direction.ANTI_HORAIRE);
 					}
-					else if (!wheelRotatingAH && wheelRotatingH) {
-						wheel.rotate(Direction.HORAIRE);
+					else if (!wheelRotatingAH && wheelRotatingH && !wheelFreinageAH && !wheelFreinageH) {
+						i=i+0.05;
+						wheel.rotate(Direction.HORAIRE,i);
 						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
 						controller.updateMvt(Direction.HORAIRE);
+					}else if(wheelFreinageAH && !wheelFreinageH){
+						if(i>0){
+							wheel.rotate(Direction.ANTI_HORAIRE,i);
+							controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+							controller.updateMvt(Direction.ANTI_HORAIRE);
+							i=i-0.2;
+						}else{
+							stopWheelFreinage();
+							i=1;
+						}
+
+					}else if(!wheelFreinageAH && wheelFreinageH){
+						if(i>0){
+							wheel.rotate(Direction.HORAIRE,i);
+							controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
+							controller.updateMvt(Direction.HORAIRE);
+							i=i-0.2;
+						}else{
+							stopWheelFreinage();
+							i=1;
+						}
+
 					}
 					else {
 						controller.stopMvt();
 					}
-				
+
 				}
 			}			
-		}, 0, 1);
+		}, 0, 2);
 	}
 	
 	public void gameStop() {
@@ -94,6 +123,21 @@ public class GamePlane {
 	}
 	
 	public void stopWheelRotation() { wheelRotatingAH = false; wheelRotatingH = false; }
+
+
+	public void startWheelFreinage(Direction dir) {
+		switch(dir) {
+			case HORAIRE:
+				wheelFreinageAH = false;
+				wheelFreinageH = true;
+				break;
+			case ANTI_HORAIRE:
+				wheelFreinageH = false;
+				wheelFreinageAH = true;
+				break;
+		}
+	}
+	public void stopWheelFreinage(){ wheelFreinageAH = false;  wheelFreinageH = false;}
 	
 	public void addObstacle(Obstacle o) {
 		this.obstacles.add(o);

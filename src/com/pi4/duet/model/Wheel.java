@@ -24,12 +24,12 @@ public class Wheel {
 	}
 	
 		
-	public void rotate(Direction dir) {
+	public void rotate(Direction dir,double i) {
 		if (dir == Direction.HORAIRE) {
-			angle -= Math.toRadians(1 * rotationSpeed);
+			angle -= Math.toRadians(i * rotationSpeed);
 		}
 		else if (dir == Direction.ANTI_HORAIRE){
-			angle += Math.toRadians(1 * rotationSpeed);
+			angle += Math.toRadians(i * rotationSpeed);
 		}
 		
 		// Changement coordonées Ball 2
@@ -42,6 +42,8 @@ public class Wheel {
 		ball_1.centerBall.setX(center.getX() - dist1);
 		ball_1.centerBall.setY(center.getY() - dist2);
 	}
+
+
 	
 	
 	public static double distance(Point p1,Point p2) {
