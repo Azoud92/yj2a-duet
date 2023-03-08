@@ -15,7 +15,6 @@ import com.pi4.duet.controller.GameController;
 import com.pi4.duet.model.Direction;
 
 import com.pi4.duet.model.Point;
-import com.pi4.duet.model.State;
 
 public class GameView extends JPanel { // représente la vue du jeu (graphismes, ...)
 	
@@ -66,7 +65,6 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		switch (indice) {
 			case 0:
 				decompte();
-				controller.getModel().setState(State.ON_GAME);
 				break;			
 			case 1:
 				this.setVisible(false);

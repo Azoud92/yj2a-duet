@@ -204,12 +204,11 @@ public class GameController implements KeyListener {
 			switch(e.getKeyCode()) {
 				case KeyEvent.VK_RIGHT: model.stopWheelRotation(); model.startWheelBreaking(); break;
 				case KeyEvent.VK_LEFT: model.stopWheelRotation(); model.startWheelBreaking(); break;
-				case KeyEvent.VK_SPACE:{
+				case KeyEvent.VK_SPACE:
 					model.stopWheelRotation();
 					model.setState(State.PAUSED);
 					view.affichePause();
-					break;
-				}
+					break;				
 			}
 		}
 		else {
