@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 import com.pi4.duet.controller.ObstacleController;
 
-// Représente n'importe quel polygone à représenter
+// Représente n'importe quel polygone convexe
 public class Obstacle implements Serializable {
 
 	private static final long serialVersionUID = -7132766134333288736L;
 	
-	private Point[] coords; // représente les différents points de l'obstacle
-	private Point center; // les coordonnées du centre de l'obstacle
+	private Point[] coords; // coordonnées de l'obstacle
+	private Point center; // coordonnées du centre de l'obstacle
+	private boolean reached = false; // sert à déterminer si un obstacle a été dépassé avec succès
 	
 	private ObstacleController controller;
 	
@@ -45,11 +46,8 @@ public class Obstacle implements Serializable {
 		center.setX(center.getX() + deltaX * velocity);
 		center.setY(center.getY() + deltaY * velocity);
 		
-		if (angle != 0) rotate(); // on met une condition pour éviter de faire des calculs inutiles
-		
-		controller.update();
-
-		
+		if (angle != 0) rotate();		
+		controller.update();	
 	}
 	
 	// Effectue une rotation de l'obstacle par rapport à l'angle en degrés en argument
@@ -65,6 +63,7 @@ public class Obstacle implements Serializable {
 		}
 	}
 	
+	@Override
 	public String toString() {
 		String res = "[";
 		for (int i = 0 ; i < coords.length ; i++) {
@@ -76,8 +75,7 @@ public class Obstacle implements Serializable {
 		return res;
 	}
 	
-	public Point[] getCoords() { return coords; }
-	
+	public Point[] getCoords() { return coords; }	
 	public Point getCenter() { return center; }
 		
 	public double getVelocity() { return velocity; }
@@ -97,6 +95,7 @@ public class Obstacle implements Serializable {
 		return (coords[3].getY() - coords[0].getY());
 	}
 	
+	// position en haut à gauche de l'obstacle (par rapport à une rotation nulle)
 	public Point getPos() {
 		return coords[0];
 	}
@@ -107,5 +106,7 @@ public class Obstacle implements Serializable {
 
 	public void setController(ObstacleController c) { controller = c; }
 
+	public boolean getReached() { return reached; }	
+	public void setReached() { reached = true; }
 	
 }

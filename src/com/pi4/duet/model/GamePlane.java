@@ -1,122 +1,92 @@
 package com.pi4.duet.model;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.pi4.duet.controller.GameController;
 
-public class GamePlane {
+public class GamePlane { // Représente le modèle du jeu : coordonnées du volant, de la balle, état de la partie, liste des obstacles...
 
 	public final int width, height;
 	
 	private GameController controller;
-	private ObstacleQueue gameTimer = new ObstacleQueue(this);
-	
-	public final Wheel wheel;
+	private Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
-
-	public boolean isPaused() {
-		return paused;
-	}
-
-	private boolean paused = false;
 	
-	private boolean wheelRotatingAH = false; // rotation anti-horaire du volant en cours
-	private boolean wheelRotatingH = false; // rotation horaire du volant en cours
+	private State gameState = State.READY;
+	
+	private Direction wheelRotating = null;
+	private Direction lastRotation = null;
+	private boolean wheelBreaking = false;
 		
 	public GamePlane(int width, int height, GameController controller) {		
 		this.width = width;
 		this.height = height;		
         this.wheel = new Wheel(new Point(width / 2, height - 150));
         this.controller = controller;
+
         this.obstacles = new ArrayList<Obstacle>();
-       
-        
 	}
-	
-	public void gameStart() {
-		gameTimer = new ObstacleQueue(this);
-		gameTimer.schedule(new TimerTask() {			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				if (!paused){
-					for (Obstacle o : obstacles) {
-						o.update(0, 1);
-						controller.verifyCollision(o);
-						controller.refreshView();
-					}
-					
-					if (wheelRotatingAH && !wheelRotatingH) {
-						wheel.rotate(Direction.ANTI_HORAIRE);
-						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-						controller.updateMvt(Direction.ANTI_HORAIRE);
-					}
-					else if (!wheelRotatingAH && wheelRotatingH) {
-						wheel.rotate(Direction.HORAIRE);
-						controller.updateWheel(wheel.getCenterBall2(), wheel.getCenterBall1());
-						controller.updateMvt(Direction.HORAIRE);
-					}
-					else {
-						controller.stopMvt();
-					}
-				
-				}
-			}			
-		}, 0, 1);
-	}
-	
-	public void gameStop() {
-		gameTimer.cancel();
-		
-	}
-	
+
 	public void startWheelRotation(Direction dir) { 
-		switch(dir) {
-		case HORAIRE:
-			wheelRotatingAH = false;
-			wheelRotatingH = true;
-			break;
-		case ANTI_HORAIRE:
-			wheelRotatingH = false;
-			wheelRotatingAH = true;
-			break;
-		}
+		wheelRotating = dir;
 	}
 	
-	public void resetObstacle() {
+	public void resetObstacles() { // on remplace tous les obstacles à leur position initiale
 		for (Obstacle o : obstacles) {
 			o.update(0, - (o.getCoords()[0].getY() / o.getVelocity()));
 			controller.refreshView();
-		}
-		
+		}		
 	}
 	
-	public void stopWheelRotation() { wheelRotatingAH = false; wheelRotatingH = false; }
+	public void stopWheelRotation() {
+		if (wheelRotating != null) lastRotation = wheelRotating;
+		wheelRotating = null;
+	}
+
+	public void startWheelBreaking() {
+		wheelBreaking = true;
+	}
+	
+	public void stopWheelBreaking() { wheelBreaking = false; }
 	
 	public void addObstacle(Obstacle o) {
 		this.obstacles.add(o);
 	}
 	
-	public void addObstacleTestDelay(Obstacle o, long delay) {
-		this.gameTimer.putObstacle(o, delay);
-	}
-	
-	public void addPattern(PatternData d) {
-		gameTimer.putPattern(d);
-	}
-	
 	public void removeObstacle(Obstacle o) {
 		this.obstacles.remove(o);
 	}
-	public void gamePausedOrResumed(){
-		paused=!paused;
+		
+	public Wheel getWheel() { return wheel; }
+	
+	public State getState() { return gameState; }
+	
+	public void setState(State s) {
+		this.gameState = s;
 	}
 	
-	public GameController getController() { return this.controller; }
+	public Direction getWheelRotating() {
+		return wheelRotating;
+	}
 	
+	public void setWheelRotating(Direction wheelRotating) {
+		this.wheelRotating = wheelRotating;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Obstacle> getObstacles() {
+		return (ArrayList<Obstacle>) obstacles.clone();
+	}
 
+	public boolean getWheelBreaking() {
+		// TODO Auto-generated method stub
+		return wheelBreaking;
+	}
 	
+	public Direction getLastRotation() { return lastRotation; }
+
+	public void setLastRotation(Direction dir) {
+		// TODO Auto-generated method stub
+		this.lastRotation = dir;
+	}
 		
 }

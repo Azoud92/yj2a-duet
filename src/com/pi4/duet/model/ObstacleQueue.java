@@ -4,17 +4,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.pi4.duet.controller.ObstacleController;
-import com.pi4.duet.view.ObstacleView;
+import com.pi4.duet.controller.GameController;
 
 import java.io.IOException;
 
-public class ObstacleQueue extends Timer {
+public class ObstacleQueue extends Timer { // représente la liste avec les délais d'apparition des obstacles
 	
 	// Lien vers un GamePlane pour faire apparaitre les obstacles
-	private final GamePlane plane;
+	private final GameController controller;
 	
-	public ObstacleQueue(GamePlane p) {
-		plane = p;
+	public ObstacleQueue(GameController c) {
+		controller = c;
 	}
 	
 	public ObstacleQueue(GamePlane p, PatternData data) {
