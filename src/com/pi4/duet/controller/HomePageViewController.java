@@ -123,7 +123,6 @@ public class HomePageViewController {
 	}
 	
 	public void runHomePage() {
-		if (sm.getMusic()) homeMusic.play();
 		view.setVisible(true);
 		
 		JPanel container = new JPanel(new GridLayout(1, 3));
@@ -142,8 +141,16 @@ public class HomePageViewController {
 		container.add(sv);
 		container.add(new JPanel());
 		window.setMainContainer(container);
+	}
+	
+	public void stopMusic() {
 		homeMusic.stop();
 	}
+	
+	public void runMusic() {
+		homeMusic.play();
+	}
+	
 	
 	
 	public void setView(HomePageView view) { 
@@ -159,5 +166,6 @@ public class HomePageViewController {
 	}
 	
 	public Settings getSettings() { return sm; }
+
 	
 }

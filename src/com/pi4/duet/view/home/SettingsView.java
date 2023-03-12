@@ -132,6 +132,7 @@ public class SettingsView extends JPanel{
 		this.add(inertie_on);
 		inertie_on.addActionListener(e -> {
 			inertie_on.setEnabled(false);
+			controller.setInertie(true);
 			inertie_off.setEnabled(true);
 		});
 		
@@ -143,6 +144,7 @@ public class SettingsView extends JPanel{
 		this.add(inertie_off);
 		inertie_off.addActionListener(e -> {
 			inertie_off.setEnabled(false);
+			controller.setInertie(false);
 			inertie_on.setEnabled(true);
 		});
 

@@ -2,7 +2,7 @@ package com.pi4.duet.model;
 
 public class Settings {
 	
-	private boolean music = true, effects = true, background = true;
+	private boolean music = true, effects = true, background = true, inertie = true;
 	
 	public void setMusic(boolean val) {
 		// TODO Auto-generated method stub
@@ -29,6 +29,14 @@ public class Settings {
 
 	public boolean getBackground() {
 		return background;
+	}
+
+	public boolean getInertie() {
+		return inertie;
+	}
+
+	public void setInertie(boolean inertie) {
+		this.inertie = inertie;
 	}
 	
 }

@@ -35,7 +35,6 @@ public class GameController implements KeyListener {
 	public GameController(HomePageViewController hpvC, Settings settings){
 		this.hpvC = hpvC;
 		this.settings = settings;
-		
 		music.stop();
 	}
 		
@@ -76,7 +75,8 @@ public class GameController implements KeyListener {
 					
 					if (model.getWheelBreaking()) {
 						if (in > 0) {
-							model.getWheel().setInertia(in - 0.0004);
+							if(!settings.getInertie()) model.getWheel().setInertia(model.getWheel().rotationSpeed);
+							else model.getWheel().setInertia(in - 0.0004);
 							model.getWheel().rotate(model.getLastRotation());
 							updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
 							updateMvt(model.getLastRotation());
@@ -91,7 +91,8 @@ public class GameController implements KeyListener {
 					if (model.getWheelRotating() != null) {
 						if (model.getWheelBreaking() == false) {
 							if (in < model.getWheel().rotationSpeed) {
-								model.getWheel().setInertia(in + 0.0004);
+								if(!settings.getInertie()) model.getWheel().setInertia(model.getWheel().rotationSpeed);
+								else model.getWheel().setInertia(in + 0.0004);
 							}
 						}
 					}
@@ -214,8 +215,8 @@ public class GameController implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == State.ON_GAME){
 			switch(e.getKeyCode()) {
-				case KeyEvent.VK_RIGHT: model.stopWheelRotation(); model.startWheelBreaking(); break;
-				case KeyEvent.VK_LEFT: model.stopWheelRotation(); model.startWheelBreaking(); break;
+				case KeyEvent.VK_RIGHT: model.stopWheelRotation(); if(settings.getInertie()) model.startWheelBreaking(); break;
+				case KeyEvent.VK_LEFT: model.stopWheelRotation(); if(settings.getInertie()) model.startWheelBreaking(); break;
 				case KeyEvent.VK_SPACE:
 					model.stopWheelRotation();
 					model.setState(State.PAUSED);
@@ -248,8 +249,14 @@ public class GameController implements KeyListener {
 	
 	public void affMenu() {
 		hpvC.runHomePage();
+		if(settings.getMusic()) { hpvC.runMusic(); }
 		view.setVisible(false);
 	}	
+	
+	public void stopMusic() {
+		music.stop();
+		
+	}
 	
 	public void replay() {
 		hpvC.runNewParty(hpvC.getWindow());
@@ -298,5 +305,7 @@ public class GameController implements KeyListener {
 	}
 	
 	public boolean isBackgroundEnabled() { return settings.getBackground(); }
+
+	
 		
 }
