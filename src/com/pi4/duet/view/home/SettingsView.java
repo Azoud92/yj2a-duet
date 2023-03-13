@@ -47,6 +47,7 @@ public class SettingsView extends JPanel{
 		
 		back.addActionListener(e -> {
 			controller.back();
+			controller.save();
 		});
 		
 		int count = 0;
@@ -62,7 +63,9 @@ public class SettingsView extends JPanel{
 		son_on.setBackground(Color.BLACK);
 		son_on.setForeground(Color.GREEN);
 		son_on.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
-		son_on.setEnabled(false);
+		if (controller.getEffects()) { son_on.setEnabled(false); }
+		else son_on.setEnabled(true);
+		
 		this.add(son_on);
 		son_on.addActionListener(e -> {
 			son_on.setEnabled(false);
@@ -75,6 +78,8 @@ public class SettingsView extends JPanel{
 		son_off.setBackground(Color.BLACK);
 		son_off.setForeground(Color.RED);
 		son_off.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
+		if (controller.getEffects()) { son_off.setEnabled(true); }
+		else son_off.setEnabled(false);
 		this.add(son_off);
 		son_off.addActionListener(e -> {
 			son_off.setEnabled(false);
@@ -95,7 +100,8 @@ public class SettingsView extends JPanel{
 		music_on.setBackground(Color.BLACK);
 		music_on.setForeground(Color.GREEN);
 		music_on.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
-		music_on.setEnabled(false);
+		if (controller.getMusic()) { music_on.setEnabled(false); }
+		else music_on.setEnabled(true);
 		this.add(music_on);
 		music_on.addActionListener(e -> {
 			music_on.setEnabled(false);
@@ -108,6 +114,8 @@ public class SettingsView extends JPanel{
 		music_off.setBackground(Color.BLACK);
 		music_off.setForeground(Color.RED);
 		music_off.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
+		if (controller.getMusic()) { music_off.setEnabled(true); }
+		else music_off.setEnabled(false);
 		this.add(music_off);
 		music_off.addActionListener(e -> {
 			music_off.setEnabled(false);
@@ -128,7 +136,8 @@ public class SettingsView extends JPanel{
 		inertie_on.setBackground(Color.BLACK);
 		inertie_on.setForeground(Color.GREEN);
 		inertie_on.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
-		inertie_on.setEnabled(false);
+		if (controller.getInertie()) { inertie_on.setEnabled(false); }
+		else inertie_on.setEnabled(true);
 		this.add(inertie_on);
 		inertie_on.addActionListener(e -> {
 			inertie_on.setEnabled(false);
@@ -142,6 +151,8 @@ public class SettingsView extends JPanel{
 		inertie_off.setForeground(Color.RED);
 		inertie_off.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
 		this.add(inertie_off);
+		if (controller.getInertie()) { inertie_off.setEnabled(true); }
+		else inertie_off.setEnabled(false);
 		inertie_off.addActionListener(e -> {
 			inertie_off.setEnabled(false);
 			controller.setInertie(false);
@@ -161,7 +172,8 @@ public class SettingsView extends JPanel{
 		fond_on.setBackground(Color.BLACK);
 		fond_on.setForeground(Color.GREEN);
 		fond_on.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
-		fond_on.setEnabled(false);
+		if (controller.getBackground()) { fond_on.setEnabled(false); }
+		else fond_on.setEnabled(true);
 		this.add(fond_on);
 		fond_on.addActionListener(e -> {
 			fond_on.setEnabled(false);
@@ -175,6 +187,8 @@ public class SettingsView extends JPanel{
 		fond_off.setBackground(Color.BLACK);
 		fond_off.setForeground(Color.RED);
 		fond_off.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
+		if (controller.getBackground()) { fond_off.setEnabled(true); }
+		else fond_off.setEnabled(false);
 		this.add(fond_off);
 		fond_off.addActionListener(e -> {
 			fond_off.setEnabled(false);

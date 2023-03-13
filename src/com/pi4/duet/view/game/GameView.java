@@ -24,12 +24,13 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 
 	private BallView ballRed, ballBlue;
 	private BallMvt mvtRed, mvtBlue;
-	
+	private JButton back, replay;
 	private Dimension size;
 
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 	
 	public GameView(Dimension size, GameController controller) {
+		
 		this.size = new Dimension(size.width / 3, size.height);
 
 		this.controller = controller;
@@ -121,7 +122,6 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		super.paintComponent(g);
 		if (controller.isBackgroundEnabled()) g.drawImage(background, 0, 0, size.width, size.height, this);
 		else g.fillRect(0, 0, size.width, size.height);
-		
 		g.setColor(ballBlue.color);
 		g.fillOval(ballBlue.x, ballBlue.y, ballBlue.width, ballBlue.height);
 		
@@ -154,7 +154,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		mvtRed.color = Color.gray;
 		mvtBlue.color = Color.gray;
 		
-		JButton back = new JButton("RETOUR");
+		back = new JButton("RETOUR");
 		back.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
 		back.setForeground(Color.RED);
 		back.setBackground(Color.BLACK);
@@ -162,7 +162,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		back.setVisible(true);
 		this.add(back);	
 		
-		JButton replay = new JButton("REJOUER");
+		replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
 		replay.setBackground(Color.BLACK);
 		replay.setForeground(Color.BLUE);
@@ -171,13 +171,13 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		add(replay);
 		
 		back.addActionListener(e -> {
-			reset(back, replay);
+			reset();
 			controller.affMenu();
 		});
 		
 		replay.addActionListener(e -> {
 			// rejouer
-			reset(back, replay);
+			reset();
 			controller.replay();
 		});
 		this.setVisible(true);
@@ -186,7 +186,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 	}
 
 	// On réaffiche la partie
-	private void reset(JButton back, JButton replay) {
+	private void reset() {
 		this.remove(back);
 		this.remove(replay);
 		this.repaint();

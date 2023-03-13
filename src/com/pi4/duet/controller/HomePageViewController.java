@@ -30,11 +30,13 @@ public class HomePageViewController {
 	private Sound homeMusic = new Sound("homeMusic.wav", true);
 	
 	public HomePageViewController(Dimension size, Scale scale) {
-		sm = new Settings();
+		homeMusic.stop();
+		sm = Settings.read();
 		sc = new SettingsController(this);
-		sv = new SettingsView(size, sc, scale);
 		sc.setModel(sm);
+		sv = new SettingsView(size, sc, scale);		
 		sc.setView(sv);
+		if (sm.getMusic()) homeMusic.play();
 	}
 			
 	public void runParty(Dimension size, GameWindow window,HomePageView view) {
@@ -69,6 +71,7 @@ public class HomePageViewController {
 		this.gv.requestFocus();
 		this.gv.setFocusable(true);
 		homeMusic.stop();
+		if(sc.getMusic())gc.playMusic();
 	}
 	
 	public void runLvl2(Dimension size, GameWindow window, HomePageView view) {

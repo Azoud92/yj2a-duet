@@ -211,6 +211,10 @@ public class GameController implements KeyListener {
 		view.MvtRedRotate(dir, angle);
 	}
 	
+	public void playMusic() {
+		music.play();
+	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == State.ON_GAME){
