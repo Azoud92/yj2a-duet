@@ -6,7 +6,7 @@ public class Wheel { // représente le volant du jeu
 	private Point center;	
 	private Ball ball_1, ball_2; // resp. balle rouge & balle bleue
 	
-	public final int radius = 100; // rayon du volant	
+	public int radius = 100; // rayon du volant	
 	public final double rotationSpeed = 0.25;
 	public final int ballRadius = 10; // rayon de la balle
 	
@@ -66,6 +66,9 @@ public class Wheel { // représente le volant du jeu
 	
 	public void setAngle(double angle) {
 		this.angle = angle;
+	}
+	public void setRadius(int radius) {
+		this.radius = radius;
 	}
 		
 	public Point getCenter() {

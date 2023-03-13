@@ -1,14 +1,16 @@
 package com.pi4.duet.model;
 
-import java.util.ArrayList; 
-import com.pi4.duet.controller.GameController;
+import java.util.ArrayList;
 
-public class GamePlane { // Représente le modèle du jeu : coordonnées du volant, de la balle, état de la partie, liste des obstacles...
+import com.pi4.duet.controller.GameDuoController;
+
+
+public class GamePlaneDuo { // Représente le modèle du jeu : coordonnées du volant, de la balle, état de la partie, liste des obstacles...
 
 	public final int width, height;
 	
-	private GameController controller;
-	private Wheel wheel;
+	private GameDuoController controller;
+	private Wheel wheelD, wheelG;
 	private ArrayList<Obstacle> obstacles;
 	
 	private State gameState = State.READY;
@@ -17,10 +19,13 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	private Direction lastRotation = null;
 	private boolean wheelBreaking = false;
 		
-	public GamePlane(int width, int height, GameController controller) {		
+	public GamePlaneDuo(int width, int height, GameDuoController controller) {		
 		this.width = width;
 		this.height = height;		
-        this.wheel = new Wheel(new Point(width / 2, height - 150));
+        this.wheelD = new Wheel(new Point(width / 4, height - 150));
+        wheelD.setAngle(wheelD.getAngle()/2);
+        this.wheelG = new Wheel(new Point(width / 4 * 3, height - 150));
+        wheelG.setAngle(wheelG.getAngle()/2);
         this.controller = controller;
 
         this.obstacles = new ArrayList<Obstacle>();
@@ -30,12 +35,12 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 		wheelRotating = dir;
 	}
 	
-	public void resetObstacles() { // on remplace tous les obstacles à leur position initiale
+	/*public void resetObstacles() { // on remplace tous les obstacles à leur position initiale
 		for (Obstacle o : obstacles) {
 			o.update(0, - (o.getCoords()[0].getY() / o.getVelocity()));
 			controller.refreshView();
 		}		
-	}
+	}*/
 	
 	public void stopWheelRotation() {
 		if (wheelRotating != null) lastRotation = wheelRotating;
@@ -56,7 +61,10 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 		this.obstacles.remove(o);
 	}
 		
-	public Wheel getWheel() { return wheel; }
+	public Wheel getWheel(Side side) {
+		if(side == Side.LEFT)return wheelG; 
+		return wheelD;
+	}
 	
 	public State getState() { return gameState; }
 	
