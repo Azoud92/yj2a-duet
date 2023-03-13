@@ -27,6 +27,10 @@ public class SettingsController {
 		model.setBackground(val);
 	}
 	
+	public boolean getMusic() { return model.getMusic(); }
+	
+	public boolean getEffects() { return model.getEffects(); }
+	
 	public boolean getBackground() {
 		// TODO Auto-generated method stub
 		return model.getBackground();
@@ -36,6 +40,10 @@ public class SettingsController {
 		sv.setVisible(false);
 		hpvC.getWindow().remove(sv);
 		hpvC.runHomePage();		
+	}
+	
+	public void save() {
+		model.save();
 	}
 	
 }
