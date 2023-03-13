@@ -30,7 +30,8 @@ public class GameController implements KeyListener {
 	
 	private Sound music = new Sound("music.wav", true);
 	
-	private ObstacleQueue gameTimer;
+	private ObstacleQueue gameTimer = new ObstacleQueue(this);
+
 	
 	private HomePageViewController hpvC;
 	
@@ -59,7 +60,7 @@ public class GameController implements KeyListener {
 		model.setWheelRotating(null);
 		if (settings.getMusic()) music.play();
 		
-		gameTimer = new ObstacleQueue();
+		gameTimer = new ObstacleQueue(this);
 		gameTimer.schedule(new TimerTask() {			
 			@Override
 			public void run() {
@@ -189,7 +190,7 @@ public class GameController implements KeyListener {
 	}
 
 	
-	public void putTestObstacle(Obstacle o) {
+	public void addObstacle(Obstacle o) {
 		ObstacleController oc = new ObstacleController();
 		o.setController(oc);
 		oc.setModel(o);

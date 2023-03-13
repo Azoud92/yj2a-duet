@@ -98,7 +98,7 @@ public class HomePageViewController {
 		points[3] = new Point(gp.width / 3 + 50, 200);
 	
 		Obstacle test = new Obstacle(points, points[0], null);
-		gc.putTestObstacle(test);
+		gc.addObstacle(test);
 		gc.gameStart();
 		homeMusic.stop();
 	}
@@ -130,7 +130,7 @@ public class HomePageViewController {
 		points[3] = new Point(gp.width / 3 + 50, 200);
 		Obstacle test = new Obstacle(points, points[0], null);
 		
-		gp.addObstacleTestDelay(test, 1000);
+		gc.addObstacleTestDelay(test, 1000);
 		
 		gc.gameStart();
 	}	
