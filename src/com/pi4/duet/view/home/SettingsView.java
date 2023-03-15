@@ -136,10 +136,12 @@ public class SettingsView extends JPanel{
 		inertie_on.setBackground(Color.BLACK);
 		inertie_on.setForeground(Color.GREEN);
 		inertie_on.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
-		inertie_on.setEnabled(false);
+		if (controller.getInertie()) { inertie_on.setEnabled(false); }
+		else inertie_on.setEnabled(true);
 		this.add(inertie_on);
 		inertie_on.addActionListener(e -> {
 			inertie_on.setEnabled(false);
+			controller.setInertie(true);
 			inertie_off.setEnabled(true);
 		});
 		
@@ -149,8 +151,11 @@ public class SettingsView extends JPanel{
 		inertie_off.setForeground(Color.RED);
 		inertie_off.setFont(new Font("Arial", Font.BOLD, (int) (30 * scale.getScaleY())));
 		this.add(inertie_off);
+		if (controller.getInertie()) { inertie_off.setEnabled(true); }
+		else inertie_off.setEnabled(false);
 		inertie_off.addActionListener(e -> {
 			inertie_off.setEnabled(false);
+			controller.setInertie(false);
 			inertie_on.setEnabled(true);
 		});
 

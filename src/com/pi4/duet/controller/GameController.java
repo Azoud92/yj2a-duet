@@ -5,7 +5,6 @@ import java.awt.Dimension;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import com.pi4.duet.Point;
@@ -13,8 +12,10 @@ import com.pi4.duet.Sound;
 import com.pi4.duet.model.Direction;
 import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
+import com.pi4.duet.model.PatternData;
 import com.pi4.duet.model.Settings;
 import com.pi4.duet.model.State;
+import com.pi4.duet.model.ObstacleQueue;
 import com.pi4.duet.view.game.GameView;
 import com.pi4.duet.view.game.ObstacleView;
 
@@ -28,14 +29,14 @@ public class GameController implements KeyListener {
 	
 	private Sound music = new Sound("music.wav", true);
 	
-	private Timer gameTimer;
+	private ObstacleQueue gameTimer = new ObstacleQueue(this);
+
 	
 	private HomePageViewController hpvC;
 	
 	public GameController(HomePageViewController hpvC, Settings settings){
 		this.hpvC = hpvC;
 		this.settings = settings;
-		
 		music.stop();
 	}
 		
@@ -57,7 +58,7 @@ public class GameController implements KeyListener {
 		model.setWheelRotating(null);
 		if (settings.getMusic()) music.play();
 		
-		gameTimer = new Timer();
+		gameTimer = new ObstacleQueue(this);
 		gameTimer.schedule(new TimerTask() {			
 			@Override
 			public void run() {
@@ -77,7 +78,8 @@ public class GameController implements KeyListener {
 					
 					if (model.getWheelBreaking()) {
 						if (in > 0) {
-							model.getWheel().setInertia(in - 0.0004);
+							if(!settings.getInertie()) model.getWheel().setInertia(model.getWheel().rotationSpeed);
+							else model.getWheel().setInertia(in - 0.0004);
 							model.getWheel().rotate(model.getLastRotation());
 							updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
 							updateMvt(model.getLastRotation());
@@ -92,7 +94,8 @@ public class GameController implements KeyListener {
 					if (model.getWheelRotating() != null) {
 						if (model.getWheelBreaking() == false) {
 							if (in < model.getWheel().rotationSpeed) {
-								model.getWheel().setInertia(in + 0.0004);
+								if(!settings.getInertie()) model.getWheel().setInertia(model.getWheel().rotationSpeed);
+								else model.getWheel().setInertia(in + 0.0004);
 							}
 						}
 					}
@@ -216,14 +219,14 @@ public class GameController implements KeyListener {
 	}
 
 	
-	public void putTestObstacle(Obstacle o) {
+	public void addObstacle(Obstacle o) {
 		ObstacleController oc = new ObstacleController();
 		o.setController(oc);
 		oc.setModel(o);
 		ObstacleView ov = new ObstacleView(oc, (int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), this);
 		oc.setView(ov);
 		model.addObstacle(o);
-		view.addObstacle(ov);		
+		view.addObstacle(ov);	
 	}
 
 		
@@ -239,12 +242,16 @@ public class GameController implements KeyListener {
 		view.MvtRedRotate(dir, angle);
 	}
 	
+	public void playMusic() {
+		music.play();
+	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == State.ON_GAME){
 			switch(e.getKeyCode()) {
-				case KeyEvent.VK_RIGHT: model.stopWheelRotation(); model.startWheelBreaking(); break;
-				case KeyEvent.VK_LEFT: model.stopWheelRotation(); model.startWheelBreaking(); break;
+				case KeyEvent.VK_RIGHT: model.stopWheelRotation(); if(settings.getInertie()) model.startWheelBreaking(); break;
+				case KeyEvent.VK_LEFT: model.stopWheelRotation(); if(settings.getInertie()) model.startWheelBreaking(); break;
 				case KeyEvent.VK_SPACE:
 					model.stopWheelRotation();
 					model.setState(State.PAUSED);
@@ -277,8 +284,14 @@ public class GameController implements KeyListener {
 	
 	public void affMenu() {
 		hpvC.runHomePage();
+		if(settings.getMusic()) { hpvC.runMusic(); }
 		view.setVisible(false);
 	}	
+	
+	public void stopMusic() {
+		music.stop();
+		
+	}
 	
 	public void replay() {
 		hpvC.runNewParty(hpvC.getWindow());
@@ -327,5 +340,13 @@ public class GameController implements KeyListener {
 	}
 	
 	public boolean isBackgroundEnabled() { return settings.getBackground(); }
-		
+	
+	public void addObstacleTestDelay(Obstacle o, long delay) {
+		this.gameTimer.putObstacle(o, delay);
+	}
+	
+	public void addPattern(PatternData d) {
+		gameTimer.putPattern(d);
+	}
+
 }

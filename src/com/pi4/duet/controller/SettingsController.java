@@ -17,6 +17,8 @@ public class SettingsController {
 	
 	public void setMusic(boolean val) {
 		model.setMusic(val);
+		if(val) { hpvC.runMusic(); }
+		else { hpvC.stopMusic(); }
 	}
 	
 	public void setEffects(boolean val) {
@@ -27,9 +29,19 @@ public class SettingsController {
 		model.setBackground(val);
 	}
 	
+
+	public void setInertie(boolean val) {
+		model.setInertie(val);
+	}
+	
+	public boolean getInertie() {
+		return model.getInertie();
+	}
+
 	public boolean getMusic() { return model.getMusic(); }
 	
 	public boolean getEffects() { return model.getEffects(); }
+
 	
 	public boolean getBackground() {
 		// TODO Auto-generated method stub
