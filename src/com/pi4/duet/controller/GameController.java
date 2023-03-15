@@ -8,11 +8,11 @@ import java.awt.event.KeyListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.pi4.duet.Point;
 import com.pi4.duet.Sound;
 import com.pi4.duet.model.Direction;
 import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
-import com.pi4.duet.model.Point;
 import com.pi4.duet.model.Settings;
 import com.pi4.duet.model.State;
 import com.pi4.duet.view.game.GameView;
@@ -63,6 +63,7 @@ public class GameController implements KeyListener {
 			public void run() {
 				// TODO Auto-generated method stub
 				if (model.getState() == State.ON_GAME){
+					hasWin();
 					for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
 						o.update(0, 1);
 						verifyCollision(o);
@@ -105,7 +106,7 @@ public class GameController implements KeyListener {
 						model.getWheel().rotate(Direction.HORAIRE);
 						updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
 						updateMvt(Direction.HORAIRE);
-					}			
+					}		
 				}
 			}			
 		}, 0, 1);
@@ -148,6 +149,21 @@ public class GameController implements KeyListener {
 		
 	}
 	
+	public void hasWin() {
+		if (model.getObstacles().size() == 0) {
+			gameStop();
+			model.setState(State.FINISHED);
+			// On jouera un son de victoire :
+			// if (settings.getEffects()) winSound.play();
+			// On affichera un écran de victoire :
+			// view.winGame();
+			if (!hpvC.getLevelsAvailable().contains(model.numLevel + 1)) { // on ajoute seulement le niveau suivant à la liste des niveaux disponibles si ce dernier n'y figure pas
+				hpvC.addLevel(model.numLevel + 1);
+				hpvC.save();
+			}
+		}
+	}
+		
 	public void verifyObstacleReached(Obstacle o) {
 		if (o.getReached() == false) {
 			boolean reach = false;
@@ -164,7 +180,20 @@ public class GameController implements KeyListener {
 				o.setReached();
 			}
 		}
-		
+		else {
+			boolean visible = true;
+			for (Point p : o.getCoords()) {
+				if (p.getY() > model.height) {
+					visible = false;
+				}
+				else {
+					return;
+				}
+			}
+			if (!visible) {
+				model.removeObstacle(o);
+			}
+		}
 	}
 		
 	public void testObstacles() {

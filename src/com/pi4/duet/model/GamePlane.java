@@ -1,6 +1,8 @@
 package com.pi4.duet.model;
 
 import java.util.ArrayList;
+
+import com.pi4.duet.Point;
 import com.pi4.duet.controller.GameController;
 
 public class GamePlane { // Représente le modèle du jeu : coordonnées du volant, de la balle, état de la partie, liste des obstacles...
@@ -10,6 +12,7 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	private GameController controller;
 	private Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
+	public final int numLevel;
 	
 	private State gameState = State.READY;
 	
@@ -17,13 +20,14 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	private Direction lastRotation = null;
 	private boolean wheelBreaking = false;
 		
-	public GamePlane(int width, int height, GameController controller) {		
+	public GamePlane(int width, int height, GameController controller, int numLevel) {		
 		this.width = width;
 		this.height = height;		
         this.wheel = new Wheel(new Point(width / 2, height - 150));
         this.controller = controller;
 
         this.obstacles = new ArrayList<Obstacle>();
+		this.numLevel = numLevel;
 	}
 
 	public void startWheelRotation(Direction dir) { 

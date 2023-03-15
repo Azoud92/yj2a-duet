@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.pi4.duet.controller.HomePageViewController;
+import com.pi4.duet.model.HomePage;
 import com.pi4.duet.view.Scale;
 import com.pi4.duet.view.home.HomePageView;
 
@@ -45,7 +46,9 @@ public class GameWindow extends JFrame { // fenêtre principale
 			container.setLayout(new GridLayout(1, 3));
 			container.add(new JPanel());
 						
+			HomePage hp = HomePage.read();
 			HomePageViewController hpc = new HomePageViewController(size, scale);
+			hpc.setModel(hp);
 			HomePageView hpv = new HomePageView(size, frame, this, hpc, scale);
 			hpc.setView(hpv);
 			container.add(hpv);

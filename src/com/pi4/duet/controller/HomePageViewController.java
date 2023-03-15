@@ -2,12 +2,15 @@ package com.pi4.duet.controller;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+
 import javax.swing.JPanel;
 
+import com.pi4.duet.Point;
 import com.pi4.duet.Sound;
 import com.pi4.duet.model.GamePlane;
+import com.pi4.duet.model.HomePage;
 import com.pi4.duet.model.Obstacle;
-import com.pi4.duet.model.Point;
 import com.pi4.duet.model.Settings;
 import com.pi4.duet.model.State;
 import com.pi4.duet.view.Scale;
@@ -21,6 +24,7 @@ public class HomePageViewController {
 	private GameView gv;
 	private GameController gc;
 	private GamePlane gp;
+	private HomePage model;
 	private HomePageView view;
 	private GameWindow window;
 	private Settings sm;
@@ -43,7 +47,7 @@ public class HomePageViewController {
 		this.view=view;
 		this.window = window;
 		gc = new GameController(this, sm);
-		gp = new GamePlane(size.width / 3, size.height, gc);
+		gp = new GamePlane(size.width / 3, size.height, gc, 1);
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
 		gc.setView(gv);
@@ -77,7 +81,7 @@ public class HomePageViewController {
 		this.view=view;
 		this.window = window;
 		gc = new GameController(this, sm);
-		gp = new GamePlane(size.width / 3, size.height, gc);
+		gp = new GamePlane(size.width / 3, size.height, gc, 2);
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
 		gv.addKeyListener(gc);	
@@ -147,6 +151,7 @@ public class HomePageViewController {
 		homeMusic.stop();
 	}
 	
+	public void setModel(HomePage model) { this.model = model; }
 	
 	public void setView(HomePageView view) { 
 		this.view = view;
@@ -161,5 +166,24 @@ public class HomePageViewController {
 	}
 	
 	public Settings getSettings() { return sm; }
+
+	public void save() {
+		// TODO Auto-generated method stub
+		model.save();
+	}
+
+	public void addLevel(int i) {
+		// TODO Auto-generated method stub
+		model.addLevel(i);
+	}
+	
+	public boolean isLevelAvailable(int i) {
+		return model.getLevelsAvailable().contains(i);
+	}
+
+	public ArrayList<Integer> getLevelsAvailable() {
+		// TODO Auto-generated method stub
+		return model.getLevelsAvailable();
+	}
 	
 }

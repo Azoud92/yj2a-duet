@@ -11,10 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.pi4.duet.Point;
 import com.pi4.duet.controller.GameController;
 import com.pi4.duet.model.Direction;
-
-import com.pi4.duet.model.Point;
 
 public class GameView extends JPanel { // représente la vue du jeu (graphismes, ...)
 	

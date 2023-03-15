@@ -1,6 +1,8 @@
 package com.pi4.duet.model;
 import java.lang.Math;
 
+import com.pi4.duet.Point;
+
 public class Wheel { // représente le volant du jeu
 		
 	private Point center;	

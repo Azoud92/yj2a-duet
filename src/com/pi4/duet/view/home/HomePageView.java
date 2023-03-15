@@ -102,7 +102,10 @@ public class HomePageView extends JPanel {
 		level2.setForeground(Color.white);
 		level2.setFocusable(false);
 		level2.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
-		level2.setEnabled(true);
+		if (controller.isLevelAvailable(2)) {
+			level2.setEnabled(true);
+		}
+		else level2.setEnabled(false);
 		this.add(level2);
 		
 		level2.addActionListener((ActionEvent e) -> {

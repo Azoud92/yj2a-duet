@@ -1,4 +1,4 @@
-package com.pi4.duet.model;
+package com.pi4.duet;
 
 import java.io.Serializable;
 

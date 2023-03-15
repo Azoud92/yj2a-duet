@@ -2,6 +2,7 @@ package com.pi4.duet.model;
 
 import java.io.Serializable;
 
+import com.pi4.duet.Point;
 import com.pi4.duet.controller.ObstacleController;
 
 // Représente n'importe quel polygone convexe

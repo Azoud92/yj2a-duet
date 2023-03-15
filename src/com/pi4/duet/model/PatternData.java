@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import com.pi4.duet.Point;
+
 import java.util.ArrayList;
 
 public class PatternData extends HashMap<Long, Obstacle> {
