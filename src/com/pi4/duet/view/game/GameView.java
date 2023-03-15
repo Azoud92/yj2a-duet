@@ -5,11 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 
 import com.pi4.duet.Point;
 import com.pi4.duet.controller.GameController;
@@ -87,6 +83,30 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		timer.setRepeats(false);
 		timer.start();
 		jboite2.createDialog(this, "TENEZ VOUS PRÊT").setVisible(true);
+	}
+
+	public void afficheWin(){
+		JLabel win1 = new JLabel();
+		win1.setText("VOUS AVEZ GAGNE");
+		win1.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
+		win1.setFont(new Font("Arial", Font.BOLD, 25));
+		win1.setForeground(Color.RED);
+		win1.setVisible(true);
+		this.add(win1);
+
+		JLabel win2 = new JLabel();
+		win2.setText("BRAVO");
+		win2.setBounds((this.size.width/5)+80, (this.size.height/6)+30, this.size.width/5 * 3, this.size.height/6);
+		win2.setFont(new Font("Arial", Font.BOLD, 25));
+		win2.setForeground(Color.BLUE);
+		win2.setVisible(true);
+		this.add(win2);
+
+
+		Timer timer = new Timer(3000, e->controller.affMenu());
+		timer.setRepeats(false);
+		timer.start();
+
 	}
 		
 	public void setBallsPosition(Point blue, Point red) {

@@ -149,6 +149,10 @@ public class GameController implements KeyListener {
 			if (settings.getEffects()) defeatSound.play();
 			view.lostGame();			
 		}
+		if(model.getWheel().getCenter().getY()+130<oY){
+			gameStop();
+			view.afficheWin();
+		}
 		
 	}
 	
