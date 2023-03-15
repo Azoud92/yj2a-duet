@@ -12,9 +12,11 @@ import com.pi4.duet.Sound;
 import com.pi4.duet.model.Direction;
 import com.pi4.duet.model.GamePlane;
 import com.pi4.duet.model.Obstacle;
+import com.pi4.duet.model.PatternData;
 import com.pi4.duet.model.Point;
 import com.pi4.duet.model.Settings;
 import com.pi4.duet.model.State;
+import com.pi4.duet.model.ObstacleQueue;
 import com.pi4.duet.view.game.GameView;
 import com.pi4.duet.view.game.ObstacleView;
 
@@ -28,7 +30,8 @@ public class GameController implements KeyListener {
 	
 	private Sound music = new Sound("music.wav", true);
 	
-	private Timer gameTimer;
+	private ObstacleQueue gameTimer = new ObstacleQueue(this);
+
 	
 	private HomePageViewController hpvC;
 	
@@ -56,7 +59,7 @@ public class GameController implements KeyListener {
 		model.setWheelRotating(null);
 		if (settings.getMusic()) music.play();
 		
-		gameTimer = new Timer();
+		gameTimer = new ObstacleQueue(this);
 		gameTimer.schedule(new TimerTask() {			
 			@Override
 			public void run() {
@@ -188,14 +191,14 @@ public class GameController implements KeyListener {
 	}
 
 	
-	public void putTestObstacle(Obstacle o) {
+	public void addObstacle(Obstacle o) {
 		ObstacleController oc = new ObstacleController();
 		o.setController(oc);
 		oc.setModel(o);
 		ObstacleView ov = new ObstacleView(oc, (int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), this);
 		oc.setView(ov);
 		model.addObstacle(o);
-		view.addObstacle(ov);		
+		view.addObstacle(ov);	
 	}
 
 		
@@ -309,7 +312,13 @@ public class GameController implements KeyListener {
 	}
 	
 	public boolean isBackgroundEnabled() { return settings.getBackground(); }
-
 	
-		
+	public void addObstacleTestDelay(Obstacle o, long delay) {
+		this.gameTimer.putObstacle(o, delay);
+	}
+	
+	public void addPattern(PatternData d) {
+		gameTimer.putPattern(d);
+	}
+
 }
