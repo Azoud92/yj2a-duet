@@ -46,20 +46,20 @@ public class GameDuoView extends JPanel{
 			int ballRadius = controller.getBallRadius();
 			
 			ballRedG = new BallView((int) (controller.getCenterBall1(Side.LEFT).getX()) - ballRadius, (int) controller.getCenterBall1(Side.LEFT).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.red);
-			mvtRedG = new BallMvt(ballRedG, Color.red);
+			mvtRedG = new BallMvt(ballRedG, Color.red, controller.getWheel(Side.LEFT));
 			this.add(mvtRedG);	
 			
 			ballBlueG = new BallView((int) (controller.getCenterBall2(Side.LEFT).getX() - ballRadius), (int) controller.getCenterBall2(Side.LEFT).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.blue);
-			mvtBlueG = new BallMvt(ballBlueG, Color.blue);
+			mvtBlueG = new BallMvt(ballBlueG, Color.blue, controller.getWheel(Side.LEFT));
 			this.add(mvtBlueG);		
 			
 			
 			ballRedD = new BallView((int) (controller.getCenterBall1(Side.RIGHT).getX()) - ballRadius, (int) controller.getCenterBall1(Side.RIGHT).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.red);
-			mvtRedD = new BallMvt(ballRedD, Color.red);
+			mvtRedD = new BallMvt(ballRedD, Color.red, controller.getWheel(Side.RIGHT));
 			this.add(mvtRedD);	
 			
 			ballBlueD = new BallView((int) (controller.getCenterBall2(Side.RIGHT).getX() - ballRadius), (int) controller.getCenterBall2(Side.RIGHT).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.blue);
-			mvtBlueD = new BallMvt(ballBlueD, Color.blue);
+			mvtBlueD = new BallMvt(ballBlueD, Color.blue, controller.getWheel(Side.RIGHT));
 			this.add(mvtBlueD);	
 	        
 	        this.addKeyListener(controller);
@@ -122,6 +122,7 @@ public class GameDuoView extends JPanel{
 			else if(side == Side.RIGHT) {
 				return new Point(ballRedD.x, ballRedD.y);
 			}
+			return null;
 		}
 		
 		public Point getBallBluePos(Side side) {
@@ -131,6 +132,7 @@ public class GameDuoView extends JPanel{
 			else if(side == Side.RIGHT) {
 				return new Point(ballBlueD.x, ballBlueD.y);
 			}
+			return null;
 		}
 		
 		public void refresh() {
@@ -240,7 +242,7 @@ public class GameDuoView extends JPanel{
 			replay.addActionListener(e -> {
 				// rejouer
 				reset();
-				controller.replay();
+				//controller.replay();
 			});
 			this.setVisible(true);
 			this.revalidate();
@@ -297,7 +299,7 @@ public class GameDuoView extends JPanel{
 			private Wheel wheel;
 			private double[] coordX, coordY;
 			
-			public BallMvt(BallView ballV, Color color) {
+			public BallMvt(BallView ballV, Color color, Wheel wheel) {
 				this.setOpaque(false);			
 				this.setSize(new Dimension(size.width, size.height));			
 				this.setVisible(true);
@@ -306,6 +308,7 @@ public class GameDuoView extends JPanel{
 				this.coordX = initCoordX(ballV);
 				this.coordY = initCoordY(ballV);
 				this.color = color;
+				this.wheel = wheel;
 			}
 			
 			public double[] initCoordX(BallView b) {

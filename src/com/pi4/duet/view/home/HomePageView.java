@@ -193,6 +193,10 @@ public class HomePageView extends JPanel {
 		lvlDuo.setFocusable(false);
 		lvlDuo.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
 		this.add(lvlDuo);
+		lvlDuo.addActionListener(e -> {
+			this.setVisible(false);
+			controller.runLvlDuo(size, window,this);
+		});
 	}
 	
 	@Override
