@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.controller.GameController;
+import com.pi4.duet.controller.GameDuoController;
 import com.pi4.duet.controller.ObstacleController;
 
 public class ObstacleView extends JPanel { // dessin d'un obstacle
@@ -27,11 +28,14 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 	
 	private Image collisionBlue;
 	private Image collisionRed;
+	private boolean duo;
+
+	private GameDuoController gdC;
 			
 	public ObstacleView(ObstacleController controller, int width, int height, int x, int y, GameController gc) {
 		listCol = new ArrayList<CollisionView>();
 		this.setOpaque(false);
-
+		duo = false;
 		this.setSize(new Dimension(width, height));
 		this.setLocation(x,y);
 		this.gvC = gc;
@@ -42,6 +46,20 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius() * 7, gvC.getBallRadius() * 7).getImage();		
 	}
 		
+	public ObstacleView(ObstacleController oc, int width, int height, int x, int y, GameDuoController gameDuoController) {
+		listCol = new ArrayList<CollisionView>();
+		this.setOpaque(false);
+		duo = true;
+		this.setSize(new Dimension(width, height));
+		this.setLocation(x,y);
+		this.gdC = gameDuoController;
+		this.setVisible(true);
+		this.setLayout(null);
+		
+		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), gvC.getBallRadius() * 7, gvC.getBallRadius() * 7).getImage();
+		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius() * 7, gvC.getBallRadius() * 7).getImage();	
+	}
+
 	public void setPolygon(Polygon polygon) {
 		// TODO Auto-generated method stub		
 		this.polygon = polygon;
@@ -75,8 +93,14 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 		int x, y, width, height;
 
 		public CollisionView (double x, double y, Color color) {
-			this.width =  gvC.getBallRadius() * 7;
-			this.height =  gvC.getBallRadius() * 7;
+			if (!duo) {
+				this.width =  gvC.getBallRadius() * 7;
+				this.height =  gvC.getBallRadius() * 7;
+			}
+			/*else {
+				this.width =  gdC.getBallRadius() * 7;
+				this.height =  gdC.getBallRadius() * 7;
+			}*/
 			this.x = (int) x - width / 2;
 			this.y = (int) y - height / 2;			
 			

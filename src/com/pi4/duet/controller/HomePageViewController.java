@@ -1,6 +1,6 @@
 package com.pi4.duet.controller;
 
-import java.awt.Dimension;
+import java.awt.Dimension; 
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
@@ -9,11 +9,16 @@ import javax.swing.JPanel;
 import com.pi4.duet.Point;
 import com.pi4.duet.Sound;
 import com.pi4.duet.model.GamePlane;
+
 import com.pi4.duet.model.HomePage;
+
+import com.pi4.duet.model.GamePlaneDuo;
+
 import com.pi4.duet.model.Obstacle;
 import com.pi4.duet.model.Settings;
 import com.pi4.duet.model.State;
 import com.pi4.duet.view.Scale;
+import com.pi4.duet.view.game.GameDuoView;
 import com.pi4.duet.view.game.GameView;
 import com.pi4.duet.view.game.GameWindow;
 import com.pi4.duet.view.home.HomePageView;
@@ -24,12 +29,19 @@ public class HomePageViewController {
 	private GameView gv;
 	private GameController gc;
 	private GamePlane gp;
+
 	private HomePage model;
+
 	private HomePageView view;
 	private GameWindow window;
+	
 	private Settings sm;
 	private SettingsView sv;
 	private SettingsController sc;
+	
+	private GameDuoView gdv;
+	private GameDuoController gdc;
+	private GamePlaneDuo gpd;
 	
 	private Sound homeMusic = new Sound("homeMusic.wav", true);
 	
@@ -65,6 +77,31 @@ public class HomePageViewController {
 						
 		gc.testObstacles();
 		gc.gameStart();
+		homeMusic.stop();
+	}
+	
+	public void runLvlDuo(Dimension size, GameWindow window, HomePageView view) {
+		this.view=view;
+		this.window = window;
+		gdc = new GameDuoController(this, sm);
+		gpd = new GamePlaneDuo(size.width / 3, size.height, gdc);
+		gdc.setModel(gpd);
+		gdv = new GameDuoView(size, gdc);
+		gdc.setView(gdv);
+		gdv.addKeyListener(gdc);	
+				
+		JPanel container = new JPanel(new GridLayout(1, 3));
+		
+		container.add(new JPanel());	
+		container.add(gdv);
+		container.add(new JPanel());
+		window.setMainContainer(container);
+		
+		gdv.requestFocus();
+		gdv.setFocusable(true);
+						
+		//gdc.testObstacles();
+		gdc.gameStart();
 		homeMusic.stop();
 	}
 	
@@ -219,5 +256,7 @@ public class HomePageViewController {
 		// TODO Auto-generated method stub
 		return model.getLevelsAvailable();
 	}
+	
+
 	
 }

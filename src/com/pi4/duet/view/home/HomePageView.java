@@ -22,7 +22,7 @@ public class HomePageView extends JPanel {
 	private Dimension size;
 	private BooleanButton level1, level2, level3, level4, level5;
 	private JLabel title1, title2;
-	private JButton settings, quit;
+	private JButton settings, quit, lvlDuo;
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
 	
@@ -54,8 +54,10 @@ public class HomePageView extends JPanel {
 		int tx1 = (this.size.width - (this.size.width/5*3) ) / 4; 
 		int tx2 = (this.size.width - (this.size.width/5*2) ) / 3; 
 		
+		int ty = (this.size.height/3 - (2*this.size.width/5))/3;
+		
 		level1 = new BooleanButton("1");
-		level1.setBounds(tx1, this.size.height/12*4, this.size.width/5, this.size.width/5);
+		level1.setBounds(tx1, this.size.height/12*4 - ty, this.size.width/5, this.size.width/5);
 		level1.setBackground(Color.BLACK);
 		level1.setForeground(Color.white);
 		level1.setFocusable(false);
@@ -97,7 +99,7 @@ public class HomePageView extends JPanel {
 		});
 		
 		level2 = new BooleanButton("2");
-		level2.setBounds(2 * tx1 + this.size.width/5, this.size.height/12*4, this.size.width/5, this.size.width/5);
+		level2.setBounds(2 * tx1 + this.size.width/5, this.size.height/12*4 - ty, this.size.width/5, this.size.width/5);
 		level2.setBackground(Color.BLACK);
 		level2.setForeground(Color.white);
 		level2.setFocusable(false);
@@ -138,7 +140,7 @@ public class HomePageView extends JPanel {
 		});
 		
 		level3 = new BooleanButton("3");
-		level3.setBounds(3 * tx1 + 2 * this.size.width/5, this.size.height/12*4, this.size.width/5, this.size.width/5);
+		level3.setBounds(3 * tx1 + 2 * this.size.width/5, this.size.height/12*4 - ty, this.size.width/5, this.size.width/5);
 		level3.setBackground(Color.BLACK);
 		level3.setForeground(Color.white);
 		level3.setFocusable(false);
@@ -179,7 +181,7 @@ public class HomePageView extends JPanel {
 		});
 
 		level4 = new BooleanButton("4");
-		level4.setBounds(tx2, this.size.height/12*6 + this.size.width/10, this.size.width/5, this.size.width/5);
+		level4.setBounds(tx2, this.size.height/12*6 + this.size.width/10 - ty, this.size.width/5, this.size.width/5);
 		level4.setBackground(Color.BLACK);
 		level4.setForeground(Color.white);
 		level4.setFocusable(false);
@@ -188,13 +190,14 @@ public class HomePageView extends JPanel {
 		this.add(level4);
 		
 		level5 = new BooleanButton("5");
-		level5.setBounds(2 * tx2 + this.size.width/5, this.size.height/12*6 + this.size.width/10, this.size.width/5, this.size.width/5);
+		level5.setBounds(2 * tx2 + this.size.width/5, this.size.height/12*6 + this.size.width/10 - ty, this.size.width/5, this.size.width/5);
 		level5.setBackground(Color.BLACK);
 		level5.setForeground(Color.white);
 		level5.setFocusable(false);
 		level5.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
 		level5.setEnabled(false);
 		this.add(level5);
+		
 		
 		settings_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/settings.png")), this.size.width/13, this.size.width/13);
 		settings = new JButton(settings_i);
@@ -217,6 +220,18 @@ public class HomePageView extends JPanel {
 			// action à effectuer pour fermer le programme
 			frame.dispose();
 		});		
+		
+		lvlDuo = new JButton("1 vs 1");
+		lvlDuo.setBounds(level4.getX(), quit.getY() - this.size.width/5 - quit.getHeight(), level5.getX() + level5.getWidth() - level4.getX(), this.size.width/5);
+		lvlDuo.setBackground(Color.BLACK);
+		lvlDuo.setForeground(Color.white);
+		lvlDuo.setFocusable(false);
+		lvlDuo.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
+		this.add(lvlDuo);
+		lvlDuo.addActionListener(e -> {
+			this.setVisible(false);
+			controller.runLvlDuo(size, window,this);
+		});
 	}
 	
 	@Override
