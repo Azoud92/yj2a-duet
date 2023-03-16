@@ -155,11 +155,13 @@ public class GameController implements KeyListener {
 	public void hasWin() {
 		if (model.getObstacles().size() == 0) {
 			gameStop();
+			view.afficheWin();
+			view.refresh();
 			model.setState(State.FINISHED);
 			// On jouera un son de victoire :
 			// if (settings.getEffects()) winSound.play();
 			// On affichera un écran de victoire :
-			// view.winGame();
+			
 			if (!hpvC.getLevelsAvailable().contains(model.numLevel + 1)) { // on ajoute seulement le niveau suivant à la liste des niveaux disponibles si ce dernier n'y figure pas
 				hpvC.addLevel(model.numLevel + 1);
 				hpvC.save();
