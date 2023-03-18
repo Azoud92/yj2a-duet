@@ -64,6 +64,12 @@ public class Obstacle implements Serializable {
 		}
 	}
 	
+	public Obstacle copy() {
+		ObstacleController oc = new ObstacleController();
+		Obstacle o = new Obstacle(this.coords, this.center, oc);
+		return o;
+	}
+	
 	@Override
 	public String toString() {
 		String res = "[";

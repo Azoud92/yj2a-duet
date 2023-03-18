@@ -33,7 +33,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				ObstacleController oc = new ObstacleController();
 				o.setController(oc);
 				oc.setModel(o);
-				ObstacleView ov = new ObstacleView(oc, (int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), controller);
+				ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), controller.getBallRadius());
 				oc.setView(ov);
 				controller.addObstacle(o);
 			}

@@ -11,30 +11,31 @@ public class GamePlaneDuo { // Représente le modèle du jeu : coordonnées du v
 	public final int width, height;
 	
 	private GameDuoController controller;
-	private Wheel wheelD, wheelG;
-	private ArrayList<Obstacle> obstacles;
+	private Wheel wheelB, wheelH;
+	private ArrayList<Obstacle> obstaclesH, obstaclesB;
 	
 	private State gameState = State.READY;
 	
-	private Direction wheelRotatingG = null,  wheelRotatingD = null;
-	private Direction lastRotationG = null, lastRotationD = null;
-	private boolean wheelBreakingG = false, wheelBreakingD = false;
+	private Direction wheelRotatingH = null,  wheelRotatingB = null;
+	private Direction lastRotationH = null, lastRotationB = null;
+	private boolean wheelBreakingH = false, wheelBreakingB = false;
 		
 	public GamePlaneDuo(int width, int height, GameDuoController controller) {		
 		this.width = width;
 		this.height = height;		
-        this.wheelD = new Wheel(new Point(width / 4 * 3, height - 150));
-        wheelD.setAngle(wheelD.getAngle()/2);
-        this.wheelG = new Wheel(new Point(width / 4, height - 150));
-        wheelG.setAngle(wheelG.getAngle()/2);
+        this.wheelB = new Wheel(new Point(width / 2, height - 135));
+        wheelB.radius = wheelB.radius*9/10;
+        this.wheelH = new Wheel(new Point(width / 2, 135));
+        wheelH.radius = wheelH.radius*9/10;
         this.controller = controller;
 
-        this.obstacles = new ArrayList<Obstacle>();
+        this.obstaclesH = new ArrayList<Obstacle>();
+        this.obstaclesB = new ArrayList<Obstacle>();
 	}
 
 	public void startWheelRotation(Side side, Direction dir) {
-		if(side == Side.LEFT) wheelRotatingG = dir;
-		else if(side == Side.RIGHT) wheelRotatingD = dir;
+		if(side == Side.HIGH) wheelRotatingH = dir;
+		else if(side == Side.LOW) wheelRotatingB = dir;
 	}
 	
 	/*public void resetObstacles() { // on remplace tous les obstacles à leur position initiale
@@ -45,37 +46,39 @@ public class GamePlaneDuo { // Représente le modèle du jeu : coordonnées du v
 	}*/
 	
 	public void stopWheelRotation(Side side) {
-		if(side == Side.LEFT) {
-			if (wheelRotatingG != null) lastRotationG = wheelRotatingG;
-			wheelRotatingG = null;
+		if(side == Side.HIGH) {
+			if (wheelRotatingH != null) lastRotationH = wheelRotatingH;
+			wheelRotatingH = null;
 		}
-		else if(side == Side.RIGHT) {
-			if (wheelRotatingD != null) lastRotationD = wheelRotatingD;
-			wheelRotatingD = null;
+		else if(side == Side.LOW) {
+			if (wheelRotatingB != null) lastRotationB = wheelRotatingB;
+			wheelRotatingB = null;
 		}
 	}
 
 	public void startWheelBreaking(Side side) {
-		if(side == Side.LEFT) wheelBreakingG = true;
-		else if(side == Side.RIGHT) wheelBreakingD = true;
+		if(side == Side.HIGH) wheelBreakingH = true;
+		else if(side == Side.LOW) wheelBreakingB = true;
 	}
 	
 	public void stopWheelBreaking(Side side) {
-		if(side == Side.LEFT) wheelBreakingG = false; 
-		else if(side == Side.RIGHT) wheelBreakingD = false; 
+		if(side == Side.HIGH) wheelBreakingH = false; 
+		else if(side == Side.LOW) wheelBreakingB = false; 
 		}
 	
-	public void addObstacle(Obstacle o) {
-		this.obstacles.add(o);
+	public void addObstacle(Side side, Obstacle o) {
+		if(side == Side.HIGH) this.obstaclesH.add(o);
+		else if(side == Side.LOW) this.obstaclesB.add(o);
 	}
 	
-	public void removeObstacle(Obstacle o) {
-		this.obstacles.remove(o);
+	public void removeObstacle(Side side, Obstacle o) {
+		if(side == Side.HIGH) this.obstaclesH.remove(o);
+		else if(side == Side.LOW) this.obstaclesB.remove(o);
 	}
 		
 	public Wheel getWheel(Side side) {
-		if(side == Side.LEFT)return wheelG; 
-		return wheelD;
+		if(side == Side.HIGH)return wheelH; 
+		return wheelB;
 	}
 	
 	public State getState() { return gameState; }
@@ -85,33 +88,34 @@ public class GamePlaneDuo { // Représente le modèle du jeu : coordonnées du v
 	}
 	
 	public Direction getWheelRotating(Side side) {
-		if(side == Side.LEFT)return wheelRotatingG;
-		return wheelRotatingD;
+		if(side == Side.HIGH)return wheelRotatingH;
+		return wheelRotatingB;
 	}
 	
 	public void setWheelRotating(Side side, Direction wheelRotating) {
-		if(side == Side.LEFT) wheelRotatingG = wheelRotating;
-		else if(side == Side.RIGHT) wheelRotatingD = wheelRotating;
+		if(side == Side.HIGH) wheelRotatingH = wheelRotating;
+		else if(side == Side.LOW) wheelRotatingB = wheelRotating;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Obstacle> getObstacles() {
-		return (ArrayList<Obstacle>) obstacles.clone();
+	public ArrayList<Obstacle> getObstacles(Side side) {
+		if(side == Side.HIGH) return (ArrayList<Obstacle>) obstaclesH.clone();
+		return (ArrayList<Obstacle>) obstaclesB.clone();
 	}
 
 	public boolean getWheelBreaking(Side side) {
-		if(side == Side.LEFT)return wheelBreakingG;
-		return wheelBreakingD;
+		if(side == Side.HIGH)return wheelBreakingH;
+		return wheelBreakingB;
 	}
 	
 	public Direction getLastRotation(Side side) {
-		if(side == Side.LEFT) return lastRotationG;
-		return lastRotationD;
+		if(side == Side.HIGH) return lastRotationH;
+		return lastRotationB;
 		}
 
 	public void setLastRotation(Side side, Direction dir) {
-		if(side == Side.LEFT) lastRotationG = dir;
-		else if(side == Side.RIGHT) lastRotationD = dir;
+		if(side == Side.HIGH) lastRotationH = dir;
+		else if(side == Side.LOW) lastRotationB = dir;
 	}
 		
 }

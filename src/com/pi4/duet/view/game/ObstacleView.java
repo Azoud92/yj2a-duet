@@ -24,40 +24,26 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 	
 	private Polygon polygon;
 	private ArrayList<CollisionView> listCol;
-	private GameController gvC;
-	
+	private int widthCol, heightCol;
 	private Image collisionBlue;
 	private Image collisionRed;
-	private boolean duo;
 
-	private GameDuoController gdC;
+
 			
-	public ObstacleView(ObstacleController controller, int width, int height, int x, int y, GameController gc) {
+
+		
+	public ObstacleView(int width, int height, int x, int y, int ballRadius) {
 		listCol = new ArrayList<CollisionView>();
 		this.setOpaque(false);
-		duo = false;
 		this.setSize(new Dimension(width, height));
+		this.widthCol =ballRadius * 7;
+		this.heightCol = ballRadius * 7;
 		this.setLocation(x,y);
-		this.gvC = gc;
 		this.setVisible(true);
 		this.setLayout(null);
 		
-		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), gvC.getBallRadius() * 7, gvC.getBallRadius() * 7).getImage();
-		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius() * 7, gvC.getBallRadius() * 7).getImage();		
-	}
-		
-	public ObstacleView(ObstacleController oc, int width, int height, int x, int y, GameDuoController gameDuoController) {
-		listCol = new ArrayList<CollisionView>();
-		this.setOpaque(false);
-		duo = true;
-		this.setSize(new Dimension(width, height));
-		this.setLocation(x,y);
-		this.gdC = gameDuoController;
-		this.setVisible(true);
-		this.setLayout(null);
-		
-		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), gvC.getBallRadius() * 7, gvC.getBallRadius() * 7).getImage();
-		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), gvC.getBallRadius() * 7, gvC.getBallRadius() * 7).getImage();	
+		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")),widthCol,heightCol).getImage();
+		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), widthCol, heightCol).getImage();	
 	}
 
 	public void setPolygon(Polygon polygon) {
@@ -93,14 +79,9 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 		int x, y, width, height;
 
 		public CollisionView (double x, double y, Color color) {
-			if (!duo) {
-				this.width =  gvC.getBallRadius() * 7;
-				this.height =  gvC.getBallRadius() * 7;
-			}
-			/*else {
-				this.width =  gdC.getBallRadius() * 7;
-				this.height =  gdC.getBallRadius() * 7;
-			}*/
+			this.width = widthCol;
+			this.height =  heightCol;
+			
 			this.x = (int) x - width / 2;
 			this.y = (int) y - height / 2;			
 			

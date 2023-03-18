@@ -213,7 +213,7 @@ public class GameController implements KeyListener {
 		ObstacleController oc = new ObstacleController();
 		Obstacle o = new Obstacle(rect, centerRect, oc);
 		oc.setModel(o);
-		ObstacleView ov = new ObstacleView(oc, (int)(rect[1].getX() - rect[0].getX()),(int)(rect[3].getY() - rect[0].getY()),(int) rect[0].getX(), (int) rect[0].getY(),this);
+		ObstacleView ov = new ObstacleView((int)(rect[1].getX() - rect[0].getX()),(int)(rect[3].getY() - rect[0].getY()),(int) rect[0].getX(), (int) rect[0].getY(), getBallRadius());
 		
 		oc.setView(ov);	
 		model.addObstacle(o);
@@ -225,7 +225,7 @@ public class GameController implements KeyListener {
 		ObstacleController oc = new ObstacleController();
 		o.setController(oc);
 		oc.setModel(o);
-		ObstacleView ov = new ObstacleView(oc, (int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), this);
+		ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), getBallRadius());
 		oc.setView(ov);
 		model.addObstacle(o);
 		view.addObstacle(ov);	

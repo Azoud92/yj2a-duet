@@ -1,6 +1,6 @@
 package com.pi4.duet.controller;
 
-import java.awt.Color; 
+import java.awt.Color;  
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Timer;
@@ -17,7 +17,6 @@ import com.pi4.duet.model.State;
 import com.pi4.duet.model.Wheel;
 import com.pi4.duet.view.game.GameDuoView;
 import com.pi4.duet.view.game.ObstacleView;
-import com.pi4.duet.view.game.ObstacleView.CollisionView;
 
 
 public class GameDuoController implements KeyListener{
@@ -60,8 +59,8 @@ public class GameDuoController implements KeyListener{
 	public void gameStart() {
 		if (model.getState() != State.READY) return;
 		model.setState(State.ON_GAME);
-		model.setWheelRotating(Side.RIGHT, null);
-		model.setWheelRotating(Side.LEFT, null);
+		model.setWheelRotating(Side.LOW, null);
+		model.setWheelRotating(Side.HIGH, null);
 		if (settings.getMusic()) music.play();
 		
 		gameTimer = new Timer();
@@ -70,91 +69,98 @@ public class GameDuoController implements KeyListener{
 			public void run() {
 				// TODO Auto-generated method stub
 				if (model.getState() == State.ON_GAME){
-					for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
+					for (Obstacle o : model.getObstacles(Side.LOW)) { // animation des obstacles pour les faire "tomber"
 						o.update(0, 1);
-						verifyCollision(Side.LEFT, o);
-						verifyCollision(Side.RIGHT, o);
+						verifyCollision(Side.HIGH, o);
+						verifyCollision(Side.LOW, o);
+						//verifyObstacleReached(o);
+						refreshView();
+					}
+					for (Obstacle o : model.getObstacles(Side.HIGH)) { // animation des obstacles pour les faire "tomber"
+						o.update(0, -1);
+						verifyCollision(Side.HIGH, o);
+						verifyCollision(Side.LOW, o);
 						//verifyObstacleReached(o);
 						refreshView();
 					}
 					
 					// animation du volant selon la direction souhaitée
-					if (model.getWheelRotating(Side.LEFT) == null) stopMvt(Side.LEFT);
-					if (model.getWheelRotating(Side.RIGHT) == null) stopMvt(Side.RIGHT);
+					if (model.getWheelRotating(Side.HIGH) == null) stopMvt(Side.HIGH);
+					if (model.getWheelRotating(Side.LOW) == null) stopMvt(Side.LOW);
 					
 					
-					double inD = model.getWheel(Side.RIGHT).getInertia();
+					double inB = model.getWheel(Side.LOW).getInertia();
 					
-					if (model.getWheelBreaking(Side.RIGHT)) {
-						if (inD > 0) {
-							if(!settings.getInertie()) model.getWheel(Side.RIGHT).setInertia(model.getWheel(Side.RIGHT).rotationSpeed);
-							else model.getWheel(Side.RIGHT).setInertia(inD - 0.0004);
-							model.getWheel(Side.RIGHT).rotate(model.getLastRotation(Side.RIGHT));
-							updateWheel(Side.RIGHT, model.getWheel(Side.RIGHT).getCenterBall2(), model.getWheel(Side.RIGHT).getCenterBall1());
-							updateMvt(Side.RIGHT, model.getLastRotation(Side.RIGHT));
+					if (model.getWheelBreaking(Side.LOW)) {
+						if (inB > 0) {
+							if(!settings.getInertie()) model.getWheel(Side.LOW).setInertia(model.getWheel(Side.LOW).rotationSpeed);
+							else model.getWheel(Side.LOW).setInertia(inB - 0.0004);
+							model.getWheel(Side.LOW).rotate(model.getLastRotation(Side.LOW));
+							updateWheel(Side.LOW, model.getWheel(Side.LOW).getCenterBall2(), model.getWheel(Side.LOW).getCenterBall1());
+							updateMvt(Side.LOW, model.getLastRotation(Side.LOW));
 						}
 						else {
-							model.stopWheelBreaking(Side.RIGHT);
-							model.getWheel(Side.RIGHT).setInertia(0);
-							model.setLastRotation(Side.RIGHT, null);
+							model.stopWheelBreaking(Side.LOW);
+							model.getWheel(Side.LOW).setInertia(0);
+							model.setLastRotation(Side.LOW, null);
 						}						
 					}
 					
-					if (model.getWheelRotating(Side.RIGHT) != null) {
-						if (model.getWheelBreaking(Side.RIGHT) == false) {
-							if (inD < model.getWheel(Side.RIGHT).rotationSpeed) {
-								if(!settings.getInertie()) model.getWheel(Side.RIGHT).setInertia(model.getWheel(Side.RIGHT).rotationSpeed);
-								else model.getWheel(Side.RIGHT).setInertia(inD + 0.0004);
+					if (model.getWheelRotating(Side.LOW) != null) {
+						if (model.getWheelBreaking(Side.LOW) == false) {
+							if (inB < model.getWheel(Side.LOW).rotationSpeed) {
+								if(!settings.getInertie()) model.getWheel(Side.LOW).setInertia(model.getWheel(Side.LOW).rotationSpeed);
+								else model.getWheel(Side.LOW).setInertia(inB + 0.0004);
 							}
 						}
 					}
 						
-					if (model.getWheelRotating(Side.RIGHT) == Direction.ANTI_HORAIRE) {					
-						model.getWheel(Side.RIGHT).rotate(Direction.ANTI_HORAIRE);
-						updateWheel(Side.RIGHT, model.getWheel(Side.RIGHT).getCenterBall2(), model.getWheel(Side.RIGHT).getCenterBall1());
-						updateMvt(Side.RIGHT, Direction.ANTI_HORAIRE);
+					if (model.getWheelRotating(Side.LOW) == Direction.ANTI_HORAIRE) {					
+						model.getWheel(Side.LOW).rotate(Direction.ANTI_HORAIRE);
+						updateWheel(Side.LOW, model.getWheel(Side.LOW).getCenterBall2(), model.getWheel(Side.LOW).getCenterBall1());
+						updateMvt(Side.LOW, Direction.ANTI_HORAIRE);
 					}
-					else if (model.getWheelRotating(Side.RIGHT) == Direction.HORAIRE) {					
-						model.getWheel(Side.RIGHT).rotate(Direction.HORAIRE);
-						updateWheel(Side.RIGHT, model.getWheel(Side.RIGHT).getCenterBall2(), model.getWheel(Side.RIGHT).getCenterBall1());
-						updateMvt(Side.RIGHT, Direction.HORAIRE);
+					else if (model.getWheelRotating(Side.LOW) == Direction.HORAIRE) {					
+						model.getWheel(Side.LOW).rotate(Direction.HORAIRE);
+						updateWheel(Side.LOW, model.getWheel(Side.LOW).getCenterBall2(), model.getWheel(Side.LOW).getCenterBall1());
+						updateMvt(Side.LOW, Direction.HORAIRE);
 					}	
 					
-					double inG = model.getWheel(Side.LEFT).getInertia();
+					double inH = model.getWheel(Side.HIGH).getInertia();
 					
-					if (model.getWheelBreaking(Side.LEFT)) {
-						if (inG > 0) {
-							if(!settings.getInertie()) model.getWheel(Side.LEFT).setInertia(model.getWheel(Side.LEFT).rotationSpeed);
-							else model.getWheel(Side.LEFT).setInertia(inG - 0.0004);
-							model.getWheel(Side.LEFT).rotate(model.getLastRotation(Side.LEFT));
-							updateWheel(Side.LEFT, model.getWheel(Side.LEFT).getCenterBall2(), model.getWheel(Side.LEFT).getCenterBall1());
-							updateMvt(Side.LEFT, model.getLastRotation(Side.LEFT));
+					if (model.getWheelBreaking(Side.HIGH)) {
+						if (inH > 0) {
+							if(!settings.getInertie()) model.getWheel(Side.HIGH).setInertia(model.getWheel(Side.HIGH).rotationSpeed);
+							else model.getWheel(Side.HIGH).setInertia(inH - 0.0004);
+							model.getWheel(Side.HIGH).rotate(model.getLastRotation(Side.HIGH));
+							updateWheel(Side.HIGH, model.getWheel(Side.HIGH).getCenterBall2(), model.getWheel(Side.HIGH).getCenterBall1());
+							updateMvt(Side.HIGH, model.getLastRotation(Side.HIGH));
 						}
 						else {
-							model.stopWheelBreaking(Side.LEFT);
-							model.getWheel(Side.LEFT).setInertia(0);
-							model.setLastRotation(Side.LEFT, null);
+							model.stopWheelBreaking(Side.HIGH);
+							model.getWheel(Side.HIGH).setInertia(0);
+							model.setLastRotation(Side.HIGH, null);
 						}						
 					}
 					
-					if (model.getWheelRotating(Side.LEFT) != null) {
-						if (model.getWheelBreaking(Side.LEFT) == false) {
-							if (inG < model.getWheel(Side.LEFT).rotationSpeed) {
-								if(!settings.getInertie()) model.getWheel(Side.LEFT).setInertia(model.getWheel(Side.LEFT).rotationSpeed);
-								else model.getWheel(Side.LEFT).setInertia(inG + 0.0004);
+					if (model.getWheelRotating(Side.HIGH) != null) {
+						if (model.getWheelBreaking(Side.HIGH) == false) {
+							if (inH < model.getWheel(Side.HIGH).rotationSpeed) {
+								if(!settings.getInertie()) model.getWheel(Side.HIGH).setInertia(model.getWheel(Side.HIGH).rotationSpeed);
+								else model.getWheel(Side.HIGH).setInertia(inH + 0.0004);
 							}
 						}
 					}
 						
-					if (model.getWheelRotating(Side.LEFT) == Direction.ANTI_HORAIRE) {					
-						model.getWheel(Side.LEFT).rotate(Direction.ANTI_HORAIRE);
-						updateWheel(Side.LEFT, model.getWheel(Side.LEFT).getCenterBall2(), model.getWheel(Side.LEFT).getCenterBall1());
-						updateMvt(Side.LEFT, Direction.ANTI_HORAIRE);
+					if (model.getWheelRotating(Side.HIGH) == Direction.ANTI_HORAIRE) {					
+						model.getWheel(Side.HIGH).rotate(Direction.ANTI_HORAIRE);
+						updateWheel(Side.HIGH, model.getWheel(Side.HIGH).getCenterBall2(), model.getWheel(Side.HIGH).getCenterBall1());
+						updateMvt(Side.HIGH, Direction.ANTI_HORAIRE);
 					}
-					else if (model.getWheelRotating(Side.LEFT) == Direction.HORAIRE) {					
-						model.getWheel(Side.LEFT).rotate(Direction.HORAIRE);
-						updateWheel(Side.LEFT, model.getWheel(Side.LEFT).getCenterBall2(), model.getWheel(Side.LEFT).getCenterBall1());
-						updateMvt(Side.LEFT, Direction.HORAIRE);
+					else if (model.getWheelRotating(Side.HIGH) == Direction.HORAIRE) {					
+						model.getWheel(Side.HIGH).rotate(Direction.HORAIRE);
+						updateWheel(Side.HIGH, model.getWheel(Side.HIGH).getCenterBall2(), model.getWheel(Side.HIGH).getCenterBall1());
+						updateMvt(Side.HIGH, Direction.HORAIRE);
 					}
 					
 				}
@@ -223,11 +229,11 @@ public class GameDuoController implements KeyListener{
 		// TODO Auto-generated method stub
 		if (model.getState() == State.ON_GAME){
 			switch (e.getKeyCode()){
-				case KeyEvent.VK_RIGHT: model.startWheelRotation(Side.RIGHT, Direction.ANTI_HORAIRE); break;
-				case KeyEvent.VK_LEFT: model.startWheelRotation(Side.RIGHT, Direction.HORAIRE); break;
+				case KeyEvent.VK_RIGHT: model.startWheelRotation(Side.LOW, Direction.ANTI_HORAIRE); break;
+				case KeyEvent.VK_LEFT: model.startWheelRotation(Side.LOW, Direction.HORAIRE); break;
 				
-				case KeyEvent.VK_D: model.startWheelRotation(Side.LEFT, Direction.ANTI_HORAIRE); break;
-				case KeyEvent.VK_Q: model.startWheelRotation(Side.LEFT, Direction.HORAIRE); break;
+				case KeyEvent.VK_D: model.startWheelRotation(Side.HIGH, Direction.ANTI_HORAIRE); break;
+				case KeyEvent.VK_Q: model.startWheelRotation(Side.HIGH, Direction.HORAIRE); break;
 			}
 		}
 	}
@@ -236,15 +242,15 @@ public class GameDuoController implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == State.ON_GAME){
 			switch(e.getKeyCode()) {
-				case KeyEvent.VK_RIGHT: model.stopWheelRotation(Side.RIGHT); if(settings.getInertie()) model.startWheelBreaking(Side.RIGHT); break;
-				case KeyEvent.VK_LEFT: model.stopWheelRotation(Side.RIGHT); if(settings.getInertie()) model.startWheelBreaking(Side.RIGHT); break;
+				case KeyEvent.VK_RIGHT: model.stopWheelRotation(Side.LOW); if(settings.getInertie()) model.startWheelBreaking(Side.LOW); break;
+				case KeyEvent.VK_LEFT: model.stopWheelRotation(Side.LOW); if(settings.getInertie()) model.startWheelBreaking(Side.LOW); break;
 				
-				case KeyEvent.VK_Q: model.stopWheelRotation(Side.LEFT); if(settings.getInertie()) model.startWheelBreaking(Side.LEFT); break;
-				case KeyEvent.VK_D: model.stopWheelRotation(Side.LEFT); if(settings.getInertie()) model.startWheelBreaking(Side.LEFT); break;
+				case KeyEvent.VK_Q: model.stopWheelRotation(Side.HIGH); if(settings.getInertie()) model.startWheelBreaking(Side.HIGH); break;
+				case KeyEvent.VK_D: model.stopWheelRotation(Side.HIGH); if(settings.getInertie()) model.startWheelBreaking(Side.HIGH); break;
 				
 				case KeyEvent.VK_SPACE:
-					model.stopWheelRotation(Side.RIGHT);
-					model.stopWheelRotation(Side.LEFT);
+					model.stopWheelRotation(Side.LOW);
+					model.stopWheelRotation(Side.HIGH);
 					model.setState(State.PAUSED);
 					view.affichePause();
 					break;				
@@ -265,7 +271,26 @@ public class GameDuoController implements KeyListener{
 		hpvC.runHomePage();
 		if(settings.getMusic()) { hpvC.runMusic(); }
 		view.setVisible(false);
-	}	
+	}
+	
+	public void addObstacle(Obstacle o) {
+		ObstacleController oc = new ObstacleController();
+		o.setController(oc);
+		oc.setModel(o);
+		ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(),getBallRadius());
+		oc.setView(ov);
+		model.addObstacle(Side.HIGH, o);
+		view.addObstacle(ov);
+		
+		Obstacle o1 = o.copy();
+		ObstacleController oc1 = new ObstacleController();
+		o1.setController(oc1);
+		oc1.setModel(o1);
+		ObstacleView ov1 = new ObstacleView((int) o1.getWidth(), (int) o1.getHeight(), (int) o1.getPos().getX(), (int) o1.getPos().getY(), getBallRadius());
+		oc1.setView(ov1);
+		model.addObstacle(Side.LOW, o1);
+		view.addObstacle(ov1);
+	}
 	
 	public void stopMusic() {
 		music.stop();
@@ -274,12 +299,12 @@ public class GameDuoController implements KeyListener{
 	
 	public int getWheelRadius() {
 		// TODO Auto-generated method stub
-		return model.getWheel(Side.RIGHT).radius;
+		return model.getWheel(Side.LOW).radius;
 	}
 	
 	public int getBallRadius() {
 		// TODO Auto-generated method stub
-		return model.getWheel(Side.RIGHT).ballRadius;
+		return model.getWheel(Side.LOW).ballRadius;
 	}
 	
 	public Point getCenterBall1(Side side) {

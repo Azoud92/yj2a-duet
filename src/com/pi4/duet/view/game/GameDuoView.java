@@ -27,8 +27,8 @@ public class GameDuoView extends JPanel{
 			
 		private GameDuoController controller;
 
-		private BallView ballRedG, ballBlueG, ballRedD, ballBlueD;
-		private BallMvt mvtRedG, mvtBlueG, mvtRedD, mvtBlueD;
+		private BallView ballRedH, ballBlueH, ballRedB, ballBlueB;
+		private BallMvt mvtRedH, mvtBlueH, mvtRedB, mvtBlueB;
 		private JButton back, replay;
 		private Dimension size;
 
@@ -45,22 +45,22 @@ public class GameDuoView extends JPanel{
 			
 			int ballRadius = controller.getBallRadius();
 			
-			ballRedG = new BallView((int) (controller.getCenterBall1(Side.LEFT).getX()) - ballRadius, (int) controller.getCenterBall1(Side.LEFT).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.red);
-			mvtRedG = new BallMvt(ballRedG, Color.red, controller.getWheel(Side.LEFT));
-			this.add(mvtRedG);	
+			ballRedH = new BallView((int) (controller.getCenterBall1(Side.HIGH).getX()) - ballRadius, (int) controller.getCenterBall1(Side.HIGH).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.red);
+			mvtRedH = new BallMvt(ballRedH, Color.red, controller.getWheel(Side.HIGH));
+			this.add(mvtRedH);	
 			
-			ballBlueG = new BallView((int) (controller.getCenterBall2(Side.LEFT).getX() - ballRadius), (int) controller.getCenterBall2(Side.LEFT).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.blue);
-			mvtBlueG = new BallMvt(ballBlueG, Color.blue, controller.getWheel(Side.LEFT));
-			this.add(mvtBlueG);		
+			ballBlueH = new BallView((int) (controller.getCenterBall2(Side.HIGH).getX() - ballRadius), (int) controller.getCenterBall2(Side.HIGH).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.blue);
+			mvtBlueH = new BallMvt(ballBlueH, Color.blue, controller.getWheel(Side.HIGH));
+			this.add(mvtBlueH);		
 			
 			
-			ballRedD = new BallView((int) (controller.getCenterBall1(Side.RIGHT).getX()) - ballRadius, (int) controller.getCenterBall1(Side.RIGHT).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.red);
-			mvtRedD = new BallMvt(ballRedD, Color.red, controller.getWheel(Side.RIGHT));
-			this.add(mvtRedD);	
+			ballRedB = new BallView((int) (controller.getCenterBall1(Side.LOW).getX()) - ballRadius, (int) controller.getCenterBall1(Side.LOW).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.red);
+			mvtRedB = new BallMvt(ballRedB, Color.red, controller.getWheel(Side.LOW));
+			this.add(mvtRedB);	
 			
-			ballBlueD = new BallView((int) (controller.getCenterBall2(Side.RIGHT).getX() - ballRadius), (int) controller.getCenterBall2(Side.RIGHT).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.blue);
-			mvtBlueD = new BallMvt(ballBlueD, Color.blue, controller.getWheel(Side.RIGHT));
-			this.add(mvtBlueD);	
+			ballBlueB = new BallView((int) (controller.getCenterBall2(Side.LOW).getX() - ballRadius), (int) controller.getCenterBall2(Side.LOW).getY()  - ballRadius, 2 * ballRadius, 2 * ballRadius, Color.blue);
+			mvtBlueB = new BallMvt(ballBlueB, Color.blue, controller.getWheel(Side.LOW));
+			this.add(mvtBlueB);	
 	        
 	        this.addKeyListener(controller);
 
@@ -105,32 +105,32 @@ public class GameDuoView extends JPanel{
 		}
 			
 		public void setBallsPosition(Side side, Point blue, Point red) {
-			if (side == Side.LEFT) {
-				this.ballBlueG.setLocation((int) blue.getX() - controller.getBallRadius(), (int) blue.getY() - controller.getBallRadius());
-				this.ballRedG.setLocation((int) red.getX() - controller.getBallRadius(), (int) red.getY() - controller.getBallRadius());
+			if (side == Side.HIGH) {
+				this.ballBlueH.setLocation((int) blue.getX() - controller.getBallRadius(), (int) blue.getY() - controller.getBallRadius());
+				this.ballRedH.setLocation((int) red.getX() - controller.getBallRadius(), (int) red.getY() - controller.getBallRadius());
 			}
-			else if (side == Side.RIGHT) {
-				this.ballBlueD.setLocation((int) blue.getX() - controller.getBallRadius(), (int) blue.getY() - controller.getBallRadius());
-				this.ballRedD.setLocation((int) red.getX() - controller.getBallRadius(), (int) red.getY() - controller.getBallRadius());
+			else if (side == Side.LOW) {
+				this.ballBlueB.setLocation((int) blue.getX() - controller.getBallRadius(), (int) blue.getY() - controller.getBallRadius());
+				this.ballRedB.setLocation((int) red.getX() - controller.getBallRadius(), (int) red.getY() - controller.getBallRadius());
 			}
 		}
 		
 		public Point getBallRedPos(Side side) {
-			if(side == Side.LEFT) {
-				return new Point(ballRedG.x, ballRedG.y);
+			if(side == Side.HIGH) {
+				return new Point(ballRedH.x, ballRedH.y);
 			}
-			else if(side == Side.RIGHT) {
-				return new Point(ballRedD.x, ballRedD.y);
+			else if(side == Side.LOW) {
+				return new Point(ballRedB.x, ballRedB.y);
 			}
 			return null;
 		}
 		
 		public Point getBallBluePos(Side side) {
-			if(side == Side.LEFT) {
-				return new Point(ballBlueG.x, ballBlueG.y);
+			if(side == Side.HIGH) {
+				return new Point(ballBlueH.x, ballBlueH.y);
 			}
-			else if(side == Side.RIGHT) {
-				return new Point(ballBlueD.x, ballBlueD.y);
+			else if(side == Side.LOW) {
+				return new Point(ballBlueB.x, ballBlueB.y);
 			}
 			return null;
 		}
@@ -155,68 +155,68 @@ public class GameDuoView extends JPanel{
 			if (controller.isBackgroundEnabled()) g.drawImage(background, 0, 0, size.width, size.height, this);
 			else g.fillRect(0, 0, size.width, size.height);
 			
-			g.setColor(ballBlueG.color);
-			g.fillOval(ballBlueG.x, ballBlueG.y, ballBlueG.width, ballBlueG.height);
+			g.setColor(ballBlueH.color);
+			g.fillOval(ballBlueH.x, ballBlueH.y, ballBlueH.width, ballBlueH.height);
 			
-			g.setColor(ballRedG.color);
-			g.fillOval(ballRedG.x,ballRedG.y, ballRedG.width, ballRedG.height);
+			g.setColor(ballRedH.color);
+			g.fillOval(ballRedH.x,ballRedH.y, ballRedH.width, ballRedH.height);
 			
-			mvtRedG.paintComponent(mvtRedG.getGraphics());
-			mvtBlueG.paintComponent(mvtBlueG.getGraphics());
+			mvtRedH.paintComponent(mvtRedH.getGraphics());
+			mvtBlueH.paintComponent(mvtBlueH.getGraphics());
 			
 			
-			g.setColor(ballBlueD.color);
-			g.fillOval(ballBlueD.x, ballBlueD.y, ballBlueD.width, ballBlueD.height);
+			g.setColor(ballBlueB.color);
+			g.fillOval(ballBlueB.x, ballBlueB.y, ballBlueB.width, ballBlueB.height);
 			
-			g.setColor(ballRedD.color);
-			g.fillOval(ballRedD.x,ballRedD.y, ballRedD.width, ballRedD.height);
+			g.setColor(ballRedB.color);
+			g.fillOval(ballRedB.x,ballRedB.y, ballRedB.width, ballRedB.height);
 			
-			mvtRedD.paintComponent(mvtRedD.getGraphics());
-			mvtBlueD.paintComponent(mvtBlueD.getGraphics());
+			mvtRedB.paintComponent(mvtRedB.getGraphics());
+			mvtBlueB.paintComponent(mvtBlueB.getGraphics());
 		}
 		
 		// Fonctions d'animation de l'effet de traînée
 		public void MvtRedRotate(Side side, Direction dir, double angle) {
-			if(side == Side.LEFT) {
-				mvtRedG.rotate(dir, angle);	
+			if(side == Side.HIGH) {
+				mvtRedH.rotate(dir, angle);	
 			}
-			else if(side == Side.RIGHT) {
-				mvtRedD.rotate(dir, angle);	
+			else if(side == Side.LOW) {
+				mvtRedB.rotate(dir, angle);	
 			}
 		}
 		
 		public void MvtBlueRotate(Side side, Direction dir, double angle) {
-			if(side == Side.LEFT) {
-				mvtBlueG.rotate(dir, angle);	
+			if(side == Side.HIGH) {
+				mvtBlueH.rotate(dir, angle);	
 			}
-			else if(side == Side.RIGHT) {
-				mvtBlueD.rotate(dir, angle);	
+			else if(side == Side.LOW) {
+				mvtBlueB.rotate(dir, angle);	
 			}
 		}
 		
 		public void stopMvt(Side side) {
-			if(side == Side.LEFT) {
-				mvtRedG.resetAngle();
-				mvtBlueG.resetAngle();
+			if(side == Side.HIGH) {
+				mvtRedH.resetAngle();
+				mvtBlueH.resetAngle();
 			}
-			else if(side == Side.RIGHT) {
-				mvtRedD.resetAngle();
-				mvtBlueD.resetAngle();
+			else if(side == Side.LOW) {
+				mvtRedB.resetAngle();
+				mvtBlueB.resetAngle();
 			}
 		}
 		
 		// Affichage lorsqu'un joueur perd la partie
 		public void lostGame() {
 			background =  new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
-			ballRedG.color = Color.gray;
-			ballBlueG.color = Color.gray;
-			mvtRedG.color = Color.gray;
-			mvtBlueG.color = Color.gray;
+			ballRedH.color = Color.gray;
+			ballBlueH.color = Color.gray;
+			mvtRedH.color = Color.gray;
+			mvtBlueH.color = Color.gray;
 			
-			ballRedD.color = Color.gray;
-			ballBlueD.color = Color.gray;
-			mvtRedD.color = Color.gray;
-			mvtBlueD.color = Color.gray;
+			ballRedB.color = Color.gray;
+			ballBlueB.color = Color.gray;
+			mvtRedB.color = Color.gray;
+			mvtBlueB.color = Color.gray;
 			
 			back = new JButton("RETOUR");
 			back.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
@@ -256,15 +256,15 @@ public class GameDuoView extends JPanel{
 			this.repaint();
 			
 			background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
-			ballRedG.color = Color.red;
-			ballBlueG.color = Color.blue;
-			mvtRedG.color = Color.red;
-			mvtBlueG.color = Color.blue;	
+			ballRedH.color = Color.red;
+			ballBlueH.color = Color.blue;
+			mvtRedH.color = Color.red;
+			mvtBlueH.color = Color.blue;	
 			
-			ballRedD.color = Color.red;
-			ballBlueD.color = Color.blue;
-			mvtRedD.color = Color.red;
-			mvtBlueD.color = Color.blue;	
+			ballRedB.color = Color.red;
+			ballBlueB.color = Color.blue;
+			mvtRedB.color = Color.red;
+			mvtBlueB.color = Color.blue;	
 		}
 		
 		public Dimension getSize() {
