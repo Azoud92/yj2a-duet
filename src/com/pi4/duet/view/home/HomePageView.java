@@ -218,6 +218,7 @@ public class HomePageView extends JPanel {
 		
 		quit.addActionListener(e -> {
 			// action à effectuer pour fermer le programme
+			if(controller.getSettings().getMusic()) controller.stopMusic();
 			frame.dispose();
 		});		
 		

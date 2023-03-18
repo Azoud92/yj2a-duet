@@ -101,10 +101,10 @@ public class HomePageViewController {
 		gdv.setFocusable(true);
 						
 		Point[] points = new Point[4];
-		points[0] = new Point(gpd.width / 3 + 50, gpd.height/2 - 30);
-		points[1] = new Point(gpd.width / 3 + 250, gpd.height/2 - 30);
-		points[2] = new Point(gpd.width / 3 + 250, gpd.height/2 + 30);
-		points[3] = new Point(gpd.width / 3 + 50, gpd.height/2 + 30);
+		points[0] = new Point(gpd.width / 3 + 50, gpd.height/2 - 10);
+		points[1] = new Point(gpd.width / 3 + 200, gpd.height/2 - 10);
+		points[2] = new Point(gpd.width / 3 + 200, gpd.height/2 + 10);
+		points[3] = new Point(gpd.width / 3 + 50, gpd.height/2 + 10);
 	
 		Obstacle test = new Obstacle(points, points[0], null);
 		gdc.addObstacle(test);
