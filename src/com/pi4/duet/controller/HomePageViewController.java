@@ -143,14 +143,17 @@ public class HomePageViewController {
 		gv.requestFocus();
 		gv.setFocusable(true);
 						
-		Point[] points = new Point[4];
-		points[0] = new Point(gp.width / 3 + 50, 100);
-		points[1] = new Point(gp.width / 3 + 250, 100);
-		points[2] = new Point(gp.width / 3 + 250, 200);
-		points[3] = new Point(gp.width / 3 + 50, 200);
+		
+		
+		Point[] points1 = new Point[4];
+		points1[0] = new Point(gp.width / 3 + 50, 0);
+		points1[1] = new Point(gp.width / 3 + 250, 0);
+		points1[2] = new Point(gp.width / 3 + 250, 400);
+		points1[3] = new Point(gp.width / 3 + 50, 400);
 	
-		Obstacle test = new Obstacle(points, points[0], null);
-		gc.addObstacle(test);
+		Obstacle test1 = new Obstacle(points1, points1[0], null);
+		gc.addObstacle(test1);
+		
 		gc.gameStart();
 		homeMusic.stop();
 	}

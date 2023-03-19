@@ -180,6 +180,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		back.setFont(new Font("Arial", Font.BOLD, 50));
 		back.setVisible(true);
 		this.add(back);	
+		setComponentZOrder(back, 0);
 		
 		replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
@@ -188,6 +189,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		replay.setFont(new Font("Arial", Font.BOLD, 50));
 		replay.setVisible(true);
 		add(replay);
+		setComponentZOrder(replay, 0);
 		
 		back.addActionListener(e -> {
 			reset();

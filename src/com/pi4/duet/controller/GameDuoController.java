@@ -73,14 +73,14 @@ public class GameDuoController implements KeyListener{
 						o.update(0, 1);
 						verifyCollision(Side.HIGH, o);
 						verifyCollision(Side.LOW, o);
-						//verifyObstacleReached(o);
+						verifyObstacleReached(Side.LOW, o);
 						refreshView();
 					}
 					for (Obstacle o : model.getObstacles(Side.HIGH)) { // animation des obstacles pour les faire "tomber"
 						o.update(0, -1);
 						verifyCollision(Side.HIGH, o);
 						verifyCollision(Side.LOW, o);
-						//verifyObstacleReached(o);
+						verifyObstacleReached(Side.HIGH, o);
 						refreshView();
 					}
 					
@@ -198,6 +198,48 @@ public class GameDuoController implements KeyListener{
 			view.lostGame();			
 		}
 		
+	}
+	
+	public void verifyObstacleReached(Side side, Obstacle o) {
+		if (o.getReached() == false) {
+			boolean reach = false;
+			for (Point p : o.getCoords()) {
+				if (side == Side.LOW) {
+					if (p.getY() > model.getWheel(side).getCenter().getY() + model.getWheel(side).radius) {
+						reach = true;
+					}
+					else {
+						return;
+					}
+				}
+				else if (side == Side.HIGH) {
+					if (p.getY() < model.getWheel(side).getCenter().getY() - model.getWheel(side).radius) {
+						reach = true;
+					}
+					else {
+						return;
+					}
+				}
+			}
+			if (reach) {
+				if (settings.getEffects()) reachedSound.play();
+				o.setReached();
+			}
+		}
+		else {
+			boolean visible = true;
+			for (Point p : o.getCoords()) {
+				if (p.getY() > model.height || p.getY() < 0) {
+					visible = false;
+				}
+				else {
+					return;
+				}
+			}
+			if (!visible) {
+				model.removeObstacle(side, o);
+			}
+		}
 	}
 	
 	public void updateWheel(Side side, Point blue, Point red) {
