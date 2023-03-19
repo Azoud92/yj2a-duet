@@ -60,6 +60,7 @@ public class GameController implements KeyListener {
 	public void gameStart() {
 		if (model.getState() != State.READY) return;
 		model.setState(State.ON_GAME);
+		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
 		model.setWheelRotating(null);
 		if (settings.getMusic()) music.play();
 		
@@ -128,12 +129,14 @@ public class GameController implements KeyListener {
 	}
 	
 	public void verifyCollision(Obstacle o) {
+		if (model.getState() == State.FINISHED) return;
 		int res = model.getWheel().isInCollision(o);
 		ObstacleView ov = o.getController().getView();
 		double oX =  o.getCoords()[0].getX();
 		double oY = o.getCoords()[0].getY();
 		if (res == 1) {			
 			gameStop();
+			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
 			model.setState(State.FINISHED);
 			ov.addCollision(ov.new CollisionView(getCenterBall1().getX() - oX, getCenterBall1().getY() - oY, Color.red));
 			if (settings.getEffects()) defeatSound.play();
@@ -142,6 +145,7 @@ public class GameController implements KeyListener {
 		}
 		else if (res == 2) {			
 			gameStop();
+			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
 			model.setState(State.FINISHED);
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));
 			if (settings.getEffects()) defeatSound.play();
@@ -150,6 +154,7 @@ public class GameController implements KeyListener {
 		}
 		else if (res == 3) {
 			gameStop();
+			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
 			model.setState(State.FINISHED);
 			ov.addCollision(ov.new CollisionView(getCenterBall1().getX()- oX,getCenterBall1().getY() - oY, Color.red));
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));	
@@ -169,6 +174,7 @@ public class GameController implements KeyListener {
 			gameStop();
 			view.afficheWin();
 			view.refresh();
+			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
 			model.setState(State.FINISHED);
 			// On jouera un son de victoire :
 			// if (settings.getEffects()) winSound.play();
@@ -289,7 +295,7 @@ public class GameController implements KeyListener {
 	}
 	
 	public void replay() {
-		hpvC.runNewParty(hpvC.getWindow());
+		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), model.numLevel);
 	}
 	
 	public void stopMvt() {

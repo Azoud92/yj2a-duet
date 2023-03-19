@@ -60,9 +60,10 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	
 	public void putPattern(PatternData data) {
 		int i = 0;
-		for (Long delay : data.keySet()) {
-			if (i == 0) putObstacle(data.get(delay), delay, ObstacleQueueStatus.DELIVERY_IN_PROGRESS);
-			//if (i == data.keySet().size() - 1) putObstacle(data.get(delay), delay, ObstacleQueueStatus.FINISHED);
+
+		for (Long delay : data.keySet()) {			
+			if (i == data.keySet().size() - 1) putObstacle(data.get(delay), delay, ObstacleQueueStatus.FINISHED);
+			else if (i == 0) putObstacle(data.get(delay), delay, ObstacleQueueStatus.DELIVERY_IN_PROGRESS);
 			else putObstacle(data.get(delay), delay);
 			i++;
 		}
