@@ -15,6 +15,7 @@ import com.pi4.duet.model.HomePage;
 import com.pi4.duet.model.GamePlaneDuo;
 
 import com.pi4.duet.model.Obstacle;
+import com.pi4.duet.model.ObstacleQueueStatus;
 import com.pi4.duet.model.Settings;
 import com.pi4.duet.model.State;
 import com.pi4.duet.view.Scale;
@@ -74,8 +75,16 @@ public class HomePageViewController {
 		
 		gv.requestFocus();
 		gv.setFocusable(true);
-						
-		gc.testObstacles();
+
+		Point[] rect = new Point[4];
+		rect[0] = new Point(gp.width / 2, 100);
+		rect[1] = new Point(gp.width / 2 + 100, 100);
+		rect[2] = new Point(gp.width / 2 + 100, 120);
+		rect[3] = new Point(gp.width / 2, 120);
+		
+		Obstacle test = new Obstacle(rect, rect[0], null);
+		gc.addObstacleTestDelay(test, 1, ObstacleQueueStatus.FINISHED);
+		
 		gc.gameStart();
 		homeMusic.stop();
 	}
@@ -152,7 +161,7 @@ public class HomePageViewController {
 		points1[3] = new Point(gp.width / 3 + 50, 400);
 	
 		Obstacle test1 = new Obstacle(points1, points1[0], null);
-		gc.addObstacle(test1);
+		gc.addObstacleTestDelay(test1, 1, ObstacleQueueStatus.FINISHED);
 		
 		gc.gameStart();
 		homeMusic.stop();
@@ -185,7 +194,15 @@ public class HomePageViewController {
 		points[3] = new Point(gp.width / 3 + 50, 200);
 		Obstacle test = new Obstacle(points, points[0], null);
 		
-		gc.addObstacleTestDelay(test, 1);
+		Point[] points1 = new Point[4];
+		points1[0] = new Point(gp.width / 3 + 50, 100);
+		points1[1] = new Point(gp.width / 3 + 250, 100);
+		points1[2] = new Point(gp.width / 3 + 250, 200);
+		points1[3] = new Point(gp.width / 3 + 50, 200);
+		Obstacle test1 = new Obstacle(points1, points1[0], null);
+				
+		gc.addObstacleTestDelay(test, 4000, ObstacleQueueStatus.DELIVERY_IN_PROGRESS);
+		gc.addObstacleTestDelay(test1, 8000, ObstacleQueueStatus.FINISHED);
 		
 		gc.gameStart();
 	}	

@@ -16,6 +16,7 @@ import com.pi4.duet.model.PatternData;
 import com.pi4.duet.model.Settings;
 import com.pi4.duet.model.State;
 import com.pi4.duet.model.ObstacleQueue;
+import com.pi4.duet.model.ObstacleQueueStatus;
 import com.pi4.duet.view.game.GameView;
 import com.pi4.duet.view.game.ObstacleView;
 
@@ -65,13 +66,15 @@ public class GameController implements KeyListener {
 				// TODO Auto-generated method stub
 				if (model.getState() == State.ON_GAME){
 					hasWin();
-					for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
-						o.update(0, 1);
-						verifyCollision(o);
-						verifyObstacleReached(o);
-						refreshView();
+					if (model.getObstacles().size() > 0) {
+						for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
+							o.update(0, 1);
+							verifyCollision(o);
+							verifyObstacleReached(o);
+							refreshView();
+						}
 					}
-					
+					else refreshView();
 					// animation du volant selon la direction souhaitée
 					if (model.getWheelRotating() == null) stopMvt();
 					double in = model.getWheel().getInertia();
@@ -158,7 +161,7 @@ public class GameController implements KeyListener {
 
 	
 	public void hasWin() {
-		if (model.getObstacles().size() == 0) {
+		if (model.getObstacles().size() == 0 && gameTimer.getStatus() == ObstacleQueueStatus.FINISHED) {
 			gameStop();
 			view.afficheWin();
 			view.refresh();
@@ -205,27 +208,7 @@ public class GameController implements KeyListener {
 			}
 		}
 	}
-		
-	public void testObstacles() {
-		Point[] rect = new Point[4];
-		rect[0] = new Point(model.width / 2, 100);
-		rect[1] = new Point(model.width / 2 + 100, 100);
-		rect[2] = new Point(model.width / 2 + 100, 120);
-		rect[3] = new Point(model.width / 2, 120);
-		
-		Point centerRect = new Point(model.width / 2 + 50, 110);
-				
-		ObstacleController oc = new ObstacleController();
-		Obstacle o = new Obstacle(rect, centerRect, oc);
-		oc.setModel(o);
-		ObstacleView ov = new ObstacleView((int)(rect[1].getX() - rect[0].getX()),(int)(rect[3].getY() - rect[0].getY()),(int) rect[0].getX(), (int) rect[0].getY(), getBallRadius());
-		
-		oc.setView(ov);	
-		model.addObstacle(o);
-		view.addObstacle(ov);		
-	}
-
-	
+			
 	public void addObstacle(Obstacle o) {
 		ObstacleController oc = new ObstacleController();
 		o.setController(oc);
@@ -350,6 +333,10 @@ public class GameController implements KeyListener {
 	
 	public void addObstacleTestDelay(Obstacle o, long delay) {
 		this.gameTimer.putObstacle(o, delay);
+	}
+	
+	public void addObstacleTestDelay(Obstacle o, long delay, ObstacleQueueStatus status) {
+		this.gameTimer.putObstacle(o, delay, status);
 	}
 	
 	public void addPattern(PatternData d) {

@@ -13,7 +13,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	
 	// Lien vers un GamePlane pour faire apparaitre les obstacles
 	private final GameController controller;
-	
+	private static ObstacleQueueStatus status = ObstacleQueueStatus.WAITING;	
 	public ObstacleQueue(GameController c) {
 		controller = c;
 	}
@@ -30,14 +30,27 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	public void putObstacle(Obstacle o, long delay) { // delay est en millisecondes
 		this.schedule(new TimerTask() {
 			public void run() {
-				ObstacleController oc = new ObstacleController();
-				o.setController(oc);
-				oc.setModel(o);
-				ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), controller.getBallRadius());
-				oc.setView(ov);
-				controller.addObstacle(o);
+				addObstacle(o);
 			}
 		}, delay);
+	}
+	
+	public void putObstacle(Obstacle o, long delay, ObstacleQueueStatus s) { // delay est en millisecondes
+		this.schedule(new TimerTask() {
+			public void run() {				
+				addObstacle(o);	
+				status = s;
+			}
+		}, delay);
+	}
+	
+	private void addObstacle(Obstacle o) {
+		ObstacleController oc = new ObstacleController();
+		o.setController(oc);
+		oc.setModel(o);
+		ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), controller.getBallRadius());
+		oc.setView(ov);
+		controller.addObstacle(o);
 	}
 	
 	public void putPattern(PatternData data) {
@@ -47,5 +60,8 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	public void putPattern(String path) throws IOException, ClassNotFoundException {
 		putPattern(PatternData.read(path));
 	}
+	
+	public void setStatus(ObstacleQueueStatus status) { ObstacleQueue.status = status; }
+	public ObstacleQueueStatus getStatus() { return status; }
 	
 }

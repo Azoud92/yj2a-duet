@@ -12,9 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import com.pi4.duet.Auxiliaire;
-import com.pi4.duet.controller.GameController;
-import com.pi4.duet.controller.GameDuoController;
-import com.pi4.duet.controller.ObstacleController;
 
 public class ObstacleView extends JPanel { // dessin d'un obstacle
 	/**
@@ -27,10 +24,6 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 	private int widthCol, heightCol;
 	private Image collisionBlue;
 	private Image collisionRed;
-
-
-			
-
 		
 	public ObstacleView(int width, int height, int x, int y, int ballRadius) {
 		listCol = new ArrayList<CollisionView>();
@@ -60,17 +53,19 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 	// Dessin de l'obstacle
 	@Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);		
-		g.setColor(Color.white);
-		g.drawPolygon(polygon);
-		g.fillPolygon(polygon);
-		
-		Graphics2D g2d = (Graphics2D) g.create();
-	    g2d.clip(polygon);
-	    for(CollisionView cv : listCol) {
-	    	g2d.drawImage(cv.icon, cv.x, cv.y, cv.width, cv.height, null);
-	    }
-	    g2d.dispose();
+		super.paintComponent(g);
+		if (polygon != null) {
+			g.setColor(Color.white);
+			g.drawPolygon(polygon);
+			g.fillPolygon(polygon);
+			
+			Graphics2D g2d = (Graphics2D) g.create();
+		    g2d.clip(polygon);
+		    for(CollisionView cv : listCol) {
+		    	g2d.drawImage(cv.icon, cv.x, cv.y, cv.width, cv.height, null);
+		    }
+		    g2d.dispose();
+		}		
 	}
 	
 	public class CollisionView { // représente l'effet de tâche sur l'obstacle
