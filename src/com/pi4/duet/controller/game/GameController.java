@@ -295,7 +295,7 @@ public class GameController implements KeyListener {
 	}
 	
 	public void replay() {
-		hpvC.runNewParty(hpvC.getWindow());
+		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), model.numLevel);
 	}
 	
 	public void stopMvt() {

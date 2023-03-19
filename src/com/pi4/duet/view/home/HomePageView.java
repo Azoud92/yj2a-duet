@@ -73,7 +73,7 @@ public class HomePageView extends JPanel {
 			if(!level1.isButton()){
 				level1.setButton(true);
 				this.setVisible(false);
-				controller.runParty(size, window,this);
+				controller.runLevel(window, this, 1);
 			}
 			else{
 				String[] option={"Reprendre votre progression","Relancer depuis le début"};
@@ -93,7 +93,7 @@ public class HomePageView extends JPanel {
 					}
 					case 1:{
 						this.setVisible(false);
-						controller.runParty(size, window,this);
+						controller.runLevel(window, this, 1);
 						break;
 					}
 				}
@@ -119,7 +119,7 @@ public class HomePageView extends JPanel {
 			if(!level2.isButton()){
 				level2.setButton(true);
 				this.setVisible(false);
-				controller.runLvl2(size, window,this);
+				controller.runLevel(window, this, 2);
 			}else{
 				String[] option={"Reprendre votre progression","Relancer depuis le début"};
 				int indice= JOptionPane.showOptionDialog(this,
@@ -137,7 +137,7 @@ public class HomePageView extends JPanel {
 					}
 					case 1:{
 						this.setVisible(false);
-						controller.runLvl2(size, window,this);
+						controller.runLevel(window, this, 2);
 						break;
 					}
 				}
@@ -160,7 +160,7 @@ public class HomePageView extends JPanel {
 			if(!level3.isButton()){
 				level3.setButton(true);
 				this.setVisible(false);
-				controller.runLvl3(size, window,this);
+				controller.runLevel(window, this, 3);
 			}else{
 				String[] option={"Reprendre votre progression","Relancer depuis le début"};
 				int indice= JOptionPane.showOptionDialog(this,
@@ -178,7 +178,7 @@ public class HomePageView extends JPanel {
 					}
 					case 1:{
 						this.setVisible(false);
-						controller.runLvl3(size, window,this);
+						controller.runLevel(window, this, 3);
 						break;
 					}
 				}
