@@ -152,6 +152,11 @@ public class GameController implements KeyListener {
 		
 	}
 	
+	public void resetIntertie() {
+		model.getWheel().setInertia(0);
+	}
+
+	
 	public void hasWin() {
 		if (model.getObstacles().size() == 0) {
 			gameStop();
@@ -229,10 +234,6 @@ public class GameController implements KeyListener {
 		oc.setView(ov);
 		model.addObstacle(o);
 		view.addObstacle(ov);	
-	}
-	
-	public void resetIntertie() {
-		model.getWheel().setInertia(0);
 	}
 
 		

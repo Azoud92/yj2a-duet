@@ -206,12 +206,13 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		this.repaint();		
 	}
 
-	// On r�affiche la partie
+	// On réaffiche la partie
 	private void reset() {
 		this.remove(back);
 		this.remove(replay);
 		this.repaint();
 		controller.resetIntertie();
+
 		
 		background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 		ballRed.color = Color.red;
