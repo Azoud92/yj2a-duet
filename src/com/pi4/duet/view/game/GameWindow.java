@@ -8,9 +8,9 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.pi4.duet.controller.HomePageViewController;
-import com.pi4.duet.model.HomePage;
-import com.pi4.duet.view.Scale;
+import com.pi4.duet.Scale;
+import com.pi4.duet.controller.home.HomePageViewController;
+import com.pi4.duet.model.home.HomePage;
 import com.pi4.duet.view.home.HomePageView;
 
 public class GameWindow extends JFrame { // fenêtre principale
@@ -75,10 +75,5 @@ public class GameWindow extends JFrame { // fenêtre principale
 		return frame;
 	}
 
-	public static void main(String[] args) {
-
-		new GameWindow();
-
-	}
 	
 }

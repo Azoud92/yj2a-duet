@@ -5,7 +5,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
-import com.pi4.duet.model.PatternData;
+import com.pi4.duet.model.game.PatternData;
 
 /*
  * Pour l'instant, cette classe est écrite pour pouvoir être éxécutée pour afficher une interface graphique permettant de pointer

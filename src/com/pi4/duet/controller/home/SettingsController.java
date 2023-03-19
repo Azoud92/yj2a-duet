@@ -1,6 +1,6 @@
-package com.pi4.duet.controller;
+package com.pi4.duet.controller.home;
 
-import com.pi4.duet.model.Settings;
+import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.home.SettingsView;
 
 public class SettingsController {

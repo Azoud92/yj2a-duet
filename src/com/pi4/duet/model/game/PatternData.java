@@ -1,4 +1,4 @@
-package com.pi4.duet.model;
+package com.pi4.duet.model.game;
 
 import java.io.*;
 import java.util.HashMap;

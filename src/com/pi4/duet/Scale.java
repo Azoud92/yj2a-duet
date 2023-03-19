@@ -1,4 +1,4 @@
-package com.pi4.duet.view;
+package com.pi4.duet;
 
 public class Scale {
 

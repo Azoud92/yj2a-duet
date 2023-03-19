@@ -1,11 +1,11 @@
-package com.pi4.duet.controller;
+package com.pi4.duet.controller.game;
 
 import java.io.Serializable;
 
 import java.awt.Polygon;
 
 import com.pi4.duet.Point;
-import com.pi4.duet.model.Obstacle;
+import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.view.game.ObstacleView;
 
 public class ObstacleController implements Serializable {

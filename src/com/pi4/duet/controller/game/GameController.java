@@ -1,4 +1,4 @@
- package com.pi4.duet.controller;
+ package com.pi4.duet.controller.game;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,15 +8,17 @@ import java.awt.event.KeyListener;
 import java.util.TimerTask;
 
 import com.pi4.duet.Point;
+import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
+import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.Direction;
-import com.pi4.duet.model.GamePlane;
-import com.pi4.duet.model.Obstacle;
-import com.pi4.duet.model.PatternData;
-import com.pi4.duet.model.Settings;
-import com.pi4.duet.model.State;
-import com.pi4.duet.model.ObstacleQueue;
-import com.pi4.duet.model.ObstacleQueueStatus;
+import com.pi4.duet.model.game.GamePlane;
+import com.pi4.duet.model.game.Obstacle;
+import com.pi4.duet.model.game.ObstacleQueue;
+import com.pi4.duet.model.game.ObstacleQueueStatus;
+import com.pi4.duet.model.game.PatternData;
+import com.pi4.duet.model.game.State;
+import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameView;
 import com.pi4.duet.view.game.ObstacleView;
 
@@ -27,18 +29,20 @@ public class GameController implements KeyListener {
 	private Sound defeatSound = new Sound("defeat.wav", false);
 	private Sound reachedSound = new Sound("reached.wav", false);
 	private Settings settings;
+	private Scale scale;
 	
 	private Sound music = new Sound("music.wav", true);
 	
-	private ObstacleQueue gameTimer = new ObstacleQueue(this);
-
+	private ObstacleQueue gameTimer;
 	
 	private HomePageViewController hpvC;
 	
-	public GameController(HomePageViewController hpvC, Settings settings){
+	public GameController(HomePageViewController hpvC, Settings settings, Scale scale){
 		this.hpvC = hpvC;
 		this.settings = settings;
 		music.stop();
+		this.scale = scale;
+		gameTimer = new ObstacleQueue(this, scale);
 	}
 		
 	public void setModel(GamePlane model) { this.model = model; }
@@ -59,7 +63,7 @@ public class GameController implements KeyListener {
 		model.setWheelRotating(null);
 		if (settings.getMusic()) music.play();
 		
-		gameTimer = new ObstacleQueue(this);
+		gameTimer = new ObstacleQueue(this, scale);
 		gameTimer.schedule(new TimerTask() {			
 			@Override
 			public void run() {
@@ -210,11 +214,12 @@ public class GameController implements KeyListener {
 	}
 			
 	public void addObstacle(Obstacle o) {
-		ObstacleController oc = new ObstacleController();
-		o.setController(oc);
-		oc.setModel(o);
 		ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), getBallRadius());
+		ObstacleController oc = new ObstacleController();
 		oc.setView(ov);
+		o.setController(oc);
+		oc.setModel(o);		
+		
 		model.addObstacle(o);
 		view.addObstacle(ov);	
 	}

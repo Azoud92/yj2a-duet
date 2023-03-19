@@ -13,10 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import com.pi4.duet.Point;
-import com.pi4.duet.controller.GameDuoController;
+import com.pi4.duet.controller.game.GameDuoController;
 import com.pi4.duet.model.Direction;
-import com.pi4.duet.model.Side;
-import com.pi4.duet.model.Wheel;
+import com.pi4.duet.model.game.Side;
+import com.pi4.duet.model.game.Wheel;
 
 
 public class GameDuoView extends JPanel{

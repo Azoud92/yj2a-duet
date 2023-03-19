@@ -1,9 +1,9 @@
-package com.pi4.duet.model;
+package com.pi4.duet.model.game;
 
 import java.io.Serializable;
 
 import com.pi4.duet.Point;
-import com.pi4.duet.controller.ObstacleController;
+import com.pi4.duet.controller.game.ObstacleController;
 
 // Représente n'importe quel polygone convexe
 public class Obstacle implements Serializable {

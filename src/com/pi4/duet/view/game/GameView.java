@@ -8,7 +8,7 @@ import java.awt.Image;
 import javax.swing.*;
 
 import com.pi4.duet.Point;
-import com.pi4.duet.controller.GameController;
+import com.pi4.duet.controller.game.GameController;
 import com.pi4.duet.model.Direction;
 
 public class GameView extends JPanel { // représente la vue du jeu (graphismes, ...)

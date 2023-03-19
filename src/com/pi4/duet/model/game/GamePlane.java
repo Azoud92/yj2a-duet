@@ -1,11 +1,11 @@
-package com.pi4.duet.model;
+package com.pi4.duet.model.game;
 
 
 import java.util.ArrayList; 
 
 import com.pi4.duet.Point;
-
-import com.pi4.duet.controller.GameController;
+import com.pi4.duet.controller.game.GameController;
+import com.pi4.duet.model.Direction;
 
 public class GamePlane { // Représente le modèle du jeu : coordonnées du volant, de la balle, état de la partie, liste des obstacles...
 

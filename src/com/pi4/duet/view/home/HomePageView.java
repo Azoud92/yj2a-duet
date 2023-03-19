@@ -11,8 +11,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 import com.pi4.duet.Auxiliaire;
-import com.pi4.duet.controller.HomePageViewController;
-import com.pi4.duet.view.Scale;
+import com.pi4.duet.Point;
+import com.pi4.duet.Scale;
+import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.view.game.GameWindow;
 
 public class HomePageView extends JPanel {
@@ -20,16 +21,20 @@ public class HomePageView extends JPanel {
 	private static final long serialVersionUID = 5945161001415252238L;
 
 	private Dimension size;
-	private BooleanButton level1, level2, level3, level4, level5;
+	private BooleanButton level1, level2, level3;
+
+	private LevelButton level4, level5;
 	private JLabel title1, title2;
 	private JButton settings, quit, lvlDuo;
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
+	private Scale scale;
 	
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 		
 	public HomePageView(Dimension size, JFrame frame, GameWindow window, HomePageViewController controller, Scale scale) {
 		this.controller = controller;
+		this.scale = scale;
 		this.setBackground(Color.black);
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.size = dim;
@@ -37,18 +42,18 @@ public class HomePageView extends JPanel {
 		this.setLayout(null);
 		
 		title1 = new JLabel("DU");
-		title1.setBounds((int) (this.size.width/4 + 7 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
+		title1.setBounds((int) (this.size.width/4 + 9 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
 		title1.setForeground(Color.RED);
 		title1.setBackground(Color.BLACK);
-		title1.setFont(new Font("Arial", Font.BOLD, (int) (115 * scale.getScaleY())));
+		title1.setFont(new Font("Arial", Font.BOLD, (int) (110 * scale.getScaleY())));
 		this.add(title1);
 		
 		title2 = new JLabel("ET");
 		//title2.setBounds((int) (title1.getLocation().x + title1.getSize().width - 5 * scale.getScaleXY()), this.size.height/24, this.size.width/4 , this.size.height/4);
-		title2.setBounds((int) (this.size.width / 2 + 7 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
+		title2.setBounds((int) (this.size.width / 2 + 9 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
 		title2.setForeground(Color.BLUE);
 		title2.setBackground(Color.BLACK);
-		title2.setFont(new Font("Arial", Font.BOLD, (int) (115 * scale.getScaleY())));
+		title2.setFont(new Font("Arial", Font.BOLD, (int) (110 * scale.getScaleY())));
 		this.add(title2);
 		
 		int tx1 = (this.size.width - (this.size.width/5*3) ) / 4; 
@@ -180,22 +185,11 @@ public class HomePageView extends JPanel {
 			}
 		});
 
-		level4 = new BooleanButton("4");
+		level4 = new LevelButton(4, new Point(tx2, this.size.height/12*6 + this.size.width/10 - ty), this.size.width/5, this.size.width/5, false);
 		level4.setBounds(tx2, this.size.height/12*6 + this.size.width/10 - ty, this.size.width/5, this.size.width/5);
-		level4.setBackground(Color.BLACK);
-		level4.setForeground(Color.white);
-		level4.setFocusable(false);
-		level4.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
-		level4.setEnabled(false);
 		this.add(level4);
 		
-		level5 = new BooleanButton("5");
-		level5.setBounds(2 * tx2 + this.size.width/5, this.size.height/12*6 + this.size.width/10 - ty, this.size.width/5, this.size.width/5);
-		level5.setBackground(Color.BLACK);
-		level5.setForeground(Color.white);
-		level5.setFocusable(false);
-		level5.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
-		level5.setEnabled(false);
+		level5 = new LevelButton(5, new Point(2 * tx2 + this.size.width/5, this.size.height/12*6 + this.size.width/10 - ty), this.size.width/5, this.size.width/5, false);
 		this.add(level5);
 		
 		
@@ -233,6 +227,26 @@ public class HomePageView extends JPanel {
 			this.setVisible(false);
 			controller.runLvlDuo(size, window,this);
 		});
+	}
+	
+	private class LevelButton extends JButton {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -2116619883053158714L;
+
+		public LevelButton(int numLevel, Point coords, int width, int height, boolean enabled) {
+			super(String.valueOf(numLevel));
+			
+			setBounds((int) coords.getX(), (int) coords.getY(), width, height);
+			setBackground(Color.BLACK);
+			setForeground(Color.WHITE);
+			setFocusable(false);
+			setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
+			setEnabled(enabled);
+		}
+		
 	}
 	
 	@Override

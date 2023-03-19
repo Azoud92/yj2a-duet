@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.pi4.duet.Auxiliaire;
-import com.pi4.duet.controller.SettingsController;
-import com.pi4.duet.view.Scale;
+import com.pi4.duet.Scale;
+import com.pi4.duet.controller.home.SettingsController;
 
 public class SettingsView extends JPanel{
 

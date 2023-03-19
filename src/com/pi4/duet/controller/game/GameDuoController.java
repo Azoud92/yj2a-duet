@@ -1,4 +1,4 @@
-package com.pi4.duet.controller;
+package com.pi4.duet.controller.game;
 
 import java.awt.Color;  
 import java.awt.event.KeyEvent;
@@ -8,13 +8,14 @@ import java.util.TimerTask;
 
 import com.pi4.duet.Point;
 import com.pi4.duet.Sound;
+import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.Direction;
-import com.pi4.duet.model.GamePlaneDuo;
-import com.pi4.duet.model.Obstacle;
-import com.pi4.duet.model.Settings;
-import com.pi4.duet.model.Side;
-import com.pi4.duet.model.State;
-import com.pi4.duet.model.Wheel;
+import com.pi4.duet.model.game.GamePlaneDuo;
+import com.pi4.duet.model.game.Obstacle;
+import com.pi4.duet.model.game.Side;
+import com.pi4.duet.model.game.State;
+import com.pi4.duet.model.game.Wheel;
+import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameDuoView;
 import com.pi4.duet.view.game.ObstacleView;
 

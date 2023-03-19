@@ -1,4 +1,4 @@
-package com.pi4.duet.model;
+package com.pi4.duet.model.home;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,52 +10,26 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
-public class Settings implements Serializable {
-	
+public class HomePage implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3702397720992732515L;
-	
-	private boolean music = true, effects = true, background = true, inertie = true;
-	
-	public void setMusic(boolean val) {
-		// TODO Auto-generated method stub
-		this.music = val;
-	}
+	private static final long serialVersionUID = 6683590500436200055L;
 
-	public void setEffects(boolean val) {
-		// TODO Auto-generated method stub
-		this.effects = val;
+	private ArrayList<Integer> levelsAvailable;
+	
+	public HomePage() {
+		levelsAvailable = new ArrayList<Integer>();
+		levelsAvailable.add(1); // le niveau 1 est toujours accompli comme c'est le niveau de départ
 	}
 	
-	public void setBackground(boolean val) {
-		// TODO Auto-generated method stub
-		this.background = val;
+	public void addLevel(int i) {
+		this.levelsAvailable.add(i);
 	}
 	
-	public boolean getMusic() {
-		return music;
-	}
-	
-	public boolean getEffects() {
-		return effects;
-	}
-
-	public boolean getBackground() {
-		return background;
-	}
-
-	public boolean getInertie() {
-		return inertie;
-	}
-
-	public void setInertie(boolean inertie) {
-		this.inertie = inertie;
-	}
-	
-	// Sauvegarde des paramètres
 	public boolean save() {
 		Path dataFolder = Paths.get("data");
 		try {
@@ -66,7 +40,7 @@ public class Settings implements Serializable {
 			return false;
 		}
 		
-		File file = new File("data/settings.ser");
+		File file = new File("data/progression.ser");
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -88,21 +62,25 @@ public class Settings implements Serializable {
 		}
 	}
 	
-	public static Settings read() {
-		File file = new File("data/settings.ser");
+	public static HomePage read() {
+		File file = new File("data/progression.ser");
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-			Settings settings = (Settings) ois.readObject();
+			HomePage homePage = (HomePage) ois.readObject();
 			ois.close();
-			return settings;
+			return homePage;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			return new Settings();
+			return new HomePage();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			return new Settings();
+			return new HomePage();
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Integer> getLevelsAvailable() {
+		return (ArrayList<Integer>) levelsAvailable.clone();
+	}
 	
 }

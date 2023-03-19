@@ -1,7 +1,8 @@
-package com.pi4.duet.model;
+package com.pi4.duet.model.game;
 import java.lang.Math;
 
 import com.pi4.duet.Point;
+import com.pi4.duet.model.Direction;
 
 public class Wheel { // représente le volant du jeu
 		

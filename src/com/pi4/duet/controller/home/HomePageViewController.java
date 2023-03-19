@@ -1,24 +1,25 @@
-package com.pi4.duet.controller;
+package com.pi4.duet.controller.home;
 
 import java.awt.Dimension; 
 import java.awt.GridLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import com.pi4.duet.Point;
+import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
-import com.pi4.duet.model.GamePlane;
-
-import com.pi4.duet.model.HomePage;
-
-import com.pi4.duet.model.GamePlaneDuo;
-
-import com.pi4.duet.model.Obstacle;
-import com.pi4.duet.model.ObstacleQueueStatus;
-import com.pi4.duet.model.Settings;
-import com.pi4.duet.model.State;
-import com.pi4.duet.view.Scale;
+import com.pi4.duet.controller.game.GameController;
+import com.pi4.duet.controller.game.GameDuoController;
+import com.pi4.duet.model.game.GamePlane;
+import com.pi4.duet.model.game.GamePlaneDuo;
+import com.pi4.duet.model.game.Obstacle;
+import com.pi4.duet.model.game.ObstacleQueueStatus;
+import com.pi4.duet.model.game.PatternData;
+import com.pi4.duet.model.game.State;
+import com.pi4.duet.model.home.HomePage;
+import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameDuoView;
 import com.pi4.duet.view.game.GameView;
 import com.pi4.duet.view.game.GameWindow;
@@ -44,9 +45,12 @@ public class HomePageViewController {
 	private GameDuoController gdc;
 	private GamePlaneDuo gpd;
 	
+	private Scale scale;
+		
 	private Sound homeMusic = new Sound("homeMusic.wav", true);
-	
+		
 	public HomePageViewController(Dimension size, Scale scale) {
+		this.scale = scale;
 		homeMusic.stop();
 		sm = Settings.read();
 		sc = new SettingsController(this);
@@ -59,7 +63,7 @@ public class HomePageViewController {
 	public void runParty(Dimension size, GameWindow window,HomePageView view) {
 		this.view=view;
 		this.window = window;
-		gc = new GameController(this, sm);
+		gc = new GameController(this, sm, scale);
 		gp = new GamePlane(size.width / 3, size.height, gc, 1);
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
@@ -76,14 +80,22 @@ public class HomePageViewController {
 		gv.requestFocus();
 		gv.setFocusable(true);
 
-		Point[] rect = new Point[4];
+		/*Point[] rect = new Point[4];
 		rect[0] = new Point(gp.width / 2, 100);
 		rect[1] = new Point(gp.width / 2 + 100, 100);
 		rect[2] = new Point(gp.width / 2 + 100, 120);
 		rect[3] = new Point(gp.width / 2, 120);
 		
-		Obstacle test = new Obstacle(rect, rect[0], null);
-		gc.addObstacleTestDelay(test, 1, ObstacleQueueStatus.FINISHED);
+		Obstacle test = new Obstacle(rect, rect[0], null);*/
+		try {
+			gc.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/level1.ser").getPath()));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		gc.gameStart();
 		homeMusic.stop();
@@ -135,7 +147,7 @@ public class HomePageViewController {
 	public void runLvl2(Dimension size, GameWindow window, HomePageView view) {
 		this.view=view;
 		this.window = window;
-		gc = new GameController(this, sm);
+		gc = new GameController(this, sm, scale);
 		gp = new GamePlane(size.width / 3, size.height, gc, 2);
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
@@ -170,7 +182,7 @@ public class HomePageViewController {
 	public void runLvl3(Dimension size, GameWindow window, HomePageView view) {
 		this.view=view;
 		this.window = window;
-		gc = new GameController(this, new Settings());
+		gc = new GameController(this, new Settings(), scale);
 		gp = new GamePlane(size.width / 3, size.height, gc, 3);
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
@@ -284,7 +296,5 @@ public class HomePageViewController {
 		// TODO Auto-generated method stub
 		return model.getLevelsAvailable();
 	}
-	
-
 	
 }
