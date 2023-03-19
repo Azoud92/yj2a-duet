@@ -180,7 +180,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		back.setFont(new Font("Arial", Font.BOLD, 50));
 		back.setVisible(true);
 		this.add(back);	
-		setComponentZOrder(back, 1);
+		setComponentZOrder(back, 0);
 		
 		replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
@@ -206,12 +206,11 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		this.repaint();		
 	}
 
-	// On r�affiche la partie
+	// On réaffiche la partie
 	private void reset() {
 		this.remove(back);
 		this.remove(replay);
 		this.repaint();
-		//controller.resetIntertie();
 		
 		background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 		ballRed.color = Color.red;
