@@ -230,6 +230,10 @@ public class GameController implements KeyListener {
 		model.addObstacle(o);
 		view.addObstacle(ov);	
 	}
+	
+	public void resetIntertie() {
+		model.getWheel().setInertia(0);
+	}
 
 		
 	public void updateWheel(Point blue, Point red) {

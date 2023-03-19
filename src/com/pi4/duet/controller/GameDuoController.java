@@ -305,6 +305,8 @@ public class GameDuoController implements KeyListener{
 		}
 	}
 	
+	
+	
 	public void stopMvt(Side side) {
 		view.stopMvt(side);		
 	}
