@@ -224,6 +224,7 @@ public class GameDuoView extends JPanel{
 			back.setFont(new Font("Arial", Font.BOLD, 50));
 			back.setVisible(true);
 			this.add(back);	
+			this.setComponentZOrder(back, 0);
 			
 			replay = new JButton("REJOUER");
 			replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
@@ -232,6 +233,7 @@ public class GameDuoView extends JPanel{
 			replay.setFont(new Font("Arial", Font.BOLD, 50));
 			replay.setVisible(true);
 			add(replay);
+			this.setComponentZOrder(replay, 1);
 			
 			back.addActionListener(e -> {
 				reset();

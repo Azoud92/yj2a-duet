@@ -62,7 +62,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		int i = 0;
 		for (Long delay : data.keySet()) {
 			if (i == 0) putObstacle(data.get(delay), delay, ObstacleQueueStatus.DELIVERY_IN_PROGRESS);
-			if (i == data.keySet().size() - 1) putObstacle(data.get(delay), delay, ObstacleQueueStatus.FINISHED);
+			//if (i == data.keySet().size() - 1) putObstacle(data.get(delay), delay, ObstacleQueueStatus.FINISHED);
 			else putObstacle(data.get(delay), delay);
 			i++;
 		}
