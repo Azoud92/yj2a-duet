@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-
 import javax.swing.*;
 
 import com.pi4.duet.Auxiliaire;
@@ -21,20 +19,21 @@ public class HomePageView extends JPanel {
 	private static final long serialVersionUID = 5945161001415252238L;
 
 	private Dimension size;
-	private BooleanButton level1, level2, level3;
-
-	private LevelButton level4, level5;
+	private LevelButton level1, level2, level3, level4, level5;
 	private JLabel title1, title2;
 	private JButton settings, quit, lvlDuo;
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
 	private Scale scale;
 	
+	private GameWindow window;
+	
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 		
 	public HomePageView(Dimension size, JFrame frame, GameWindow window, HomePageViewController controller, Scale scale) {
 		this.controller = controller;
 		this.scale = scale;
+		this.window = window;
 		this.setBackground(Color.black);
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.size = dim;
@@ -61,135 +60,19 @@ public class HomePageView extends JPanel {
 		
 		int ty = (this.size.height/3 - (2*this.size.width/5))/3;
 		
-		level1 = new BooleanButton("1");
-		level1.setBounds(tx1, this.size.height/12*4 - ty, this.size.width/5, this.size.width/5);
-		level1.setBackground(Color.BLACK);
-		level1.setForeground(Color.white);
-		level1.setFocusable(false);
-		level1.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
+		level1 = new LevelButton(1, new Point(tx1, this.size.height / 12 * 4 - ty), this.size.width / 5, this.size.width / 5);
 		this.add(level1);
-		level1.addActionListener((ActionEvent e) ->{
-
-			if(!level1.isButton()){
-				level1.setButton(true);
-				this.setVisible(false);
-				controller.runLevel(window, this, 1);
-			}
-			else{
-				String[] option={"Reprendre votre progression","Relancer depuis le début"};
-				int indice= JOptionPane.showOptionDialog(this,
-						"Veuillez choisir",
-						"Progression en cours",
-						JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE,
-						new ImageIcon(getClass().getResource("/resources/img/reset.png")),
-						option,
-						option[0]);
-				switch(indice){
-					case 0: {
-						this.setVisible(false);
-						controller.continueParty();
-						break;
-					}
-					case 1:{
-						this.setVisible(false);
-						controller.runLevel(window, this, 1);
-						break;
-					}
-				}
-			}
-
-
-
-		});
 		
-		level2 = new BooleanButton("2");
-		level2.setBounds(2 * tx1 + this.size.width/5, this.size.height/12*4 - ty, this.size.width/5, this.size.width/5);
-		level2.setBackground(Color.BLACK);
-		level2.setForeground(Color.white);
-		level2.setFocusable(false);
-		level2.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
-		if (controller.isLevelAvailable(2)) {
-			level2.setEnabled(true);
-		}
-		else level2.setEnabled(false);
+		level2 = new LevelButton(2, new Point(2 * tx1 + this.size.width / 5, this.size.height / 12 * 4 - ty), this.size.width / 5, this.size.width / 5);
 		this.add(level2);
 		
-		level2.addActionListener((ActionEvent e) -> {
-			if(!level2.isButton()){
-				level2.setButton(true);
-				this.setVisible(false);
-				controller.runLevel(window, this, 2);
-			}else{
-				String[] option={"Reprendre votre progression","Relancer depuis le début"};
-				int indice= JOptionPane.showOptionDialog(this,
-						"Veuillez choisir",
-						"Progression en cours",
-						JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE,
-						new ImageIcon(getClass().getResource("/resources/img/reset.png")),
-						option,
-						option[0]);
-				switch(indice){
-					case 0: {
-						this.setVisible(false);
-						controller.continueParty();
-					}
-					case 1:{
-						this.setVisible(false);
-						controller.runLevel(window, this, 2);
-						break;
-					}
-				}
-			}
-		});
-		
-		level3 = new BooleanButton("3");
-		level3.setBounds(3 * tx1 + 2 * this.size.width/5, this.size.height/12*4 - ty, this.size.width/5, this.size.width/5);
-		level3.setBackground(Color.BLACK);
-		level3.setForeground(Color.white);
-		level3.setFocusable(false);
-		if (controller.isLevelAvailable(3)) {
-			level3.setEnabled(true);
-		}
-		else level3.setEnabled(false);
-		level3.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
+		level3 = new LevelButton(3, new Point(3 * tx1 + 2 * this.size.width / 5, this.size.height/12 * 4 - ty), this.size.width / 5, this.size.width / 5);
 		this.add(level3);
-
-		level3.addActionListener((ActionEvent e) -> {
-			if(!level3.isButton()){
-				level3.setButton(true);
-				this.setVisible(false);
-				controller.runLevel(window, this, 3);
-			}else{
-				String[] option={"Reprendre votre progression","Relancer depuis le début"};
-				int indice= JOptionPane.showOptionDialog(this,
-						"Veuillez choisir",
-						"Progression en cours",
-						JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE,
-						new ImageIcon(getClass().getResource("/resources/reset.png")),
-						option,
-						option[0]);
-				switch(indice){
-					case 0: {
-						this.setVisible(false);
-						controller.continueParty();
-					}
-					case 1:{
-						this.setVisible(false);
-						controller.runLevel(window, this, 3);
-						break;
-					}
-				}
-			}
-		});
-
-		level4 = new LevelButton(4, new Point(tx2, this.size.height/12*6 + this.size.width/10 - ty), this.size.width/5, this.size.width/5, false);
-		level4.setBounds(tx2, this.size.height/12*6 + this.size.width/10 - ty, this.size.width/5, this.size.width/5);
+		
+		level4 = new LevelButton(4, new Point(tx2, this.size.height/12 * 6 + this.size.width / 10 - ty), this.size.width / 5, this.size.width / 5);
 		this.add(level4);
 		
-		level5 = new LevelButton(5, new Point(2 * tx2 + this.size.width/5, this.size.height/12*6 + this.size.width/10 - ty), this.size.width/5, this.size.width/5, false);
+		level5 = new LevelButton(5, new Point(2 * tx2 + this.size.width / 5, this.size.height/12 * 6 + this.size.width / 10 - ty), this.size.width / 5, this.size.width / 5);
 		this.add(level5);
 		
 		
@@ -235,8 +118,10 @@ public class HomePageView extends JPanel {
 		 * 
 		 */
 		private static final long serialVersionUID = -2116619883053158714L;
+		
+		boolean showDialog = false;
 
-		public LevelButton(int numLevel, Point coords, int width, int height, boolean enabled) {
+		public LevelButton(int numLevel, Point coords, int width, int height) {
 			super(String.valueOf(numLevel));
 			
 			setBounds((int) coords.getX(), (int) coords.getY(), width, height);
@@ -244,9 +129,40 @@ public class HomePageView extends JPanel {
 			setForeground(Color.WHITE);
 			setFocusable(false);
 			setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
-			setEnabled(enabled);
-		}
-		
+			if (controller.isLevelAvailable(numLevel)) setEnabled(true);
+			else setEnabled(false);
+			
+			addActionListener(e -> {
+				if (!showDialog) {
+					showDialog = true;
+					this.setVisible(false);
+					controller.runLevel(window, HomePageView.this, numLevel);
+				}
+				else {
+					String[] option = {"Reprendre votre progression", "Relancer depuis le début"};
+					int indice = JOptionPane.showOptionDialog(this,
+							"Veuillez choisir",
+							"Progression en cours",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							new ImageIcon(getClass().getResource("/resources/reset.png")),
+							option,
+							option[0]);
+					switch (indice) {
+						case 0: {
+							this.setVisible(false);
+							controller.continueParty();
+							break;
+						}
+						case 1:{
+							this.setVisible(false);
+							controller.runLevel(window, HomePageView.this, numLevel);
+							break;
+						}
+					}
+				}
+			});
+		}		
 	}
 	
 	@Override
