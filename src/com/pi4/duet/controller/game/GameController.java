@@ -176,9 +176,6 @@ public class GameController implements KeyListener {
 			view.refresh();
 			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
 			model.setState(State.FINISHED);
-			// On jouera un son de victoire :
-			// if (settings.getEffects()) winSound.play();
-			// On affichera un écran de victoire :
 			
 			if (!hpvC.getLevelsAvailable().contains(model.numLevel + 1)) { // on ajoute seulement le niveau suivant à la liste des niveaux disponibles si ce dernier n'y figure pas
 				hpvC.addLevel(model.numLevel + 1);

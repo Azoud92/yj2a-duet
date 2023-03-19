@@ -18,7 +18,7 @@ import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.SettingsController;
 
-public class SettingsView extends JPanel{
+public class SettingsView extends JPanel {
 
 	private static final long serialVersionUID = 8809186306938504775L;
 	

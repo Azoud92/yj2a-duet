@@ -48,7 +48,6 @@ public class HomePageView extends JPanel {
 		this.add(title1);
 		
 		title2 = new JLabel("ET");
-		//title2.setBounds((int) (title1.getLocation().x + title1.getSize().width - 5 * scale.getScaleXY()), this.size.height/24, this.size.width/4 , this.size.height/4);
 		title2.setBounds((int) (this.size.width / 2 + 9 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
 		title2.setForeground(Color.BLUE);
 		title2.setBackground(Color.BLACK);
@@ -73,8 +72,7 @@ public class HomePageView extends JPanel {
 		this.add(level4);
 		
 		level5 = new LevelButton(5, new Point(2 * tx2 + this.size.width / 5, this.size.height/12 * 6 + this.size.width / 10 - ty), this.size.width / 5, this.size.width / 5);
-		this.add(level5);
-		
+		this.add(level5);		
 		
 		settings_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/settings.png")), this.size.width/13, this.size.width/13);
 		settings = new JButton(settings_i);
@@ -135,7 +133,7 @@ public class HomePageView extends JPanel {
 			addActionListener(e -> {
 				if (!showDialog) {
 					showDialog = true;
-					this.setVisible(false);
+					HomePageView.this.setVisible(false);
 					controller.runLevel(window, HomePageView.this, numLevel);
 				}
 				else {
@@ -145,17 +143,17 @@ public class HomePageView extends JPanel {
 							"Progression en cours",
 							JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE,
-							new ImageIcon(getClass().getResource("/resources/reset.png")),
+							new ImageIcon(getClass().getResource("/resources/img/reset.png")),
 							option,
 							option[0]);
 					switch (indice) {
 						case 0: {
-							this.setVisible(false);
+							HomePageView.this.setVisible(false);
 							controller.continueParty();
 							break;
 						}
 						case 1:{
-							this.setVisible(false);
+							HomePageView.this.setVisible(false);
 							controller.runLevel(window, HomePageView.this, numLevel);
 							break;
 						}
