@@ -271,6 +271,15 @@ public class GameController implements KeyListener {
 			switch (e.getKeyCode()){
 				case KeyEvent.VK_RIGHT: model.startWheelRotation(Direction.ANTI_HORAIRE); break;
 				case KeyEvent.VK_LEFT: model.startWheelRotation(Direction.HORAIRE); break;
+				case KeyEvent.VK_CONTROL:{
+					System.out.println("A");
+					System.out.println(model.getWheel().getCenterBall1().getX());
+					model.getWheel().moveLeft();
+					System.out.println(model.getWheel().getCenterBall1().getX());
+					System.out.println("B");
+					break;
+				}
+				case KeyEvent.VK_ALT:model.getWheel().moveRight();break;
 			}
 		}
 	}

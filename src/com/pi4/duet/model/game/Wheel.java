@@ -39,7 +39,15 @@ public class Wheel { // représente le volant du jeu
 		double dist2 = ball_2.centerBall.getY() - center.getY();
 		ball_1.centerBall.setX(center.getX() - dist1);
 		ball_1.centerBall.setY(center.getY() - dist2);
-	}	
+	}
+	public void moveRight(){
+		ball_2.centerBall.setX(center.getX()+10);
+		ball_1.centerBall.setX(center.getX()+10);
+	}
+	public void moveLeft(){
+		ball_2.centerBall.setX(center.getX()-10);
+		ball_1.centerBall.setX(center.getX()-10);
+	}
 		
 	// on remet les balles à leur position initiale (droites)
 	public void resetBallPosition() {

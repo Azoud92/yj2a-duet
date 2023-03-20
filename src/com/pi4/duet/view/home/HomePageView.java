@@ -131,34 +131,9 @@ public class HomePageView extends JPanel {
 			else setEnabled(false);
 			
 			addActionListener(e -> {
-				if (!showDialog) {
-					showDialog = true;
-					HomePageView.this.setVisible(false);
-					controller.runLevel(window, HomePageView.this, numLevel);
-				}
-				else {
-					String[] option = {"Reprendre votre progression", "Relancer depuis le début"};
-					int indice = JOptionPane.showOptionDialog(this,
-							"Veuillez choisir",
-							"Progression en cours",
-							JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.QUESTION_MESSAGE,
-							new ImageIcon(getClass().getResource("/resources/img/reset.png")),
-							option,
-							option[0]);
-					switch (indice) {
-						case 0: {
-							HomePageView.this.setVisible(false);
-							controller.continueParty();
-							break;
-						}
-						case 1:{
-							HomePageView.this.setVisible(false);
-							controller.runLevel(window, HomePageView.this, numLevel);
-							break;
-						}
-					}
-				}
+				showDialog = true;
+				HomePageView.this.setVisible(false);
+				controller.runLevel(window, HomePageView.this, numLevel);
 			});
 		}		
 	}
