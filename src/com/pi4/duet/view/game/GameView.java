@@ -146,7 +146,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		super.paintComponent(g);
 		if (controller.isBackgroundEnabled()){
 			for(int i=0;i<100;i++) {
-				g.drawImage(background, 0, y-(i*630), size.width, size.height, this);
+				g.drawImage(background, 0, y+(i*630), size.width, size.height, this);
 			}
 		}
 		else g.fillRect(0, 0, size.width, size.height);
@@ -165,7 +165,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 			e.printStackTrace();
 		}
 		if(controller.getBackgroundMouvement()==false) {
-			y = y + step;
+			y = y - step;
 			repaint();
 		}
 	}
