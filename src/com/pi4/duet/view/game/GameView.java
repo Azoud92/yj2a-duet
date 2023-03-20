@@ -14,6 +14,9 @@ import com.pi4.duet.controller.game.GameController;
 import com.pi4.duet.model.Direction;
 
 public class GameView extends JPanel { // représente la vue du jeu (graphismes, ...)
+
+	int step=1;
+	int y=0;
 	
 	private static final long serialVersionUID = -306594423077754361L;
 		
@@ -88,6 +91,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		timer.setRepeats(false);
 		timer.start();
 		jboite2.createDialog(this, "TENEZ VOUS PRÊT").setVisible(true);
+		controller.setBackgroundMovement(false);
 	}
 
 	public void afficheWin(){
@@ -145,7 +149,11 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
-		if (controller.isBackgroundEnabled()) g.drawImage(background, 0, 0, size.width, size.height, this);
+		if (controller.isBackgroundEnabled()){
+			for(int i=0;i<100;i++) {
+				g.drawImage(background, 0, y+(i*630), size.width, size.height, this);
+			}
+		}
 		else g.fillRect(0, 0, size.width, size.height);
 		g.setColor(ballBlue.color);
 		g.fillOval(ballBlue.x, ballBlue.y, ballBlue.width, ballBlue.height);
@@ -155,6 +163,16 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		
 		mvtRed.paintComponent(mvtRed.getGraphics());
 		mvtBlue.paintComponent(mvtBlue.getGraphics());
+
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if(controller.getBackgroundMouvement()==false) {
+			y = y - step;
+			repaint();
+		}
 	}
 	
 	// Fonctions d'animation de l'effet de traînée

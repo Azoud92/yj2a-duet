@@ -37,6 +37,8 @@ public class GameController implements KeyListener {
 	private ObstacleQueue gameTimer;
 	
 	private HomePageViewController hpvC;
+
+	private boolean backgroundMovement;
 	
 	public GameController(HomePageViewController hpvC, Settings settings, Scale scale){
 		this.hpvC = hpvC;
@@ -142,6 +144,7 @@ public class GameController implements KeyListener {
 			ov.addCollision(ov.new CollisionView(getCenterBall1().getX() - oX, getCenterBall1().getY() - oY, Color.red));
 			if (settings.getEffects()) defeatSound.play();
 			view.lostGame();
+			this.setBackgroundMovement(true);
 			
 		}
 		else if (res == 2) {			
@@ -151,6 +154,7 @@ public class GameController implements KeyListener {
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));
 			if (settings.getEffects()) defeatSound.play();
 			view.lostGame();
+			this.setBackgroundMovement(true);
 			
 		}
 		else if (res == 3) {
@@ -160,7 +164,8 @@ public class GameController implements KeyListener {
 			ov.addCollision(ov.new CollisionView(getCenterBall1().getX()- oX,getCenterBall1().getY() - oY, Color.red));
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));	
 			if (settings.getEffects()) defeatSound.play();
-			view.lostGame();			
+			view.lostGame();
+			this.setBackgroundMovement(true);
 		}
 		
 	}
@@ -172,6 +177,7 @@ public class GameController implements KeyListener {
 	
 	public void hasWin() {
 		if (model.getObstacles().size() == 0 && gameTimer.getStatus() == ObstacleQueueStatus.FINISHED) {
+			this.setBackgroundMovement(true);
 			gameStop();
 			view.afficheWin();
 			view.refresh();
@@ -261,6 +267,7 @@ public class GameController implements KeyListener {
 					if(settings.getInertie()) model.startWheelBreaking();
 					break;
 				case KeyEvent.VK_SPACE:
+					this.setBackgroundMovement(true);
 					model.stopWheelRotation();
 					model.setState(State.PAUSED);
 					view.affichePause();
@@ -318,6 +325,7 @@ public class GameController implements KeyListener {
 		hpvC.runHomePage();
 		if(settings.getMusic()) { hpvC.runMusic(); }
 		view.setVisible(false);
+		this.setBackgroundMovement(true);
 	}	
 	
 	public void stopMusic() {
@@ -384,5 +392,8 @@ public class GameController implements KeyListener {
 	public void addPattern(PatternData d) {
 		gameTimer.putPattern(d);
 	}
+
+	public Boolean getBackgroundMouvement(){ return this.backgroundMovement;}
+	public void setBackgroundMovement(boolean b){ this.backgroundMovement=b;}
 
 }

@@ -144,6 +144,7 @@ public class HomePageViewController {
 		this.gv.setFocusable(true);
 		homeMusic.stop();
 		if(sc.getMusic())gc.playMusic();
+		this.gc.setBackgroundMovement(false);
 	}
 		
 	public void runHomePage() {
