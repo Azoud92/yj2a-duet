@@ -12,6 +12,7 @@ import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
 import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.Direction;
+import com.pi4.duet.model.game.Wheel;
 import com.pi4.duet.model.game.GamePlane;
 import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.ObstacleQueue;
@@ -248,8 +249,14 @@ public class GameController implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == State.ON_GAME){
 			switch(e.getKeyCode()) {
-				case KeyEvent.VK_RIGHT: model.stopWheelRotation(); if(settings.getInertie()) model.startWheelBreaking(); break;
-				case KeyEvent.VK_LEFT: model.stopWheelRotation(); if(settings.getInertie()) model.startWheelBreaking(); break;
+				case KeyEvent.VK_RIGHT: 
+					model.stopWheelRotation();
+					if(settings.getInertie()) model.startWheelBreaking();
+					break;
+				case KeyEvent.VK_LEFT:
+					model.stopWheelRotation();
+					if(settings.getInertie()) model.startWheelBreaking();
+					break;
 				case KeyEvent.VK_SPACE:
 					model.stopWheelRotation();
 					model.setState(State.PAUSED);
@@ -268,18 +275,33 @@ public class GameController implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (model.getState() == State.ON_GAME){
+			Wheel w = model.getWheel();
 			switch (e.getKeyCode()){
-				case KeyEvent.VK_RIGHT: model.startWheelRotation(Direction.ANTI_HORAIRE); break;
-				case KeyEvent.VK_LEFT: model.startWheelRotation(Direction.HORAIRE); break;
+				case KeyEvent.VK_RIGHT: 
+					if (!model.getWheelBreaking()) model.startWheelRotation(Direction.ANTI_HORAIRE);
+					else if (model.getLastRotation() != null) switch (model.getLastRotation()) {
+					case HORAIRE : w.setInertia(w.getInertia() * 0.9); break;
+					case ANTI_HORAIRE : if (w.getInertia() <= w.rotationSpeed) w.setInertia(w.getInertia() + 0.004); break;
+					}
+					break;
+				case KeyEvent.VK_LEFT:
+					if (!model.getWheelBreaking()) model.startWheelRotation(Direction.HORAIRE);
+					else if (model.getLastRotation() != null) switch (model.getLastRotation()) {
+					case HORAIRE : if (w.getInertia() <= w.rotationSpeed) w.setInertia(w.getInertia() + 0.004); break;
+					case ANTI_HORAIRE : w.setInertia(w.getInertia() * 0.9); break;
+					}
+
+					break;
 				case KeyEvent.VK_CONTROL:{
 					System.out.println("A");
-					System.out.println(model.getWheel().getCenterBall1().getX());
-					model.getWheel().moveLeft();
-					System.out.println(model.getWheel().getCenterBall1().getX());
+					System.out.println(w.getCenterBall1().getX());
+					w.moveLeft();
+					System.out.println(w.getCenterBall1().getX());
 					System.out.println("B");
 					break;
 				}
-				case KeyEvent.VK_ALT:model.getWheel().moveRight();break;
+				case KeyEvent.VK_ALT:w.moveRight();
+				break;
 			}
 		}
 	}
