@@ -50,6 +50,11 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 		listCol.add(collision);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public ArrayList<CollisionView> getCollisions() {
+		return (ArrayList<CollisionView>) listCol.clone();
+	}
+	
 	// Dessin de l'obstacle
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -83,6 +88,12 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 			if(color == Color.blue) this.icon = collisionBlue;
 			if(color == Color.red) this.icon = collisionRed;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setColList(ArrayList<CollisionView> alcv) {
+		// TODO Auto-generated method stub
+		this.listCol = (ArrayList<CollisionView>) alcv.clone();
 	}
 	
 }

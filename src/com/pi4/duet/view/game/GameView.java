@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 import com.pi4.duet.Point;
@@ -21,6 +23,8 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 	private BallMvt mvtRed, mvtBlue;
 	private JButton back, replay;
 	private Dimension size;
+	
+	private ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
 
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 	
@@ -130,6 +134,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		
 	public void addObstacle(ObstacleView ov) {
 		this.add(ov);
+		obstacles.add(ov);
 	}
 	
 	
@@ -225,6 +230,9 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 	public Dimension getSize() {
 		return size;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<ObstacleView> getObstacles() { return (ArrayList<ObstacleView>) obstacles.clone(); }
 	
 	private class BallView { // représente la vue d'une balle du volant
 		

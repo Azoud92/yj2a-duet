@@ -220,10 +220,13 @@ public class GameController implements KeyListener {
 	public void addObstacle(Obstacle o) {
 		ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), getBallRadius());
 		ObstacleController oc = new ObstacleController();
+		if (hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 0) {
+			ov.setColList(hpvC.getObstaclesViews().get(0).getCollisions());
+			hpvC.getObstaclesViews().remove(0);
+		}		
 		oc.setView(ov);
 		o.setController(oc);
 		oc.setModel(o);		
-		
 		model.addObstacle(o);
 		view.addObstacle(ov);	
 	}
@@ -323,7 +326,7 @@ public class GameController implements KeyListener {
 	}
 	
 	public void replay() {
-		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), model.numLevel);
+		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), model.numLevel, true);
 	}
 	
 	public void stopMvt() {

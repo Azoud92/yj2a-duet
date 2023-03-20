@@ -22,6 +22,7 @@ import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameDuoView;
 import com.pi4.duet.view.game.GameView;
 import com.pi4.duet.view.game.GameWindow;
+import com.pi4.duet.view.game.ObstacleView;
 import com.pi4.duet.view.home.HomePageView;
 import com.pi4.duet.view.home.SettingsView;
 
@@ -46,7 +47,9 @@ public class HomePageViewController {
 	
 	private Scale scale;
 	private Dimension size;
-		
+	
+	private ArrayList<ObstacleView> obstaclesViews;
+			
 	private Sound homeMusic = new Sound("homeMusic.wav", true);
 		
 	public HomePageViewController(Dimension size, Scale scale) {
@@ -61,9 +64,14 @@ public class HomePageViewController {
 		if (sm.getMusic()) homeMusic.play();
 	}
 	
-	public void runLevel(GameWindow window, HomePageView view, int numLevel) {
+	public void runLevel(GameWindow window, HomePageView view, int numLevel, boolean replay) {
 		this.view = view;
 		this.window = window;
+				
+		if (replay) {
+			obstaclesViews = gv.getObstacles();
+		}
+		
 		gc = new GameController(this, sm, scale);
 		gp = new GamePlane(size.width / 3, size.height, gc, 1);
 		gc.setModel(gp);
@@ -202,4 +210,6 @@ public class HomePageViewController {
 		return model.getLevelsAvailable();
 	}
 	
+	public ArrayList<ObstacleView> getObstaclesViews() { return obstaclesViews; }
+		
 }

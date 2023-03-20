@@ -117,8 +117,6 @@ public class HomePageView extends JPanel {
 		 */
 		private static final long serialVersionUID = -2116619883053158714L;
 		
-		boolean showDialog = false;
-
 		public LevelButton(int numLevel, Point coords, int width, int height) {
 			super(String.valueOf(numLevel));
 			
@@ -131,9 +129,8 @@ public class HomePageView extends JPanel {
 			else setEnabled(false);
 			
 			addActionListener(e -> {
-				showDialog = true;
 				HomePageView.this.setVisible(false);
-				controller.runLevel(window, HomePageView.this, numLevel);
+				controller.runLevel(window, HomePageView.this, numLevel, false);
 			});
 		}		
 	}

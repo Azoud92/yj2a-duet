@@ -15,7 +15,6 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 	private Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
 	public final int numLevel;
-	
 	private State gameState = State.READY;
 	
 	private Direction wheelRotating = null;
@@ -94,5 +93,7 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 		// TODO Auto-generated method stub
 		this.lastRotation = dir;
 	}
+	
+	
 		
 }
