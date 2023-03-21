@@ -103,7 +103,7 @@ public class HomePageViewController {
 		homeMusic.stop();
 	}
 	
-	public void runLvlDuo(Dimension size, GameWindow window, HomePageView view) {
+	public void runLvlDuo(GameWindow window, HomePageView view) {
 		this.view=view;
 		this.window = window;
 		gdc = new GameDuoController(this, sm);

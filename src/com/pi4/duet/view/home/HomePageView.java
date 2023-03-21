@@ -106,7 +106,7 @@ public class HomePageView extends JPanel {
 		this.add(lvlDuo);
 		lvlDuo.addActionListener(e -> {
 			this.setVisible(false);
-			controller.runLvlDuo(size, window,this);
+			controller.runLvlDuo(window, this);
 		});
 	}
 	

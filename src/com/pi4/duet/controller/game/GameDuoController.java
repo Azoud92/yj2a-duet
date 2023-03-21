@@ -311,6 +311,13 @@ public class GameDuoController implements KeyListener{
 		view.stopMvt(side);		
 	}
 	
+	
+	public void replay() {
+		hpvC.runLvlDuo(hpvC.getWindow(), hpvC.getView());
+		
+	}
+	
+	
 	public void affMenu() {
 		hpvC.runHomePage();
 		if(settings.getMusic()) { hpvC.runMusic(); }
@@ -368,6 +375,8 @@ public class GameDuoController implements KeyListener{
 	}
 	
 	public boolean isBackgroundEnabled() { return settings.getBackground(); }
+
+	
 
 
 }

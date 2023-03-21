@@ -243,7 +243,7 @@ public class GameDuoView extends JPanel{
 			replay.addActionListener(e -> {
 				// rejouer
 				reset();
-				//controller.replay();
+				controller.replay();
 			});
 			this.setVisible(true);
 			this.revalidate();
