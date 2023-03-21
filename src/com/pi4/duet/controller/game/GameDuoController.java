@@ -172,8 +172,9 @@ public class GameDuoController implements KeyListener{
 	public void verifyCollision(Side side, Obstacle o) {
 		int res = model.getWheel(side).isInCollision(o);
 		ObstacleView ov = o.getController().getView();
-		double oX =  o.getCoords()[0].getX();
-		double oY = o.getCoords()[0].getY();
+		int oX = (int) o.getCoords()[0].getX();
+		int oY = (int) o.getCoords()[0].getY();
+		
 		if (res == 1) {			
 			gameStop();
 			model.setState(State.FINISHED);
@@ -185,7 +186,7 @@ public class GameDuoController implements KeyListener{
 		else if (res == 2) {			
 			gameStop();
 			model.setState(State.FINISHED);
-			ov.addCollision(ov.new CollisionView(getCenterBall2(side).getX()- oX,getCenterBall2(side).getY() - oY, Color.blue));
+			ov.addCollision(ov.new CollisionView(getCenterBall2(side).getX() - oX,getCenterBall2(side).getY() - oY, Color.blue));
 			if (settings.getEffects()) defeatSound.play();
 			view.lostGame();
 			
@@ -193,8 +194,8 @@ public class GameDuoController implements KeyListener{
 		else if (res == 3) {
 			gameStop();
 			model.setState(State.FINISHED);
-			ov.addCollision(ov.new CollisionView(getCenterBall1(side).getX()- oX,getCenterBall1(side).getY() - oY, Color.red));
-			ov.addCollision(ov.new CollisionView(getCenterBall2(side).getX()- oX,getCenterBall2(side).getY() - oY, Color.blue));	
+			ov.addCollision(ov.new CollisionView(getCenterBall1(side).getX() - oX,getCenterBall1(side).getY() - oY, Color.red));
+			ov.addCollision(ov.new CollisionView(getCenterBall2(side).getX() - oX,getCenterBall2(side).getY() - oY, Color.blue));	
 			if (settings.getEffects()) defeatSound.play();
 			view.lostGame();			
 		}
@@ -320,7 +321,7 @@ public class GameDuoController implements KeyListener{
 		ObstacleController oc = new ObstacleController();
 		o.setController(oc);
 		oc.setModel(o);
-		ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(),getBallRadius());
+		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(),getBallRadius());
 		oc.setView(ov);
 		model.addObstacle(Side.HIGH, o);
 		view.addObstacle(ov);
@@ -329,7 +330,7 @@ public class GameDuoController implements KeyListener{
 		ObstacleController oc1 = new ObstacleController();
 		o1.setController(oc1);
 		oc1.setModel(o1);
-		ObstacleView ov1 = new ObstacleView((int) o1.getWidth(), (int) o1.getHeight(), (int) o1.getPos().getX(), (int) o1.getPos().getY(), getBallRadius());
+		ObstacleView ov1 = new ObstacleView(view.getWidth(), view.getHeight(), getBallRadius());
 		oc1.setView(ov1);
 		model.addObstacle(Side.LOW, o1);
 		view.addObstacle(ov1);

@@ -25,13 +25,13 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 	private Image collisionBlue;
 	private Image collisionRed;
 		
-	public ObstacleView(int width, int height, int x, int y, int ballRadius) {
+	public ObstacleView(int width, int height, int ballRadius) {
 		listCol = new ArrayList<CollisionView>();
 		this.setOpaque(false);
 		this.setSize(new Dimension(width, height));
+		this.setLocation(0, 0);
 		this.widthCol =ballRadius * 7;
 		this.heightCol = ballRadius * 7;
-		this.setLocation(x,y);
 		this.setVisible(true);
 		this.setLayout(null);
 		
@@ -67,7 +67,7 @@ public class ObstacleView extends JPanel { // dessin d'un obstacle
 			Graphics2D g2d = (Graphics2D) g.create();
 		    g2d.clip(polygon);
 		    for(CollisionView cv : listCol) {
-		    	g2d.drawImage(cv.icon, cv.x, cv.y, cv.width, cv.height, null);
+		    	g2d.drawImage(cv.icon, cv.x + polygon.xpoints[0], cv.y + polygon.ypoints[0], cv.width, cv.height, null);
 		    }
 		    g2d.dispose();
 		}		

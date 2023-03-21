@@ -135,8 +135,9 @@ public class GameController implements KeyListener {
 		if (model.getState() == State.FINISHED) return;
 		int res = model.getWheel().isInCollision(o);
 		ObstacleView ov = o.getController().getView();
-		double oX =  o.getCoords()[0].getX();
-		double oY = o.getCoords()[0].getY();
+		int oX = (int) o.getCoords()[0].getX();
+		int oY = (int) o.getCoords()[0].getY();
+				
 		if (res == 1) {			
 			gameStop();
 			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
@@ -161,7 +162,7 @@ public class GameController implements KeyListener {
 			gameStop();
 			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
 			model.setState(State.FINISHED);
-			ov.addCollision(ov.new CollisionView(getCenterBall1().getX()- oX,getCenterBall1().getY() - oY, Color.red));
+			ov.addCollision(ov.new CollisionView(getCenterBall1().getX()- oX,getCenterBall1().getY() - oY , Color.red));
 			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));	
 			if (settings.getEffects()) defeatSound.play();
 			view.lostGame();
@@ -224,7 +225,7 @@ public class GameController implements KeyListener {
 	}
 			
 	public void addObstacle(Obstacle o) {
-		ObstacleView ov = new ObstacleView((int) o.getWidth(), (int) o.getHeight(), (int) o.getPos().getX(), (int) o.getPos().getY(), getBallRadius());
+		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), getBallRadius());
 		ObstacleController oc = new ObstacleController();
 		if (hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 0) {
 			ov.setColList(hpvC.getObstaclesViews().get(0).getCollisions());

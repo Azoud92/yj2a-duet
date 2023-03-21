@@ -39,6 +39,7 @@ public class Obstacle implements Serializable {
 	
 	// Met à jour la pos. de l'obstacle pour un deltaX et deltaY données
 	public void update(double deltaX, double deltaY) {
+		
 		for (Point p : coords) {
 			p.setX(p.getX() + deltaX * velocity);
 			p.setY(p.getY() + deltaY * velocity);

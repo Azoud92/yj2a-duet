@@ -36,12 +36,12 @@ public class ObstacleController implements Serializable {
 		int[] x = new int[coords.length];
 		int[] y = new int [coords.length];
 		for (int i = 0; i < coords.length; i++) {
-			x[i] = (int) (coords[i].getX() - coords[0].getX());
-			y[i] = (int) (coords[i].getY() - coords[0].getY());
+			x[i] = (int) (coords[i].getX() );
+			y[i] = (int) (coords[i].getY() );
 		}
 		
 		view.setPolygon(new Polygon(x, y, coords.length));
-		view.setLocation((int)coords[0].getX(), (int)coords[0].getY());
+
 	}
 			
 }
