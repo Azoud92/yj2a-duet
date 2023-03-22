@@ -347,7 +347,7 @@ public class GameDuoController implements KeyListener{
 	
 	public int getBallRadius() {
 		// TODO Auto-generated method stub
-		return model.getWheel(Side.LOW).ballRadius;
+		return model.getWheel(Side.LOW).getBallRadius();
 	}
 	
 	public Point getCenterBall1(Side side) {

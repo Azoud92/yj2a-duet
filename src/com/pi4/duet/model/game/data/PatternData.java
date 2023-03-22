@@ -1,10 +1,11 @@
-package com.pi4.duet.model.game;
+package com.pi4.duet.model.game.data;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
 import com.pi4.duet.Point;
+import com.pi4.duet.model.game.Obstacle;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.pi4.duet.model.game;
+package com.pi4.duet.model.game.data;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -6,6 +6,8 @@ import java.util.TimerTask;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameController;
+import com.pi4.duet.model.game.Obstacle;
+
 import java.io.IOException;
 
 public class ObstacleQueue extends Timer { // représente la liste avec les délais d'apparition des obstacles
@@ -40,7 +42,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	public void putObstacle(Obstacle o, long delay, ObstacleQueueStatus s) { // delay est en millisecondes
 		this.schedule(new TimerTask() {
 			public void run() {				
-				addObstacle(o);	
+				addObstacle(o);
 				status = s;
 			}
 		}, delay);
@@ -62,8 +64,8 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		int i = 0;
 
 		for (Long delay : data.keySet()) {			
-			if (i == data.keySet().size() - 1) putObstacle(data.get(delay), delay, ObstacleQueueStatus.FINISHED);
-			else if (i == 0) putObstacle(data.get(delay), delay, ObstacleQueueStatus.DELIVERY_IN_PROGRESS);
+			if (i == data.keySet().size() - 1) putObstacle(data.get(delay), delay, ObstacleQueueStatus.DELIVERY_IN_PROGRESS);
+			else if (i == 0) putObstacle(data.get(delay), delay, ObstacleQueueStatus.FINISHED);
 			else putObstacle(data.get(delay), delay);
 			i++;
 		}

@@ -344,8 +344,8 @@ public class GameDuoView extends JPanel{
 					double angleTmp = angle;
 
 					for (int i = coordX.length - 1; i >= 0; i--) {					
-						coordX[i] = (int) (wheel.radius * Math.cos(angleTmp) + wheel.getCenter().getX()) - wheel.ballRadius;
-						coordY[i] = (int) (wheel.radius * Math.sin(angleTmp) + wheel.getCenter().getY()) - wheel.ballRadius;
+						coordX[i] = (int) (wheel.radius * Math.cos(angleTmp) + wheel.getCenter().getX()) - wheel.getBallRadius();
+						coordY[i] = (int) (wheel.radius * Math.sin(angleTmp) + wheel.getCenter().getY()) - wheel.getBallRadius();
 						if (dir == Direction.HORAIRE) {
 							angleTmp += Math.toRadians(1 * wheel.rotationSpeed);
 						}
@@ -358,8 +358,8 @@ public class GameDuoView extends JPanel{
 					double angleTmp = angle + Math.PI;
 				
 					for (int i = coordX.length - 1; i>=0; i--) {					
-						coordX[i] = (int) (wheel.radius * Math.cos(angleTmp) +  wheel.getCenter().getX()) - wheel.ballRadius;
-						coordY[i] = (int) (wheel.radius * Math.sin(angleTmp) +  wheel.getCenter().getY()) - wheel.ballRadius;
+						coordX[i] = (int) (wheel.radius * Math.cos(angleTmp) +  wheel.getCenter().getX()) - wheel.getBallRadius();
+						coordY[i] = (int) (wheel.radius * Math.sin(angleTmp) +  wheel.getCenter().getY()) - wheel.getBallRadius();
 						if (dir == Direction.HORAIRE) {
 							angleTmp += Math.toRadians(1 * wheel.rotationSpeed);
 						}

@@ -25,9 +25,9 @@ public class GamePlaneDuo { // Représente le modèle du jeu : coordonnées du v
 		this.width = width;
 		this.height = height;		
         this.wheelB = new Wheel(new Point(width / 2, height - 135));
-        wheelB.radius = wheelB.radius*9/10;
+        wheelB.setBallRadius(wheelB.radius*9/10);
         this.wheelH = new Wheel(new Point(width / 2, 135));
-        wheelH.radius = wheelH.radius*9/10;
+        wheelH.setBallRadius(wheelH.radius*9/10);
         this.controller = controller;
 
         this.obstaclesH = new ArrayList<Obstacle>();

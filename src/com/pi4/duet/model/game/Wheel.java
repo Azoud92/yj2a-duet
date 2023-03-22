@@ -9,12 +9,16 @@ public class Wheel { // représente le volant du jeu
 	private Point center;	
 	private Ball ball_1, ball_2; // resp. balle rouge & balle bleue
 	
-	public int radius = 100; // rayon du volant	
+	public final int radius = 100; // rayon du volant	
 	public final double rotationSpeed = 0.25;
-	public final int ballRadius = 10; // rayon de la balle
+	private int ballRadius = 10; // rayon de la balle
 	
 	private double angle = 0; // angle des balles
 	private double inertia = 0; // inertie pour donner l'illusion d'accélération / freinage
+	
+	private Direction wheelRotating = null;
+	private Direction lastRotation = null;
+	private boolean wheelBreaking = false;
 	
 	public Wheel(Point center) {
 		this.center = center;
@@ -40,11 +44,12 @@ public class Wheel { // représente le volant du jeu
 		ball_1.centerBall.setX(center.getX() - dist1);
 		ball_1.centerBall.setY(center.getY() - dist2);
 	}
-	public void moveRight(){
+	
+	public void moveRight() {
 		ball_2.centerBall.setX(center.getX()+10);
 		ball_1.centerBall.setX(center.getX()+10);
 	}
-	public void moveLeft(){
+	public void moveLeft() {
 		ball_2.centerBall.setX(center.getX()-10);
 		ball_1.centerBall.setX(center.getX()-10);
 	}
@@ -63,50 +68,47 @@ public class Wheel { // représente le volant du jeu
 		return 0;
 	}
 	
-	public Point getCenterBall1() {
-		return ball_1.centerBall;
-	}
+	public Point getCenterBall1() { return ball_1.centerBall; }	
+	public Point getCenterBall2() { return ball_2.centerBall; }
 	
-	public Point getCenterBall2() {
-		return ball_2.centerBall;
-	}
-	
-	public double getAngle() {
-		return angle;
-	}
-	
-	public void setAngle(double angle) {
-		this.angle = angle;
-	}
-	public void setRadius(int radius) {
-		this.radius = radius;
-	}
+	public double getAngle() { return angle; }	
+	public void setAngle(double angle) { this.angle = angle; }
 		
-	public Point getCenter() {
-		// TODO Auto-generated method stub
-		return center;
-	}
+	public Point getCenter() { return center; }
 	
-	public void setInertia(double inertia) {
-		this.inertia = inertia;
-	}
-	
+	public void setInertia(double inertia) { this.inertia = inertia; }	
 	public double getInertia() { return inertia; }
 	
+	public void setBallRadius(int r) { this.ballRadius = r; }	
+	public int getBallRadius() { return ballRadius; }
+	
+	public Direction getWheelRotating() { return wheelRotating; }
+	public void setWheelRotating(Direction wheelRotating) {	this.wheelRotating = wheelRotating;	}
+	public void stopWheelRotation() {
+		if (wheelRotating != null) lastRotation = wheelRotating;
+		wheelRotating = null;
+	}
+
+	public Direction getLastRotation() { return lastRotation; }
+	public void setLastRotation(Direction lastRotation) { this.lastRotation = lastRotation; }
+
+	public boolean isWheelBreaking() { return wheelBreaking; }
+	public void setWheelBreaking(boolean wheelBreaking) { this.wheelBreaking = wheelBreaking; }
+
 	private class Ball { // représente une balle rattachée au volant
 		
 		Point centerBall;
 		
-		public Ball(Point centerBall) {
+		Ball(Point centerBall) {
 			this.centerBall = centerBall;
 		}
 		
-		public void setCenterBall(Point centerBall) {
+		void setCenterBall(Point centerBall) {
 			this.centerBall = centerBall;			
 		}
 
 		// Méthode principale servant à déterminer si il y a collision entre le volant et l'obstacle par le biais de calculs
-		public boolean isInCollision(Obstacle o) {
+		boolean isInCollision(Obstacle o) {
 	        int n = o.getCoords().length;
 	        double[] distances = new double[n];
 
