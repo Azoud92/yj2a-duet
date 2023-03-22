@@ -12,10 +12,7 @@ import javax.swing.*;
 import com.pi4.duet.controller.game.GameController;
 
 public class GameView extends JPanel { // représente la vue du jeu (graphismes, ...)
-
-	int step=1;
-	int y=0;
-	
+		
 	private static final long serialVersionUID = -306594423077754361L;
 		
 	private GameController controller;
@@ -23,6 +20,9 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 	private WheelView wheel;
 	private JButton back, replay;
 	private Dimension size;
+	
+	private double y_background = 0;
+	private double background_speed = 0.5;
 	
 	private ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
 
@@ -36,10 +36,7 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.setPreferredSize(dim);
-		       
-		//wheel = new WheelView(new Dimension((int) controller.getWheelController().getWheelRadius(), (int) controller.getWheelController().getWheelRadius()),
-			//	controller.getWheelController());
-		
+		       		
 		wheel = new WheelView(size, controller.getWheelController());
 		this.add(wheel);
 		
@@ -128,19 +125,14 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		if (controller.isBackgroundEnabled()){
-			for(int i=0;i<100;i++) {
-				g.drawImage(background, 0, y+(i*630), size.width, size.height, this);
+			for(int i = 0; i < 100; i++) {
+				g.drawImage(background, 0, (int) (y_background + (i * 630)), size.width, size.height, this);
 			}
 		}
 		else g.fillRect(0, 0, size.width, size.height);
-
-		try {
-			Thread.sleep(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		if(controller.getBackgroundMouvement()==false) {
-			y = y - step;
+		
+		if(controller.getBackgroundMouvement() == false) {
+			y_background -= background_speed;
 			repaint();
 		}
 	}
