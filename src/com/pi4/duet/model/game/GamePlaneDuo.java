@@ -39,12 +39,7 @@ public class GamePlaneDuo { // Représente le modèle du jeu : coordonnées du v
 		else if(side == Side.LOW) wheelRotatingB = dir;
 	}
 	
-	/*public void resetObstacles() { // on remplace tous les obstacles à leur position initiale
-		for (Obstacle o : obstacles) {
-			o.update(0, - (o.getCoords()[0].getY() / o.getVelocity()));
-			controller.refreshView();
-		}		
-	}*/
+
 	
 	public void stopWheelRotation(Side side) {
 		if(side == Side.HIGH) {

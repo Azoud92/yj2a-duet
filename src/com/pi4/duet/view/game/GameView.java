@@ -71,9 +71,9 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 				break;			
 			case 1:
 				this.setVisible(false);
+				controller.gameStop();
 				controller.stopMusic();
 				controller.affMenu();
-				controller.gameStop();
 				break;			
 			case 2: System.exit(0);
 		}
