@@ -15,8 +15,8 @@ import com.pi4.duet.controller.game.GameDuoController;
 import com.pi4.duet.model.game.GamePlane;
 import com.pi4.duet.model.game.GamePlaneDuo;
 import com.pi4.duet.model.game.Obstacle;
-import com.pi4.duet.model.game.PatternData;
 import com.pi4.duet.model.game.State;
+import com.pi4.duet.model.game.data.PatternData;
 import com.pi4.duet.model.home.HomePage;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameDuoView;
@@ -73,9 +73,11 @@ public class HomePageViewController {
 		}
 		
 		gc = new GameController(this, sm, scale);
-		gp = new GamePlane(size.width / 3, size.height, gc, 1);
+		gp = new GamePlane(size.width / 3, size.height, gc, numLevel);
+		gc.getWheelController().setModel(gp.getWheel());
 		gc.setModel(gp);
 		gv = new GameView(size, gc);
+		gc.getWheelController().setView(gv.getWheel());
 		gc.setView(gv);
 		gv.addKeyListener(gc);	
 				

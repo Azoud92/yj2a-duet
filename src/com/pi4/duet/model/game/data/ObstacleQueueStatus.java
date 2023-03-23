@@ -1,4 +1,4 @@
-package com.pi4.duet.model.game;
+package com.pi4.duet.model.game.data;
 
 public enum ObstacleQueueStatus {
 	WAITING,

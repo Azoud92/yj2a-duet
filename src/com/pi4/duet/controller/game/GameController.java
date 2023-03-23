@@ -11,13 +11,11 @@ import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
 import com.pi4.duet.controller.home.HomePageViewController;
-import com.pi4.duet.model.Direction;
-import com.pi4.duet.model.game.Wheel;
+import com.pi4.duet.model.game.data.ObstacleQueue;
+import com.pi4.duet.model.game.data.ObstacleQueueStatus;
+import com.pi4.duet.model.game.data.PatternData;
 import com.pi4.duet.model.game.GamePlane;
 import com.pi4.duet.model.game.Obstacle;
-import com.pi4.duet.model.game.ObstacleQueue;
-import com.pi4.duet.model.game.ObstacleQueueStatus;
-import com.pi4.duet.model.game.PatternData;
 import com.pi4.duet.model.game.State;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameView;
@@ -37,6 +35,8 @@ public class GameController implements KeyListener {
 	private ObstacleQueue gameTimer;
 	
 	private HomePageViewController hpvC;
+	
+	private WheelController wheelController;
 
 	private boolean backgroundMovement;
 	
@@ -46,11 +46,15 @@ public class GameController implements KeyListener {
 		music.stop();
 		this.scale = scale;
 		gameTimer = new ObstacleQueue(this, scale);
+		
+		this.wheelController = new WheelController(settings, this);
 	}
 		
 	public void setModel(GamePlane model) { this.model = model; }
 	
 	public void setView(GameView view) { this.view = view; }
+	
+	public WheelController getWheelController() { return this.wheelController; }
 	
 	public GameView getView() {
 		return view;
@@ -64,7 +68,9 @@ public class GameController implements KeyListener {
 		if (model.getState() != State.READY) return;
 		model.setState(State.ON_GAME);
 		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
-		model.setWheelRotating(null);
+		
+		wheelController.setWheelRotating(null);
+		
 		if (settings.getMusic()) music.play();
 		
 		gameTimer = new ObstacleQueue(this, scale);
@@ -83,44 +89,7 @@ public class GameController implements KeyListener {
 						}
 					}
 					else refreshView();
-					// animation du volant selon la direction souhaitée
-					if (model.getWheelRotating() == null) stopMvt();
-					double in = model.getWheel().getInertia();
-					
-					if (model.getWheelBreaking()) {
-						if (in > 0) {
-							if(!settings.getInertie()) model.getWheel().setInertia(model.getWheel().rotationSpeed);
-							else model.getWheel().setInertia(in - 0.0004);
-							model.getWheel().rotate(model.getLastRotation());
-							updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
-							updateMvt(model.getLastRotation());
-						}
-						else {
-							model.stopWheelBreaking();
-							model.getWheel().setInertia(0);
-							model.setLastRotation(null);
-						}						
-					}
-					
-					if (model.getWheelRotating() != null) {
-						if (model.getWheelBreaking() == false) {
-							if (in < model.getWheel().rotationSpeed) {
-								if(!settings.getInertie()) model.getWheel().setInertia(model.getWheel().rotationSpeed);
-								else model.getWheel().setInertia(in + 0.0004);
-							}
-						}
-					}
-						
-					if (model.getWheelRotating() == Direction.ANTI_HORAIRE) {					
-						model.getWheel().rotate(Direction.ANTI_HORAIRE);
-						updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
-						updateMvt(Direction.ANTI_HORAIRE);
-					}
-					else if (model.getWheelRotating() == Direction.HORAIRE) {					
-						model.getWheel().rotate(Direction.HORAIRE);
-						updateWheel(model.getWheel().getCenterBall2(), model.getWheel().getCenterBall1());
-						updateMvt(Direction.HORAIRE);
-					}		
+					wheelController.animateWheel();
 				}
 			}			
 		}, 0, 1);
@@ -174,7 +143,6 @@ public class GameController implements KeyListener {
 	public void resetIntertie() {
 		model.getWheel().setInertia(0);
 	}
-
 	
 	public void hasWin() {
 		if (model.getObstacles().size() == 0 && gameTimer.getStatus() == ObstacleQueueStatus.FINISHED) {
@@ -226,6 +194,7 @@ public class GameController implements KeyListener {
 			
 	public void addObstacle(Obstacle o) {
 		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), getBallRadius());
+
 		ObstacleController oc = new ObstacleController();
 		if (hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 0) {
 			ov.setColList(hpvC.getObstaclesViews().get(0).getCollisions());
@@ -237,20 +206,13 @@ public class GameController implements KeyListener {
 		model.addObstacle(o);
 		view.addObstacle(ov);	
 	}
-
-		
-	public void updateWheel(Point blue, Point red) {
-		// TODO Auto-generated method stub	
-		view.setBallsPosition(blue, red);
+	
+	
+	
+	private int getBallRadius() {
+		return model.getWheel().getBallRadius();
 	}
 
-	
-	public void updateMvt(Direction dir) { 
-		double angle = getWheelangle();
-		view.MvtBlueRotate(dir, angle); 
-		view.MvtRedRotate(dir, angle);
-	}
-	
 	public void playMusic() {
 		music.play();
 	}
@@ -258,18 +220,10 @@ public class GameController implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == State.ON_GAME){
-			switch(e.getKeyCode()) {
-				case KeyEvent.VK_RIGHT: 
-					model.stopWheelRotation();
-					if(settings.getInertie()) model.startWheelBreaking();
-					break;
-				case KeyEvent.VK_LEFT:
-					model.stopWheelRotation();
-					if(settings.getInertie()) model.startWheelBreaking();
-					break;
+			switch(e.getKeyCode()) {				
 				case KeyEvent.VK_SPACE:
 					this.setBackgroundMovement(true);
-					model.stopWheelRotation();
+					wheelController.stopWheelRotation();
 					model.setState(State.PAUSED);
 					view.affichePause();
 					break;				
@@ -284,37 +238,7 @@ public class GameController implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		if (model.getState() == State.ON_GAME){
-			Wheel w = model.getWheel();
-			switch (e.getKeyCode()){
-				case KeyEvent.VK_RIGHT: 
-					if (!model.getWheelBreaking()) model.startWheelRotation(Direction.ANTI_HORAIRE);
-					else if (model.getLastRotation() != null) switch (model.getLastRotation()) {
-					case HORAIRE : w.setInertia(w.getInertia() * 0.9); break;
-					case ANTI_HORAIRE : if (w.getInertia() <= w.rotationSpeed) w.setInertia(w.getInertia() + 0.004); break;
-					}
-					break;
-				case KeyEvent.VK_LEFT:
-					if (!model.getWheelBreaking()) model.startWheelRotation(Direction.HORAIRE);
-					else if (model.getLastRotation() != null) switch (model.getLastRotation()) {
-					case HORAIRE : if (w.getInertia() <= w.rotationSpeed) w.setInertia(w.getInertia() + 0.004); break;
-					case ANTI_HORAIRE : w.setInertia(w.getInertia() * 0.9); break;
-					}
-
-					break;
-				case KeyEvent.VK_CONTROL:{
-					System.out.println("A");
-					System.out.println(w.getCenterBall1().getX());
-					w.moveLeft();
-					System.out.println(w.getCenterBall1().getX());
-					System.out.println("B");
-					break;
-				}
-				case KeyEvent.VK_ALT:w.moveRight();
-				break;
-			}
-		}
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
@@ -329,72 +253,32 @@ public class GameController implements KeyListener {
 		this.setBackgroundMovement(true);
 	}	
 	
-	public void stopMusic() {
-		music.stop();
-		
-	}
+	public void stopMusic() { music.stop(); }
 	
 	public void replay() {
 		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), model.numLevel, true);
 	}
 	
-	public void stopMvt() {
-		view.stopMvt();		
-	}
+	public Dimension getSize() { return view.getSize(); }
 	
-	public Dimension getSize() {
-		return view.getSize();
-	}
+	public Point getCenterBall1() { return model.getWheel().getCenterBall1(); }
+	
+	public Point getCenterBall2() { return model.getWheel().getCenterBall2(); }
+	
+	public int getWheelRadius() { return model.getWheel().radius; }
 
-	
-	public Point getCenterBall1() {
-		return model.getWheel().getCenterBall1();
-	}
-	
-	public Point getCenterBall2() {
-		return model.getWheel().getCenterBall2();
-	}
-	
-	public int getWheelRadius() {
-		// TODO Auto-generated method stub
-		return model.getWheel().radius;
-	}
-
-	public GamePlane getModel() {
-		return model;
-	}
-
-	public int getBallRadius() {
-		// TODO Auto-generated method stub
-		return model.getWheel().ballRadius;
-	}
-	public double getWheelSpeed() {
-		return model.getWheel().rotationSpeed;
-	}
-	
-	public double getWheelangle() {
-		return model.getWheel().getAngle();
-	}
-	
-	public Point getWheelCenter() {
-		return model.getWheel().getCenter();
-	}
+	public GamePlane getModel() { return model; }
 	
 	public boolean isBackgroundEnabled() { return settings.getBackground(); }
 	
-	public void addObstacleTestDelay(Obstacle o, long delay) {
-		this.gameTimer.putObstacle(o, delay);
-	}
-	
-	public void addObstacleTestDelay(Obstacle o, long delay, ObstacleQueueStatus status) {
-		this.gameTimer.putObstacle(o, delay, status);
-	}
-	
-	public void addPattern(PatternData d) {
-		gameTimer.putPattern(d);
-	}
+	public void addPattern(PatternData d) { gameTimer.putPattern(d); }
 
-	public Boolean getBackgroundMouvement(){ return this.backgroundMovement;}
-	public void setBackgroundMovement(boolean b){ this.backgroundMovement=b;}
+	public Boolean getBackgroundMouvement() { return this.backgroundMovement; }
+	public void setBackgroundMovement(boolean b) { this.backgroundMovement = b; }
+
+	public State getState() {
+		// TODO Auto-generated method stub
+		return model.getState();
+	}
 
 }
