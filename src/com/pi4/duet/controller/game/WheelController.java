@@ -82,7 +82,27 @@ public class WheelController implements KeyListener {
 			view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
 					model.getCenterBall2().getY() - model.getBallRadius()));
 			updateMvt(Direction.HORAIRE);
-		}	
+		}
+
+		if(model.getStopMovement()==true) {
+			if (model.getWheelMovement() == Direction.LEFT) {
+				model.move(Direction.LEFT);
+				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
+						model.getCenterBall1().getY() - model.getBallRadius()));
+				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
+						model.getCenterBall2().getY() - model.getBallRadius()));
+
+
+			} else if (model.getWheelMovement() == Direction.RIGHT) {
+				model.move(Direction.RIGHT);
+				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
+						model.getCenterBall1().getY() - model.getBallRadius()));
+				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
+						model.getCenterBall2().getY() - model.getBallRadius()));
+
+
+			}
+		}
 	}
 	
 	public void updateMvt(Direction dir) { 
@@ -129,15 +149,13 @@ public class WheelController implements KeyListener {
 						}
 					}
 					break;
+				case KeyEvent.VK_SHIFT:
+					model.setStopMovement(true);
+					model.setWheelMovement(Direction.RIGHT);
+					break;
 				case KeyEvent.VK_CONTROL:
-					System.out.println("A");
-					System.out.println(model.getCenterBall1().getX());
-					model.moveLeft();
-					System.out.println(model.getCenterBall1().getX());
-					System.out.println("B");
-					break;				
-				case KeyEvent.VK_ALT:
-					model.moveRight();
+					model.setStopMovement(true);
+					model.setWheelMovement(Direction.LEFT);
 					break;
 			}
 		}
@@ -155,6 +173,13 @@ public class WheelController implements KeyListener {
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 				break;
+
+				case KeyEvent.VK_SHIFT:
+					model.setStopMovement(false);
+					break;
+				case KeyEvent.VK_CONTROL:
+					model.setStopMovement(false);
+					break;
 			}
 		}		
 	}

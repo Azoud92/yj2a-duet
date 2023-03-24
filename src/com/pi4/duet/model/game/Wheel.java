@@ -18,6 +18,9 @@ public class Wheel { // représente le volant du jeu
 	
 	private Direction wheelRotating = null;
 	private Direction lastRotation = null;
+	private Direction wheelMovement =null;
+
+	private boolean stopMovement=false;
 	private boolean wheelBreaking = false;
 	
 	public Wheel(Point center) {
@@ -44,14 +47,18 @@ public class Wheel { // représente le volant du jeu
 		ball_1.centerBall.setX(center.getX() - dist1);
 		ball_1.centerBall.setY(center.getY() - dist2);
 	}
-	
-	public void moveRight() {
-		ball_2.centerBall.setX(center.getX()+10);
-		ball_1.centerBall.setX(center.getX()+10);
-	}
-	public void moveLeft() {
-		ball_2.centerBall.setX(center.getX()-10);
-		ball_1.centerBall.setX(center.getX()-10);
+
+	public void move(Direction dir) {
+		if(dir==Direction.RIGHT && ball_2.centerBall.getX()<420&& ball_1.centerBall.getX()<420) {
+			ball_2.centerBall.setX(getCenterBall2().getX() + 0.5);
+			ball_1.centerBall.setX(getCenterBall1().getX() + 0.5);
+			center.setX(center.getX() + 0.5);
+		}else if(dir==Direction.LEFT && ball_1.centerBall.getX()>0 && ball_2.centerBall.getX()>0){
+			ball_2.centerBall.setX(getCenterBall2().getX()-0.5);
+			ball_1.centerBall.setX(getCenterBall1().getX()-0.5);
+			center.setX(center.getX()-0.5);
+		}
+
 	}
 		
 	// on remet les balles à leur position initiale (droites)
@@ -94,6 +101,14 @@ public class Wheel { // représente le volant du jeu
 
 	public boolean isWheelBreaking() { return wheelBreaking; }
 	public void setWheelBreaking(boolean wheelBreaking) { this.wheelBreaking = wheelBreaking; }
+
+
+	public Direction getWheelMovement() { return wheelMovement; }
+	public void setWheelMovement(Direction wheelMovement) {	this.wheelMovement= wheelMovement;	}
+
+	public void setStopMovement(boolean stopMovement){this.stopMovement= stopMovement;}
+	public boolean getStopMovement(){return this.stopMovement;}
+
 
 	private class Ball { // représente une balle rattachée au volant
 		
