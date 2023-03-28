@@ -1,51 +1,57 @@
 package com.pi4.duet.view.game;
 
-import java.awt.Color;    
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import com.pi4.duet.controller.game.GameController;
 
-public class GameView extends JPanel { // représente la vue du jeu (graphismes, ...)
-		
-	private static final long serialVersionUID = -306594423077754361L;
-		
-	private GameController controller;
+public abstract class GameView extends JPanel {
 
-	private WheelView wheel;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2419747303611397162L;
+
+	protected GameController controller;
+
+	private WheelView wheelView;
 	private JButton back, replay;
-	private Dimension size;
-	
-	private double y_background = 0;
-	private double background_speed = 0.5;
-	
-	private ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
+	protected Dimension size;
 
-	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
-	
+	protected double y_background = 0;
+	protected double background_speed = 0.5;
+
+	private ArrayList<ObstacleView> obstacles = new ArrayList<>();
+
+	protected Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
+
 	public GameView(Dimension size, GameController controller) {
-		
 		this.size = new Dimension(size.width / 3, size.height);
-
 		this.controller = controller;
 
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.setPreferredSize(dim);
-		       		
-		wheel = new WheelView(size, controller.getWheelController());
-		this.add(wheel);
-		
+
+		wheelView = new WheelView(size, controller.getWheelController());
+		this.add(wheelView);
+
 		this.addKeyListener(controller);
-		this.addKeyListener(wheel.getController());
+		this.addKeyListener(wheelView.getController());
 		this.setLayout(null);
 	}
-	
-	public void affichePause() {
+
+	public final void affichePause() {
 		String[] option = {"Reprendre le jeu", "Revenir au menu", "Quitter le jeu"};
 		int indice = JOptionPane.showOptionDialog(this,
 				"Le jeu est en pause, veuillez choisir une option",
@@ -58,18 +64,18 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		switch (indice) {
 			case 0:
 				decompte();
-				break;			
+				break;
 			case 1:
 				this.setVisible(false);
 				controller.gameStop();
 				controller.stopMusic();
 				controller.affMenu();
-				break;			
+				break;
 			case 2: System.exit(0);
 		}
 	}
 
-	public void decompte(){
+	public final void decompte(){
 		String[] resume = {"Reprendre maintenant"};
 		JOptionPane jboite2 = new JOptionPane("Le jeu va reprendre automatiquement dans moins de 3 secondes",
 				JOptionPane.INFORMATION_MESSAGE, -1,
@@ -109,28 +115,29 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		timer.setRepeats(false);
 		timer.start();
 	}
+
 	public void timerFinish(ConfettiView cv) {
 		controller.affMenu();
 		cv.finish();
 		
 	}
-	
-		
-	public void refresh() {
+
+
+	public final void refresh() {
 		revalidate();
 		repaint();
 	}
-		
-	public void addObstacle(ObstacleView ov) {
+
+	public final void addObstacle(ObstacleView ov) {
 		this.add(ov);
 		obstacles.add(ov);
 	}
-	
-	
-	public void removeObstacle(ObstacleView ov) {
+
+
+	public final void removeObstacle(ObstacleView ov) {
 		this.remove(ov);
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -140,27 +147,27 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 			}
 		}
 		else g.fillRect(0, 0, size.width, size.height);
-		
-		if(controller.getBackgroundMouvement() == false) {
+
+		if(!controller.getBackgroundMouvement()) {
 			y_background -= background_speed;
 			repaint();
 		}
 	}
-	
+
 	// Affichage lorsqu'un joueur perd la partie
 	public void lostGame() {
 		background =  new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
-		wheel.greyWheel();
-		
+		wheelView.greyWheel();
+
 		back = new JButton("RETOUR");
 		back.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
 		back.setForeground(Color.RED);
 		back.setBackground(Color.BLACK);
 		back.setFont(new Font("Arial", Font.BOLD, 50));
 		back.setVisible(true);
-		this.add(back);	
+		this.add(back);
 		setComponentZOrder(back, 1);
-		
+
 		replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
 		replay.setBackground(Color.BLACK);
@@ -169,12 +176,12 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		replay.setVisible(true);
 		add(replay);
 		setComponentZOrder(replay, 0);
-		
+
 		back.addActionListener(e -> {
 			reset();
 			controller.affMenu();
 		});
-		
+
 		replay.addActionListener(e -> {
 			// rejouer
 			reset();
@@ -182,28 +189,30 @@ public class GameView extends JPanel { // représente la vue du jeu (graphismes,
 		});
 		this.setVisible(true);
 		this.revalidate();
-		this.repaint();		
+		this.repaint();
 	}
 
 	// On réaffiche la partie
-	private void reset() {
+	protected void reset() {
 		this.remove(back);
 		this.remove(replay);
 		this.repaint();
-		
+
 		background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
-		wheel.resetWheelColor();	
+		wheelView.resetWheelColor();
 	}
-	
-	public Dimension getSize() {
+
+	@Override
+	public final Dimension getSize() {
 		return size;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public ArrayList<ObstacleView> getObstacles() { return (ArrayList<ObstacleView>) obstacles.clone(); }
 
-	public WheelView getWheel() {
+	@SuppressWarnings("unchecked")
+	public final ArrayList<ObstacleView> getObstacles() { return (ArrayList<ObstacleView>) obstacles.clone(); }
+
+	public final WheelView getWheel() {
 		// TODO Auto-generated method stub
-		return wheel;
-	}	
+		return wheelView;
+	}
+
 }

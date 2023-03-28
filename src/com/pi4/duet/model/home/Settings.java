@@ -12,14 +12,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Settings implements Serializable {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3702397720992732515L;
-	
+
 	private boolean music = true, effects = true, background = true, inertie = true;
-	
+
 	public void setMusic(boolean val) {
 		// TODO Auto-generated method stub
 		this.music = val;
@@ -29,16 +29,16 @@ public class Settings implements Serializable {
 		// TODO Auto-generated method stub
 		this.effects = val;
 	}
-	
+
 	public void setBackground(boolean val) {
 		// TODO Auto-generated method stub
 		this.background = val;
 	}
-	
+
 	public boolean getMusic() {
 		return music;
 	}
-	
+
 	public boolean getEffects() {
 		return effects;
 	}
@@ -54,7 +54,7 @@ public class Settings implements Serializable {
 	public void setInertie(boolean inertie) {
 		this.inertie = inertie;
 	}
-	
+
 	// Sauvegarde des paramètres
 	public boolean save() {
 		Path dataFolder = Paths.get("data");
@@ -65,7 +65,7 @@ public class Settings implements Serializable {
 			e1.printStackTrace();
 			return false;
 		}
-		
+
 		File file = new File("data/settings.ser");
 		if (!file.exists()) {
 			try {
@@ -87,7 +87,7 @@ public class Settings implements Serializable {
 			return false;
 		}
 	}
-	
+
 	public static Settings read() {
 		File file = new File("data/settings.ser");
 		try {
@@ -103,6 +103,6 @@ public class Settings implements Serializable {
 			return new Settings();
 		}
 	}
-	
-	
+
+
 }
