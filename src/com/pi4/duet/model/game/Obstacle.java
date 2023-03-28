@@ -134,7 +134,10 @@ public class Obstacle implements Serializable, Cloneable {
 		return velocity;
 	}
 
-	/*
+	public void setVelocity(double velocity) {
+		this.velocity = velocity;
+	}
+/*
 	@Override
 	public String toString() {
 		String res = "[";
