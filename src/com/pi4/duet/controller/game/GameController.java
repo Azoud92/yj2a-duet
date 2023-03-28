@@ -118,7 +118,14 @@ public abstract class GameController implements KeyListener {
 					wheelController.stopWheelRotation();
 					model.setState(GameState.PAUSED);
 					view.affichePause();
+					for(int i=0;i<model.getObstacles().size();i++){
+						model.getObstacles().get(i).setVelocity(0.1);
+					}
 					break;
+				case KeyEvent.VK_DOWN:
+					for(int i=0;i<model.getObstacles().size();i++){
+						model.getObstacles().get(i).setVelocity(0.1);
+					}
 			}
 		}
 		else {
