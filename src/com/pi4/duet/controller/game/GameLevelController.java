@@ -61,8 +61,11 @@ public class GameLevelController extends GameController {
 		int res = model.getWheel().isInCollision(o);
 		ObstacleController oc = o.getController();
 
-		int oX = (int) o.getPoints()[0].getX();
-		int oY = (int) o.getPoints()[0].getY();
+		/*int oX = (int) o.getPoints()[0].getX();
+		int oY = (int) o.getPoints()[0].getY();*/
+		
+		int oX = (int) o.getCenter().getX();
+		int oY = (int) o.getCenter().getY();
 
 		
 		if (res > 0) {
