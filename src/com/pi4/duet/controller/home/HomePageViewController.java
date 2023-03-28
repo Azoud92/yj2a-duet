@@ -135,7 +135,7 @@ public class HomePageViewController {
 		gdv.setFocusable(true);
 
 		try {
-			gdc.addPattern(PatternData.read("2022-yj2-g2-duet/src/resources/levels/levelDuo.ser"));
+			gdc.addPattern(PatternData.read("src/resources/levels/levelDuo.ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

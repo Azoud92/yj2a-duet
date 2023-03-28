@@ -8,7 +8,7 @@ import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -24,7 +24,7 @@ public class ObstacleView extends JPanel {
 	private static final long serialVersionUID = 6211757738266989720L;
 
 	private Polygon polygon;
-	private HashMap<CollisionView, Double> collisionsMap = new HashMap<>();
+	private LinkedHashMap<CollisionView, Double> collisionsMap = new LinkedHashMap<>();
 	private int widthCollision, heightCollision;
 	private Image collisionRed, collisionBlue;
 
@@ -54,7 +54,9 @@ public class ObstacleView extends JPanel {
 	        g2d.drawPolygon(polygon);
 	        g2d.fillPolygon(polygon);
 			//g2d.clip(polygon);
-			for(CollisionView cv : collisionsMap.keySet()) {
+	        @SuppressWarnings("unchecked")
+			LinkedHashMap<CollisionView, Double> copy = (LinkedHashMap<CollisionView, Double>) collisionsMap.clone();
+			for(CollisionView cv : copy.keySet()) {
 				g2d = (Graphics2D) g.create();
 				Double angle = collisionsMap.get(cv);
 				
@@ -71,7 +73,7 @@ public class ObstacleView extends JPanel {
 
 		        // Rotation sur elle-même
 		        g2d.rotate(angle, x, y);
-		        
+		        		        
 		        g2d.drawImage(cv.icon, (int) (cv.point.getX() + controller.getCenter().getX()), (int) (cv.point.getY() + controller.getCenter().getY()), null);
 		       	        				
 		        g2d.dispose();
@@ -90,19 +92,19 @@ public class ObstacleView extends JPanel {
 			y[i] = (int) (points[i].getY());
 		}
 
-		this.polygon = new Polygon(x, y, points.length);
+		this.polygon = new Polygon(x, y, points.length);	
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setCollisionsMap(HashMap<CollisionView, Double> collisionsMap) {
+	public void setCollisionsMap(LinkedHashMap<CollisionView, Double> collisionsMap) {
 		// TODO Auto-generated method stub
-		this.collisionsMap = (HashMap<CollisionView, Double>) collisionsMap.clone();
+		this.collisionsMap = (LinkedHashMap<CollisionView, Double>) collisionsMap.clone();
 	}
 
 	@SuppressWarnings("unchecked")
-	public HashMap<CollisionView, Double> getCollisionsMap() { return (HashMap<CollisionView, Double>) this.collisionsMap.clone(); }
+	public LinkedHashMap<CollisionView, Double> getCollisionsMap() { return (LinkedHashMap<CollisionView, Double>) this.collisionsMap.clone(); }
 
-	public void addCollision(double angle, Point point, Color color) {		
+	public void addCollision(double angle, Point point, Color color) {
 		collisionsMap.put(new CollisionView(point.getX(), point.getY(), color), angle);
 	}
 
@@ -110,12 +112,11 @@ public class ObstacleView extends JPanel {
 		Image icon;
 		Point point;
 		int width, height;
-
+		
 		public CollisionView (double x, double y, Color color) {
 			this.width = widthCollision;
 			this.height = heightCollision;
 			this.point = new Point(x - width / 2, y - height / 2);
-
 			if(color == Color.blue) this.icon = collisionBlue;
 			if(color == Color.red) this.icon = collisionRed;
 		}
@@ -123,11 +124,12 @@ public class ObstacleView extends JPanel {
 
 	public void resetCollisions() {
 		@SuppressWarnings("unchecked")
-		HashMap<CollisionView, Double> copy = (HashMap<CollisionView, Double>) collisionsMap.clone();
+		LinkedHashMap<CollisionView, Double> copy = (LinkedHashMap<CollisionView, Double>) collisionsMap.clone();
 		for (CollisionView cv : copy.keySet()) {
-			collisionsMap.put(cv, - collisionsMap.get(cv));
-			//collisionsMap.put(cv, - collisionsMap.get(cv));
+			collisionsMap.remove(cv);
+			collisionsMap.put(cv, - copy.get(cv));				
 		}
 	}
+
 
 }

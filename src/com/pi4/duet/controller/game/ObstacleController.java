@@ -18,7 +18,7 @@ public class ObstacleController {
 		view.updatePosition();
 	}
 
-	public void addCollisionView(Point point, Color color) {
+	public void addCollisionView(Point point, Color color) {		
 		view.addCollision(model.getAngle(), point, color);
 	}
 
@@ -41,6 +41,7 @@ public class ObstacleController {
 		// TODO Auto-generated method stub
 		return model.getVelocity();
 	}
+	
 	public Point getCenter() {
 		// TODO Auto-generated method stub
 		return model.getCenter().clone();
