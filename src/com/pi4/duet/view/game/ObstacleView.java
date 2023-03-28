@@ -52,12 +52,12 @@ public class ObstacleView extends JPanel {
 	        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	        g2d.setColor(Color.WHITE);
 	        g2d.drawPolygon(polygon);
-	        g2d.fillPolygon(polygon);
-			//g2d.clip(polygon);
+	        g2d.fillPolygon(polygon);			
 	        @SuppressWarnings("unchecked")
 			LinkedHashMap<CollisionView, Double> copy = (LinkedHashMap<CollisionView, Double>) collisionsMap.clone();
 			for(CollisionView cv : copy.keySet()) {
 				g2d = (Graphics2D) g.create();
+				g2d.clip(polygon);
 				Double angle = collisionsMap.get(cv);
 				
 				// Translation pour centrer l'image
@@ -72,8 +72,7 @@ public class ObstacleView extends JPanel {
 		        }		        
 
 		        // Rotation sur elle-même
-		        g2d.rotate(angle, x, y);
-		        		        
+		        g2d.rotate(angle, x, y);		        
 		        g2d.drawImage(cv.icon, (int) (cv.point.getX() + controller.getCenter().getX()), (int) (cv.point.getY() + controller.getCenter().getY()), null);
 		       	        				
 		        g2d.dispose();
@@ -127,7 +126,7 @@ public class ObstacleView extends JPanel {
 		LinkedHashMap<CollisionView, Double> copy = (LinkedHashMap<CollisionView, Double>) collisionsMap.clone();
 		for (CollisionView cv : copy.keySet()) {
 			collisionsMap.remove(cv);
-			collisionsMap.put(cv, - copy.get(cv));				
+			collisionsMap.put(cv, - Math.abs(copy.get(cv)));				
 		}
 	}
 
