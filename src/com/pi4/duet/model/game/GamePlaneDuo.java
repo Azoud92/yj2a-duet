@@ -11,7 +11,7 @@ public class GamePlaneDuo { // Représente le modèle du jeu : coordonnées du v
 
 	public final int width, height;
 	
-	private GameDuoController controller;
+
 	private Wheel wheelB, wheelH;
 	private ArrayList<Obstacle> obstaclesH, obstaclesB;
 	
@@ -28,7 +28,6 @@ public class GamePlaneDuo { // Représente le modèle du jeu : coordonnées du v
         wheelB.radius = (wheelB.radius*9/10);
         this.wheelH = new Wheel(new Point(width / 2, 135));
         wheelH.radius = (wheelH.radius*9/10);
-        this.controller = controller;
 
         this.obstaclesH = new ArrayList<Obstacle>();
         this.obstaclesB = new ArrayList<Obstacle>();

@@ -9,7 +9,6 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 
 	public final int width, height;
 	
-	private GameController controller;
 	private Wheel wheel;
 	private ArrayList<Obstacle> obstacles;
 	public final int numLevel;
@@ -19,7 +18,6 @@ public class GamePlane { // Représente le modèle du jeu : coordonnées du vola
 		this.width = width;
 		this.height = height;		
         this.wheel = new Wheel(new Point(width / 2, height - 150));
-        this.controller = controller;
 
         this.obstacles = new ArrayList<Obstacle>();
 		this.numLevel = numLevel;
