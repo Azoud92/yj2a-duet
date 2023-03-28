@@ -1,47 +1,49 @@
 package com.pi4.duet.controller.game;
 
-import java.io.Serializable;
-
-import java.awt.Polygon;
+import java.awt.Color;
 
 import com.pi4.duet.Point;
 import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.view.game.ObstacleView;
 
-public class ObstacleController implements Serializable {
+public class ObstacleController {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7126796665402586980L;
-	
 	private Obstacle model;
 	private ObstacleView view;
-		
-	public void setModel(Obstacle model) { this.model = model; }
-	public Obstacle getModel() {
-		return model;
-	}
-	
-	public void setView(ObstacleView view) { this.view = view; }
-	public ObstacleView getView() {
-		return view;
-	}
-	
-	public void update() {
-		// TODO Auto-generated method stub
-		
-		Point[] coords = model.getCoords();
-		
-		int[] x = new int[coords.length];
-		int[] y = new int [coords.length];
-		for (int i = 0; i < coords.length; i++) {
-			x[i] = (int) (coords[i].getX() );
-			y[i] = (int) (coords[i].getY() );
-		}
-		
-		view.setPolygon(new Polygon(x, y, coords.length));
 
+	public void setModel(Obstacle model) { this.model = model; }
+	public void setView(ObstacleView view) { this.view = view; }
+
+	public void update() {
+		view.updatePosition();
 	}
-			
+
+	public void addCollisionView(Point point, Color color) {
+		view.addCollision(model.getAngle(), point, color);
+	}
+
+	public double getAngle() {
+		// TODO Auto-generated method stub
+		return model.getAngle();
+	}
+
+	public Point[] getPoints() {
+		// TODO Auto-generated method stub
+		Point[] modelPoints = model.getPoints();
+		Point[] res = new Point[modelPoints.length];
+		for (int i = 0; i < res.length; i++) {
+			res[i] = modelPoints[i].clone();
+		}
+		return res;
+	}
+
+	public double getVelocity() {
+		// TODO Auto-generated method stub
+		return model.getVelocity();
+	}
+	public Point getCenter() {
+		// TODO Auto-generated method stub
+		return model.getCenter().clone();
+	}
+
 }

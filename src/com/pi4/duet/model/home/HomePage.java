@@ -15,21 +15,21 @@ import java.util.ArrayList;
 public class HomePage implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 6683590500436200055L;
 
 	private ArrayList<Integer> levelsAvailable;
-	
+
 	public HomePage() {
-		levelsAvailable = new ArrayList<Integer>();
+		levelsAvailable = new ArrayList<>();
 		levelsAvailable.add(1); // le niveau 1 est toujours accompli comme c'est le niveau de départ
 	}
-	
+
 	public void addLevel(int i) {
 		this.levelsAvailable.add(i);
 	}
-	
+
 	public boolean save() {
 		Path dataFolder = Paths.get("data");
 		try {
@@ -39,7 +39,7 @@ public class HomePage implements Serializable {
 			e1.printStackTrace();
 			return false;
 		}
-		
+
 		File file = new File("data/progression.ser");
 		if (!file.exists()) {
 			try {
@@ -61,7 +61,7 @@ public class HomePage implements Serializable {
 			return false;
 		}
 	}
-	
+
 	public static HomePage read() {
 		File file = new File("data/progression.ser");
 		try {
@@ -77,10 +77,10 @@ public class HomePage implements Serializable {
 			return new HomePage();
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public ArrayList<Integer> getLevelsAvailable() {
 		return (ArrayList<Integer>) levelsAvailable.clone();
 	}
-	
+
 }

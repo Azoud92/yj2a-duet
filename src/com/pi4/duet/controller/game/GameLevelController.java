@@ -8,7 +8,7 @@ import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.game.Direction;
-import com.pi4.duet.model.game.GameDuo;
+import com.pi4.duet.model.game.GameLevel;
 import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.data.ObstacleQueue;
@@ -16,16 +16,12 @@ import com.pi4.duet.model.game.data.ObstacleQueueStatus;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.ObstacleView;
 
-public class GameDuoController extends GameController {
+public class GameLevelController extends GameController {
 
-	private WheelController wheelTopController;
-
-	public GameDuoController(HomePageViewController hpvC, Settings settings, Scale scale){
+	public GameLevelController(HomePageViewController hpvC, Settings settings, Scale scale) {
 		super(hpvC, settings, scale);
-		this.wheelTopController = new WheelController(settings, this, 2);
+		// TODO Auto-generated constructor stub
 	}
-
-	public WheelController getWheelTopController() { return wheelTopController; }
 
 	@Override
 	public void gameStart() {
@@ -34,7 +30,6 @@ public class GameDuoController extends GameController {
 		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
 
 		wheelController.setWheelRotating(null);
-		wheelTopController.setWheelRotating(null);
 
 		if (settings.getMusic()) music.play();
 
@@ -45,15 +40,9 @@ public class GameDuoController extends GameController {
 				// TODO Auto-generated method stub
 				if (model.getState() == GameState.ON_GAME){
 					hasWin();
-					if (model.getObstacles().size() > 0 && ((GameDuo) model).getTopObstacles().size() > 0) {
+					if (model.getObstacles().size() > 0) {
 						for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
 							o.updatePosition(Direction.BOTTOM);
-							verifyCollision(o);
-							verifyObstacleReached(o);
-							refreshView();
-						}
-						for (Obstacle o : ((GameDuo) model).getTopObstacles()) {
-							o.updatePosition(Direction.TOP);
 							verifyCollision(o);
 							verifyObstacleReached(o);
 							refreshView();
@@ -61,7 +50,6 @@ public class GameDuoController extends GameController {
 					}
 					else refreshView();
 					wheelController.animateWheel();
-					wheelTopController.animateWheel();
 				}
 			}
 		}, 0, 1);
@@ -71,13 +59,13 @@ public class GameDuoController extends GameController {
 	public void verifyCollision(Obstacle o) {
 		if (model.getState() == GameState.FINISHED) return;
 		int res = model.getWheel().isInCollision(o);
-		int resTop = ((GameDuo) model).getTopWheel().isInCollision(o);
 		ObstacleController oc = o.getController();
-		
+
 		int oX = (int) o.getPoints()[0].getX();
 		int oY = (int) o.getPoints()[0].getY();
 
-		if (res > 0 || resTop > 0) {
+		
+		if (res > 0) {
 			gameStop();
 			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
 			model.setState(GameState.FINISHED);
@@ -91,18 +79,6 @@ public class GameDuoController extends GameController {
 				oc.addCollisionView(new Point(wheelController.getCenterBall_2().getX() - oX,
 						wheelController.getCenterBall_2().getY() - oY), Color.BLUE);
 			}
-
-			if (resTop == 1) oc.addCollisionView(new Point(wheelTopController.getCenterBall_1().getX() - oX,
-					wheelTopController.getCenterBall_1().getY() - oY), Color.RED);
-			else if (resTop == 2) oc.addCollisionView(new Point(wheelTopController.getCenterBall_2().getX() - oX,
-					wheelTopController.getCenterBall_2().getY() - oY), Color.BLUE);
-			else if (resTop == 3) {
-				oc.addCollisionView(new Point(wheelTopController.getCenterBall_1().getX() - oX,
-						wheelTopController.getCenterBall_1().getY() - oY), Color.RED);
-				oc.addCollisionView(new Point(wheelTopController.getCenterBall_2().getX() - oX,
-						wheelTopController.getCenterBall_2().getY() - oY), Color.BLUE);
-			}
-
 			if (settings.getEffects()) defeatSound.play();
 			view.lostGame();
 			this.setBackgroundMovement(true);
@@ -114,7 +90,7 @@ public class GameDuoController extends GameController {
 		if (!o.getReached()) {
 			boolean reach = false;
 			for (Point p : o.getPoints()) {
-				if (p.getY() > model.getWheel().getCenter().getY() + model.getWheel().getRadius() || p.getY() < wheelTopController.getWheelCenter().getY() - wheelTopController.getWheelRadius()) {
+				if (p.getY() > model.getWheel().getCenter().getY() + model.getWheel().getRadius()) {
 					reach = true;
 				}
 				else {
@@ -129,7 +105,7 @@ public class GameDuoController extends GameController {
 		else {
 			boolean visible = true;
 			for (Point p : o.getPoints()) {
-				if (p.getY() > model.height || p.getY() < 0) {
+				if (p.getY() > model.height) {
 					visible = false;
 				}
 				else {
@@ -138,72 +114,46 @@ public class GameDuoController extends GameController {
 			}
 			if (!visible) {
 				model.removeObstacle(o);
-				((GameDuo) model).removeTopObstacle(o);
 			}
+		}
+	}
+
+	@Override
+	public void addObstacle(Obstacle o) {
+		ObstacleController oc = new ObstacleController();
+		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), oc);
+
+		if (hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 0) {
+			ov.setCollisionsMap(hpvC.getObstaclesViews().get(0).getCollisionsMap());
+			ov.resetCollisions();
+			hpvC.getObstaclesViews().remove(0);
+		}
+		oc.setView(ov);
+		o.setController(oc);
+		oc.setModel(o);
+		model.addObstacle(o);
+		view.addObstacle(ov);
+	}
+
+	@Override
+	public void hasWin() {
+		super.hasWin();
+		if (!hpvC.getLevelsAvailable().contains(((GameLevel) model).numLevel + 1)) { // on ajoute seulement le niveau suivant à la liste des niveaux disponibles si ce dernier n'y figure pas
+			hpvC.addLevel(((GameLevel) model).numLevel + 1);
+			hpvC.save();
 		}
 	}
 
 	@Override
 	public void replay() {
-		hpvC.runLvlDuo(hpvC.getWindow(), hpvC.getView(), true);
-	}
-
-	@Override
-	public void addObstacle(Obstacle o) {
-		Obstacle omTop = o.clone();
-
-		ObstacleController ocTop = new ObstacleController();
-		ObstacleController ocBottom = new ObstacleController();
-
-		ObstacleView ovBottom = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), ocBottom);
-		ObstacleView ovTop = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), ocTop);
-
-
-		if(hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 1) {
-			ovBottom.setCollisionsMap(hpvC.getObstaclesViews().get(0).getCollisionsMap());
-			ovBottom.resetCollisions();
-			ovTop.setCollisionsMap(hpvC.getObstaclesViews().get(1).getCollisionsMap());
-			ovTop.resetCollisions();
-			hpvC.getObstaclesViews().remove(0);
-			hpvC.getObstaclesViews().remove(0);
-		}
-
-		ocBottom.setView(ovBottom);
-		omTop.setController(ocTop);
-		ocTop.setView(ovTop);
-		ocTop.setModel(omTop);
-		o.setController(ocBottom);
-		
-		ocBottom.setModel(o);
-		model.addObstacle(o);
-		((GameDuo) model).addTopObstacle(omTop);
-		view.addObstacle(ovBottom);
-		view.addObstacle(ovTop);
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		if (model.getState() == GameState.ON_GAME){
-			switch(e.getKeyCode()) {
-				case KeyEvent.VK_SPACE:
-					this.setBackgroundMovement(true);
-					wheelController.stopWheelRotation();
-					wheelTopController.stopWheelRotation();
-					model.setState(GameState.PAUSED);
-					view.affichePause();
-					break;
-			}
-		}
-		else {
-			if (KeyEvent.VK_SPACE == e.getKeyCode()) {
-				model.setState(GameState.ON_GAME);
-			}
-		}
+		// TODO Auto-generated method stub
+		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), ((GameLevel) model).numLevel, true);
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
+
 	}
 
 	@Override

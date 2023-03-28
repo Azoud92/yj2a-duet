@@ -1,6 +1,6 @@
 package com.pi4.duet.model.game;
 
-public enum State { // Différents statuts d'une partie
+public enum GameState { // Différents statuts d'une partie
 	READY,
 	PAUSED,
 	ON_GAME,

@@ -1,149 +1,68 @@
- package com.pi4.duet.controller.game;
+package com.pi4.duet.controller.game;
 
-import java.awt.Color;
 import java.awt.Dimension;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.TimerTask;
 
-import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
 import com.pi4.duet.controller.home.HomePageViewController;
+import com.pi4.duet.model.game.Game;
+import com.pi4.duet.model.game.GameState;
+import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.data.ObstacleQueue;
 import com.pi4.duet.model.game.data.ObstacleQueueStatus;
 import com.pi4.duet.model.game.data.PatternData;
-import com.pi4.duet.model.game.GamePlane;
-import com.pi4.duet.model.game.Obstacle;
-import com.pi4.duet.model.game.State;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameView;
-import com.pi4.duet.view.game.ObstacleView;
 
-public class GameController implements KeyListener {
+public abstract class GameController implements KeyListener {
 
-	private GamePlane model;
-	private GameView view;
-	private Sound defeatSound = new Sound("defeat.wav", false);
-	private Sound reachedSound = new Sound("reached.wav", false);
-	private Settings settings;
-	private Scale scale;
-	
-	private Sound music = new Sound("music.wav", true);
-	
-	private ObstacleQueue gameTimer;
-	
-	private HomePageViewController hpvC;
-	
-	private WheelController wheelController;
+	protected Game model;
+	protected GameView view;
+	protected Settings settings;
+	protected Scale scale;
 
-	private boolean backgroundMovement;
-	
-	public GameController(HomePageViewController hpvC, Settings settings, Scale scale){
+	protected Sound defeatSound = new Sound("defeat.wav", false);
+	protected Sound reachedSound = new Sound("reached.wav", false);
+	protected Sound music = new Sound("music.wav", true);
+
+	protected ObstacleQueue gameTimer;
+	protected HomePageViewController hpvC;
+	protected WheelController wheelController;
+
+	protected boolean backgroundMovement;
+
+	public GameController(HomePageViewController hpvC, Settings settings, Scale scale) {
 		this.hpvC = hpvC;
 		this.settings = settings;
 		music.stop();
 		this.scale = scale;
 		gameTimer = new ObstacleQueue(this, scale);
-		
-		this.wheelController = new WheelController(settings, this);
+		this.wheelController = new WheelController(settings, this, 1);
 	}
-		
-	public void setModel(GamePlane model) { this.model = model; }
-	
-	public void setView(GameView view) { this.view = view; }
-	
-	public WheelController getWheelController() { return this.wheelController; }
-	
-	public GameView getView() {
-		return view;
-	}
-	
-	public void refreshView() {
+
+	public final void setModel(Game model) { this.model = model; }
+	public final Game getModel() { return model; }
+	public final void setView(GameView view) { this.view = view; }
+	public final GameView getView() { return view; }
+	public final WheelController getWheelController() { return this.wheelController; }
+
+	public final void refreshView() {
 		view.refresh();
 	}
-	
-	public void gameStart() {
-		if (model.getState() != State.READY) return;
-		model.setState(State.ON_GAME);
-		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
-		
-		wheelController.setWheelRotating(null);
-		
-		if (settings.getMusic()) music.play();
-		
-		gameTimer = new ObstacleQueue(this, scale);
-		gameTimer.schedule(new TimerTask() {			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				if (model.getState() == State.ON_GAME){
-					hasWin();
-					if (model.getObstacles().size() > 0) {
-						for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
-							o.update(0, 1);
-							verifyCollision(o);
-							verifyObstacleReached(o);
-							refreshView();
-						}
-					}
-					else refreshView();
-					wheelController.animateWheel();
-				}
-			}			
-		}, 0, 1);
-	}
-	
-	public void gameStop() {
+
+	public abstract void gameStart();
+
+	public final void gameStop() {
 		gameTimer.cancel();
 		music.stop();
 	}
-	
-	public void verifyCollision(Obstacle o) {
-		if (model.getState() == State.FINISHED) return;
-		int res = model.getWheel().isInCollision(o);
-		ObstacleView ov = o.getController().getView();
-		int oX = (int) o.getCoords()[0].getX();
-		int oY = (int) o.getCoords()[0].getY();
-				
-		if (res == 1) {			
-			gameStop();
-			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
-			model.setState(State.FINISHED);
-			ov.addCollision(ov.new CollisionView(getCenterBall1().getX() - oX, getCenterBall1().getY() - oY, Color.red));
-			if (settings.getEffects()) defeatSound.play();
-			view.lostGame();
-			this.setBackgroundMovement(true);
-			
-		}
-		else if (res == 2) {			
-			gameStop();
-			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
-			model.setState(State.FINISHED);
-			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));
-			if (settings.getEffects()) defeatSound.play();
-			view.lostGame();
-			this.setBackgroundMovement(true);
-			
-		}
-		else if (res == 3) {
-			gameStop();
-			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
-			model.setState(State.FINISHED);
-			ov.addCollision(ov.new CollisionView(getCenterBall1().getX()- oX,getCenterBall1().getY() - oY , Color.red));
-			ov.addCollision(ov.new CollisionView(getCenterBall2().getX()- oX,getCenterBall2().getY() - oY, Color.blue));	
-			if (settings.getEffects()) defeatSound.play();
-			view.lostGame();
-			this.setBackgroundMovement(true);
-		}
-		
-	}
-	
-	public void resetIntertie() {
-		model.getWheel().setInertia(0);
-	}
-	
+
+	public abstract void verifyCollision(Obstacle o);
+
+	public abstract void verifyObstacleReached(Obstacle o);
+
 	public void hasWin() {
 		if (model.getObstacles().size() == 0 && gameTimer.getStatus() == ObstacleQueueStatus.FINISHED) {
 			this.setBackgroundMovement(true);
@@ -151,134 +70,61 @@ public class GameController implements KeyListener {
 			view.afficheWin();
 			view.refresh();
 			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
-			model.setState(State.FINISHED);
-			
-			if (!hpvC.getLevelsAvailable().contains(model.numLevel + 1)) { // on ajoute seulement le niveau suivant à la liste des niveaux disponibles si ce dernier n'y figure pas
-				hpvC.addLevel(model.numLevel + 1);
-				hpvC.save();
-			}
+			model.setState(GameState.FINISHED);
 		}
-	}
-		
-	public void verifyObstacleReached(Obstacle o) {
-		if (o.getReached() == false) {
-			boolean reach = false;
-			for (Point p : o.getCoords()) {
-				if (p.getY() > model.getWheel().getCenter().getY() + model.getWheel().radius) {
-					reach = true;
-				}
-				else {
-					return;
-				}
-			}
-			if (reach) {
-				if (settings.getEffects()) reachedSound.play();
-				o.setReached();
-			}
-		}
-		else {
-			boolean visible = true;
-			for (Point p : o.getCoords()) {
-				if (p.getY() > model.height) {
-					visible = false;
-				}
-				else {
-					return;
-				}
-			}
-			if (!visible) {
-				model.removeObstacle(o);
-			}
-		}
-	}
-			
-	public void addObstacle(Obstacle o) {
-		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), getBallRadius());
-
-		ObstacleController oc = new ObstacleController();
-		if (hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 0) {
-			ov.setColList(hpvC.getObstaclesViews().get(0).getCollisions());
-			hpvC.getObstaclesViews().remove(0);
-		}		
-		oc.setView(ov);
-		o.setController(oc);
-		oc.setModel(o);		
-		model.addObstacle(o);
-		view.addObstacle(ov);	
-	}
-	
-	
-	
-	private int getBallRadius() {
-		return model.getWheel().getBallRadius();
 	}
 
-	public void playMusic() {
+	public final void resetIntertie() {
+		model.getWheel().setInertia(0);
+	}
+
+	public abstract void addObstacle(Obstacle o);
+
+	public final void playMusic() {
 		music.play();
 	}
-	
-	@Override
-	public void keyReleased(KeyEvent e) {
-		if (model.getState() == State.ON_GAME){
-			switch(e.getKeyCode()) {				
-				case KeyEvent.VK_SPACE:
-					this.setBackgroundMovement(true);
-					wheelController.stopWheelRotation();
-					model.setState(State.PAUSED);
-					view.affichePause();
-					break;				
-			}
-		}
-		else {
-			if (KeyEvent.VK_SPACE == e.getKeyCode()) {
-				model.setState(State.ON_GAME);
-			}
-		}
-	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub		
-	}
+	public final void stopMusic() { music.stop(); }
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub		
-	}	
-	
-	public void affMenu() {
+	public final void affMenu() {
 		hpvC.runHomePage();
 		if(settings.getMusic()) { hpvC.runMusic(); }
 		view.setVisible(false);
 		this.setBackgroundMovement(true);
-	}	
-	
-	public void stopMusic() { music.stop(); }
-	
-	public void replay() {
-		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), model.numLevel, true);
 	}
-	
-	public Dimension getSize() { return view.getSize(); }
-	
-	public Point getCenterBall1() { return model.getWheel().getCenterBall1(); }
-	
-	public Point getCenterBall2() { return model.getWheel().getCenterBall2(); }
-	
-	public int getWheelRadius() { return model.getWheel().radius; }
 
-	public GamePlane getModel() { return model; }
-	
-	public boolean isBackgroundEnabled() { return settings.getBackground(); }
-	
-	public void addPattern(PatternData d) { gameTimer.putPattern(d); }
+	public abstract void replay();
 
-	public Boolean getBackgroundMouvement() { return this.backgroundMovement; }
-	public void setBackgroundMovement(boolean b) { this.backgroundMovement = b; }
+	public final Dimension getSize() { return view.getSize(); }
 
-	public State getState() {
+	public final boolean isBackgroundEnabled() { return settings.getBackground(); }
+
+	public final void addPattern(PatternData d) { gameTimer.putPattern(d); }
+
+	public final Boolean getBackgroundMouvement() { return this.backgroundMovement; }
+	public final void setBackgroundMovement(boolean b) { this.backgroundMovement = b; }
+
+	public final GameState getState() {
 		// TODO Auto-generated method stub
 		return model.getState();
 	}
 
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (model.getState() == GameState.ON_GAME){
+			switch(e.getKeyCode()) {
+				case KeyEvent.VK_SPACE:
+					this.setBackgroundMovement(true);
+					wheelController.stopWheelRotation();
+					model.setState(GameState.PAUSED);
+					view.affichePause();
+					break;
+			}
+		}
+		else {
+			if (KeyEvent.VK_SPACE == e.getKeyCode()) {
+				model.setState(GameState.ON_GAME);
+			}
+		}
+	}
 }

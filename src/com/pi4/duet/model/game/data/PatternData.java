@@ -1,18 +1,26 @@
 package com.pi4.duet.model.game.data;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 import com.pi4.duet.Point;
 import com.pi4.duet.model.game.Obstacle;
 
-import java.util.ArrayList;
-
 public class PatternData extends HashMap<Long, Obstacle> {
 
 	private static final long serialVersionUID = -8250741712843302226L;
-	
+
 	public void write(String path) throws IOException {	// Attrapez l'exception dans l'interface graphique pour faire un message d'erreur
 		File destination = new File(path);
 		if (!destination.exists()) destination.createNewFile();	// S'il y a une IOException, une erreur s'est produite lors de la communication
@@ -21,7 +29,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		objectStream.writeObject(this);
 		objectStream.close();
 	}
-	
+
 	public void writeTxt(String path) throws IOException {
 		File destination = new File(path);
 		if (!destination.exists()) destination.createNewFile();
@@ -31,7 +39,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		buffer.write(toString());
 		buffer.close();
 	}
-	
+
 	public static PatternData read(String path) throws IOException, ClassNotFoundException { // Pareil ici
 		FileInputStream fileInput = new FileInputStream(path);
 		ObjectInputStream inputStream = new ObjectInputStream(fileInput);
@@ -39,12 +47,12 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		inputStream.close();
 		return res;
 	}
-	
+
 	public static PatternData readTxt(String path) throws IOException, ClassNotFoundException {
 		File fileInput = new File(path);
 		FileReader reader = new FileReader(fileInput);
 		BufferedReader buffer = new BufferedReader(reader);
-		
+
 		String txt = "";
 		String line = "";
 		while (line != null) {
@@ -54,7 +62,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		buffer.close();
 		return parse(txt);
 	}
-	
+
 	public static PatternData parse(String input) {
 		PatternData res = new PatternData();
 		Scanner globalSc = new Scanner(input);
@@ -68,12 +76,12 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		while (globalSc.hasNext()) {
 			//initialisation
 			Scanner lineSc = new Scanner(globalSc.next());
-			lineSc.useDelimiter(":|;");	
-			
+			lineSc.useDelimiter(":|;");
+
 			try {
 				//Récupération du délai
 				long key = lineSc.nextLong();
-			
+
 				//Récupération des points
 				Scanner arraySc = new Scanner(lineSc.next());
 				arraySc.useDelimiter(" ");
@@ -85,26 +93,26 @@ public class PatternData extends HashMap<Long, Obstacle> {
 					String d2 = pointSc.next();
 					points.add(new Point(Double.parseDouble(d1), Double.parseDouble(d2)));
 				}
-				
+
 				//Récupération du centre de rotation
 				Scanner centreSc = new Scanner(lineSc.next());
 				centreSc.useDelimiter("\\(|,|\\)");
 				String x = centreSc.next();
 				String y = centreSc.next();
 				Point centre = new Point(Double.parseDouble(x), Double.parseDouble(y));
-				
+
 				//Récupération des données de mouvement
 				double velocity = Double.parseDouble(lineSc.next());
 				double rotationSpeed = Double.parseDouble(lineSc.next());
 				double angle = Double.parseDouble(lineSc.next());
-				
+
 				//Conversion des points (Un cast d'arrays ne marche pas)
 				Object[] uncastedPoints = points.toArray();
 				Point[] castedPoints = new Point[uncastedPoints.length];
 				for (int i = 0 ; i < castedPoints.length ; i++) {
 					castedPoints[i] = (Point) uncastedPoints[i];
 				}
-				
+
 				//Placement du résultat
 				res.put(key, new Obstacle(castedPoints, centre, velocity, rotationSpeed, angle, null));
 			} catch (Exception e) {
@@ -113,10 +121,11 @@ public class PatternData extends HashMap<Long, Obstacle> {
 			}
 		}
 		globalSc.close();
-		
+
 		return res;
 	}
-	
+
+	@Override
 	public String toString() {
 		String res = "";
 		int i = 0;
@@ -127,7 +136,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		}
 		return res;
 	}
-	
+
 	public String toHTMLString() {
 		String res = "";
 		int i = 0;
@@ -138,13 +147,13 @@ public class PatternData extends HashMap<Long, Obstacle> {
 		}
 		return res;
 	}
-	
+
 	public static void main(String[] args) {
 		/*
 		PatternData d = parse("1000:[(3,2) (2,5) (-3,9.2)];(.4,8);1.4;.8;0\n" +
 							  "2000:[(.8,-.902) (3,-7)];(1,0);0;9;9");
 		System.out.println("Original : \n" + d);
-		
+
 		try {
 			d.writeTxt("test.txt");
 			d.write("test.ser");

@@ -12,13 +12,13 @@ public class Sound { // sert à créer un son que l'on peut jouer
 
 	private AudioInputStream audioStream;
 	private Clip clip;
-	
+
 	public Sound(String filename, boolean loop) {
 		try {
 			audioStream = AudioSystem.getAudioInputStream(this.getClass().getResource("/resources/snd/" + filename));
 			clip = AudioSystem.getClip();
 			clip.open(audioStream);
-			if (loop) {;
+			if (loop) {
 				clip.loop(Clip.LOOP_CONTINUOUSLY);
 			}
 		} catch (UnsupportedAudioFileException e) {
@@ -32,14 +32,14 @@ public class Sound { // sert à créer un son que l'on peut jouer
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void play() {
 		clip.setMicrosecondPosition(0);
-		clip.start();		
+		clip.start();
 	}
-	
+
 	public void stop() {
 		clip.stop();
 	}
-	
+
 }
