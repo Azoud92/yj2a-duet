@@ -92,25 +92,36 @@ public abstract class GameView extends JPanel {
 
 	public void afficheWin(){
 		JLabel win1 = new JLabel();
-		win1.setText("VOUS AVEZ GAGNÃ‰");
-		win1.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
-		win1.setFont(new Font("Arial", Font.BOLD, 25));
-		win1.setForeground(Color.RED);
+		win1.setText("VOUS AVEZ GAGNÉ");
+		win1.setBounds(size.width/6, this.size.height/5*2 , this.size.width/6 * 4, this.size.height/6);
+		win1.setFont(new Font("Arial", Font.BOLD, 43));
+		win1.setForeground(Color.WHITE);
 		win1.setVisible(true);
 		this.add(win1);
 
 		JLabel win2 = new JLabel();
 		win2.setText("BRAVO");
-		win2.setBounds((this.size.width/5)+80, (this.size.height/6)+30, this.size.width/5 * 3, this.size.height/6);
-		win2.setFont(new Font("Arial", Font.BOLD, 25));
-		win2.setForeground(Color.BLUE);
+		win2.setBounds((this.size.width/6)+140, (this.size.height/5)*2+50, this.size.width/6 * 4, this.size.height/6);
+		win2.setFont(new Font("Arial", Font.BOLD, 43));
+		win2.setForeground(Color.WHITE);
 		win2.setVisible(true);
 		this.add(win2);
+		
+		ConfettiView cv = new ConfettiView(this.getWidth(), this.getHeight(),controller.getWheelController().getWheelCenter());
+		this.add(cv);
 
-		Timer timer = new Timer(3000, e->controller.affMenu());
+		
+		Timer timer = new Timer(3000, e->timerFinish(cv));
 		timer.setRepeats(false);
 		timer.start();
 	}
+
+	public void timerFinish(ConfettiView cv) {
+		controller.affMenu();
+		cv.finish();
+		
+	}
+
 
 	public final void refresh() {
 		revalidate();

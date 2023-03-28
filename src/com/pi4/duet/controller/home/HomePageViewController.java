@@ -161,6 +161,9 @@ public class HomePageViewController {
 
 	public void runHomePage() {
 		view.setVisible(true);
+		view.revalidate();
+		view.repaint();
+		view.paintComponents(view.getGraphics());
 
 		JPanel container = new JPanel(new GridLayout(1, 3));
 		container.add(new JPanel());

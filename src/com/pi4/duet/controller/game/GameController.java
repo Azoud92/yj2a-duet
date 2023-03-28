@@ -88,6 +88,7 @@ public abstract class GameController implements KeyListener {
 
 	public final void affMenu() {
 		hpvC.runHomePage();
+		
 		if(settings.getMusic()) { hpvC.runMusic(); }
 		view.setVisible(false);
 		this.setBackgroundMovement(true);
