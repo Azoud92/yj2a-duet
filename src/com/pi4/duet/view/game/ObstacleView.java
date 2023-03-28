@@ -54,6 +54,7 @@ public class ObstacleView extends JPanel {
 	        g2d.fillPolygon(polygon);
 			//g2d.clip(polygon);
 			for(CollisionView cv : collisionsMap.keySet()) {
+				g2d = (Graphics2D) g.create();
 				Double angle = collisionsMap.get(cv);
 
 				double cx = cv.point.getX() + controller.getCenter().getX() + cv.width / 2;
@@ -61,8 +62,8 @@ public class ObstacleView extends JPanel {
 				
 		        g2d.rotate(angle + controller.getAngle(), cx, cy);
 		        g2d.drawImage(cv.icon, (int) (cv.point.getX() + controller.getCenter().getX()), (int) (cv.point.getY() + controller.getCenter().getY()), null);
+		        g2d.dispose();
 			}
-			g2d.dispose();
 		}
 	}
 
