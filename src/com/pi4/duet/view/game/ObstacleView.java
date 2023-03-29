@@ -35,8 +35,8 @@ public class ObstacleView extends JPanel {
 		this.setOpaque(false);
 		this.setSize(new Dimension(width, height));
 		this.setLocation(0, 0);
-		this.widthCollision = ballRadius * 9;
-		this.heightCollision = ballRadius * 9;
+		this.widthCollision = ballRadius * 8;
+		this.heightCollision = ballRadius * 8;
 		this.setVisible(true);
 		this.setLayout(null);
 

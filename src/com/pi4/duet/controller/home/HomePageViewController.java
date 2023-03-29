@@ -88,7 +88,7 @@ public class HomePageViewController {
 
 		gv.requestFocus();
 		gv.setFocusable(true);
-
+		
 		try {
 			gc.addPattern(PatternData.read("src/resources/levels/level" + numLevel + ".ser"));
 		} catch (ClassNotFoundException e) {
