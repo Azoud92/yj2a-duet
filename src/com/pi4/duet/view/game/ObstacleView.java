@@ -35,8 +35,8 @@ public class ObstacleView extends JPanel {
 		this.setOpaque(false);
 		this.setSize(new Dimension(width, height));
 		this.setLocation(0, 0);
-		this.widthCollision = ballRadius * 7;
-		this.heightCollision = ballRadius * 7;
+		this.widthCollision = ballRadius * 9;
+		this.heightCollision = ballRadius * 9;
 		this.setVisible(true);
 		this.setLayout(null);
 
@@ -58,7 +58,7 @@ public class ObstacleView extends JPanel {
 			for(CollisionView cv : copy.keySet()) {
 				g2d = (Graphics2D) g.create();
 				g2d.clip(polygon);
-				Double angle = collisionsMap.get(cv);
+				Double angle = -collisionsMap.get(cv);
 				
 				// Translation pour centrer l'image
 		        int x = (int) (cv.point.getX() + controller.getCenter().getX() + cv.width / 2);
@@ -126,7 +126,7 @@ public class ObstacleView extends JPanel {
 		LinkedHashMap<CollisionView, Double> copy = (LinkedHashMap<CollisionView, Double>) collisionsMap.clone();
 		for (CollisionView cv : copy.keySet()) {
 			collisionsMap.remove(cv);
-			collisionsMap.put(cv, - Math.abs(copy.get(cv)));				
+			collisionsMap.put(cv,Math.abs(copy.get(cv)));				
 		}
 	}
 
