@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -17,6 +19,7 @@ import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
+import com.pi4.duet.model.home.HomePage;
 import com.pi4.duet.view.game.GameWindow;
 
 public class HomePageView extends JPanel {
@@ -30,6 +33,8 @@ public class HomePageView extends JPanel {
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
 	private Scale scale;
+	private int progression;
+	private Timer timer;
 
 	private GameWindow window;
 
@@ -44,21 +49,50 @@ public class HomePageView extends JPanel {
 		this.size = dim;
 		this.setPreferredSize(dim);
 		this.setLayout(null);
+		progression = 0;
+		
+		
 
 		title1 = new JLabel("DU");
-		title1.setBounds((int) (this.size.width/4 + 9 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
+		title1.setBounds(this.size.width/2 - this.size.width/7, this.size.height/24, this.size.width/4 , this.size.height/4);
 		title1.setForeground(Color.RED);
 		title1.setBackground(Color.BLACK);
 		title1.setFont(new Font("Arial", Font.BOLD, (int) (110 * scale.getScaleY())));
-		this.add(title1);
+		//this.add(title1);
 
 		title2 = new JLabel("ET");
-		title2.setBounds((int) (this.size.width / 2 + 9 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
+		title2.setBounds((int) (this.size.width / 2 + 6 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
 		title2.setForeground(Color.BLUE);
 		title2.setBackground(Color.BLACK);
 		title2.setFont(new Font("Arial", Font.BOLD, (int) (110 * scale.getScaleY())));
-		this.add(title2);
+		//this.add(title2);
+		
+		
+		this.timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				progression++;
+				repaint();
+				if(progression == 25) {
+					add(title1);
+					repaint();
+				}
+				if(progression == 75) {
+					title1.setLocation((int) (dim.width/4 + 12 * scale.getScaleX()), dim.height/24);;
+					add(title2);
+				}
+				if(progression == 100) {
+					initHPV(frame);
+					
+				}
+			}
+		}, 0, 20);
 
+		
+	}
+	
+	public void initHPV(JFrame frame) {
 		int tx1 = (this.size.width - (this.size.width/5*3) ) / 4;
 		int tx2 = (this.size.width - (this.size.width/5*2) ) / 3;
 
@@ -113,6 +147,8 @@ public class HomePageView extends JPanel {
 			this.setVisible(false);
 			controller.runLvlDuo(window, this, false);
 		});
+		
+		controller.runMusic();
 	}
 
 	private class LevelButton extends JButton {
@@ -144,5 +180,15 @@ public class HomePageView extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (controller.getSettings().getBackground()) g.drawImage(background, 0, 0, size.width, size.height, this);
+		
+		if(progression < 101 && progression > -1) {
+			int placeW = size.width /5;
+			int placeH = size.height/7;
+		    g.setColor(Color.red);
+		    g.fillRoundRect(placeW, placeH * 3, placeW * 3 * progression/100, placeH, 20, 20);
+		    
+		    g.setColor(Color.white);
+		    g.drawRoundRect(placeW, placeH*3, placeW*3 , placeH, 20, 20);
+	    }
 	}
 }

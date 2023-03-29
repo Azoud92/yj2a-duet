@@ -60,7 +60,6 @@ public class HomePageViewController {
 		sc.setModel(sm);
 		sv = new SettingsView(size, sc, scale);
 		sc.setView(sv);
-		if (sm.getMusic()) homeMusic.play();
 	}
 
 	public void runLevel(GameWindow window, HomePageView view, int numLevel, boolean replay) {
@@ -135,7 +134,7 @@ public class HomePageViewController {
 		gdv.setFocusable(true);
 
 		try {
-			gdc.addPattern(PatternData.read("2022-yj2-g2-duet/src/resources/levels/levelDuo.ser"));
+			gdc.addPattern(PatternData.read("src/resources/levels/levelDuo.ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -190,7 +189,7 @@ public class HomePageViewController {
 	public void setModel(HomePage model) { this.model = model; }
 
 	public void runMusic() {
-		homeMusic.play();
+		if (sm.getMusic()) homeMusic.play();
 	}
 
 	public void setView(HomePageView view) {
@@ -203,6 +202,11 @@ public class HomePageViewController {
 
 	public GameWindow getWindow() {
 		return window;
+	}
+	
+	public void setWindow(GameWindow gw) {
+		this.window = gw;
+		
 	}
 
 	public Settings getSettings() { return sm; }
