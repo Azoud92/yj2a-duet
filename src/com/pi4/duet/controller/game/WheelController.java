@@ -223,8 +223,8 @@ public class WheelController implements KeyListener {
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
+			if(e.getKeyCode()==CommandsView.keyButton[2]) model.setStopMovement(false);
 			if(e.getKeyCode()==CommandsView.keyButton[3]) model.setStopMovement(false);
-			if(e.getKeyCode()==CommandsView.keyButton[4]) model.setStopMovement(false);
 		}
 	}
 	public void setWheelRotating(RotationType dir) {
