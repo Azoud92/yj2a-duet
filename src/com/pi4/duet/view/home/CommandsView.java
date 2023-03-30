@@ -180,9 +180,6 @@ public class CommandsView extends JPanel implements KeyListener {
     }
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        if(keyEvent.getKeyCode()==KeyEvent.VK_SPACE){
-            System.out.println("DOg");
-        }
         for(int i=0;i<allJButton.length;++i){
             if(allJButton[i]!=null){
                 if(allJButton[i].getText().equals("Veuillez chosir une touche")){
@@ -206,7 +203,6 @@ public class CommandsView extends JPanel implements KeyListener {
                     if(keyButton[i]==keyButton[j]){
                         differentButton.setText("Il y a des touches identiques");
                         differentButton.setForeground(Color.red);
-
                         return;
                     }else{
                         differentButton.setText("");

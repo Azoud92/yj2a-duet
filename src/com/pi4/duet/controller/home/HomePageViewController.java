@@ -60,7 +60,6 @@ public class HomePageViewController {
 		sc = new SettingsController(this,window,new CommandsView(sv));
 		sc.setModel(sm);
 		sv = new SettingsView(size, sc, scale,window);
-		if(window==null) System.out.println("chien");
 		sc.setView(sv);
 	}
 
@@ -182,10 +181,6 @@ public class HomePageViewController {
 		container.add(new JPanel());
 		window.setMainContainer(container);
 		sv.setGw(this.window);
-		if(sv.getGw()==null) System.out.println("PROUT");
-		else System.out.println("EPEPEPEP");
-		if(this.window==null) System.out.println("DOGO");
-		else System.out.println("AYAYA");
 	}
 
 	public void stopMusic() {
