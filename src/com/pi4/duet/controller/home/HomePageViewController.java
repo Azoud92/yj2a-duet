@@ -22,6 +22,7 @@ import com.pi4.duet.view.game.GameDuoView;
 import com.pi4.duet.view.game.GameLevelView;
 import com.pi4.duet.view.game.GameWindow;
 import com.pi4.duet.view.game.ObstacleView;
+import com.pi4.duet.view.home.CommandsView;
 import com.pi4.duet.view.home.HomePageView;
 import com.pi4.duet.view.home.SettingsView;
 
@@ -56,9 +57,10 @@ public class HomePageViewController {
 		this.scale = scale;
 		homeMusic.stop();
 		sm = Settings.read();
-		sc = new SettingsController(this);
+		sc = new SettingsController(this,window,new CommandsView(sv));
 		sc.setModel(sm);
-		sv = new SettingsView(size, sc, scale);
+		sv = new SettingsView(size, sc, scale,window);
+		if(window==null) System.out.println("chien");
 		sc.setView(sv);
 	}
 
@@ -90,7 +92,7 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 		
 		try {
-			gc.addPattern(PatternData.read("src/resources/levels/level" + numLevel + ".ser"));
+			gc.addPattern(PatternData.read("2022-yj2-g2-duet/src/resources/levels/level" + numLevel + ".ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -174,12 +176,16 @@ public class HomePageViewController {
 	public void runSettings(Dimension size, GameWindow window) {
 		this.window = window;
 		sv.setVisible(true);
-
 		JPanel container = new JPanel(new GridLayout(1, 3));
 		container.add(new JPanel());
 		container.add(sv);
 		container.add(new JPanel());
 		window.setMainContainer(container);
+		sv.setGw(this.window);
+		if(sv.getGw()==null) System.out.println("PROUT");
+		else System.out.println("EPEPEPEP");
+		if(this.window==null) System.out.println("DOGO");
+		else System.out.println("AYAYA");
 	}
 
 	public void stopMusic() {

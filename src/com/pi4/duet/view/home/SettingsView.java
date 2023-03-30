@@ -1,10 +1,6 @@
 package com.pi4.duet.view.home;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -15,23 +11,36 @@ import javax.swing.SwingConstants;
 
 import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Scale;
+import com.pi4.duet.controller.home.CommandsController;
 import com.pi4.duet.controller.home.SettingsController;
+import com.pi4.duet.view.game.GameWindow;
 
 public class SettingsView extends JPanel {
 
 	private static final long serialVersionUID = 8809186306938504775L;
+	private GameWindow gw;
 
 	private Dimension size;
-	private JButton back;
+	private JButton back,commands;
 	private JButton son_on, son_off, music_on, music_off, inertie_on, inertie_off, fond_on, fond_off;
 	private JLabel son, music, inertie, fond;
 	private Icon back_img;
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 
 	private SettingsController controller;
+	private CommandsView cv;
 
-	public SettingsView(Dimension size, SettingsController controller, Scale scale) {
+	public void setGw(GameWindow gw) {
+		this.gw = gw;
+	}
+
+	public GameWindow getGw() {
+		return gw;
+	}
+
+	public SettingsView(Dimension size, SettingsController controller, Scale scale, GameWindow gw) {
 		this.controller = controller;
+		this.gw=gw;
 		this.setBackground(Color.black);
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.size = dim;
@@ -48,6 +57,17 @@ public class SettingsView extends JPanel {
 			controller.back();
 			controller.save();
 		});
+		commands=new JButton(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/commands.png")),this.size.width/10, this.size.width/10));
+		commands.setBounds((this.size.width/20)*18, this.size.width/20 ,this.size.width/10, this.size.width/10);
+		commands.setBackground(Color.BLACK);
+		this.add(commands);
+		commands.addActionListener(e->{
+			if(cv==null){
+				this.cv=new CommandsView(this);
+			}
+			controller.showCommands(cv,controller.getHpvC().getWindow());
+		});
+
 
 		int count = 0;
 

@@ -10,6 +10,7 @@ import com.pi4.duet.model.game.RotationType;
 import com.pi4.duet.model.game.Wheel;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.WheelView;
+import com.pi4.duet.view.home.CommandsView;
 
 public class WheelController implements KeyListener {
 
@@ -126,71 +127,75 @@ public class WheelController implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (game.getState() == GameState.ON_GAME){
-			switch (e.getKeyCode()){
-				case KeyEvent.VK_RIGHT:
-					if (numWheel != 1) break;
-					if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
-					else if (model.getLastRotation() != null) {
-						switch (model.getLastRotation()) {
+			if(e.getKeyCode()== CommandsView.keyButton[1]){
+				if (numWheel != 1) return;
+				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
+				else if (model.getLastRotation() != null) {
+					switch (model.getLastRotation()) {
 						case HORAIRE:
 							model.setInertia(model.getInertia() * 0.9);
 							break;
 						case ANTI_HORAIRE:
 							if (model.getInertia() <= model.rotationSpeed) model.setInertia(model.getInertia() + 0.004);
 							break;
-						}
 					}
-					break;
-				case KeyEvent.VK_LEFT:
-					if (numWheel != 1) break;
-					if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
-					else if (model.getLastRotation() != null) {
-						switch (model.getLastRotation()) {
+				}
+				return;
+			}
+			if(e.getKeyCode()==CommandsView.keyButton[0]){
+				if (numWheel != 1) return;
+				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
+				else if (model.getLastRotation() != null) {
+					switch (model.getLastRotation()) {
 						case HORAIRE:
 							if (model.getInertia() <= model.rotationSpeed) model.setInertia(model.getInertia() + 0.004);
 							break;
 						case ANTI_HORAIRE:
 							model.setInertia(model.getInertia() * 0.9);
 							break;
-						}
 					}
-					break;
-				case KeyEvent.VK_Q:
-					if (numWheel != 2) break;
-					if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
-					else if (model.getLastRotation() != null) {
-						switch (model.getLastRotation()) {
+				}
+				return;
+			}
+			if(e.getKeyCode()==KeyEvent.VK_Q){
+				if (numWheel != 2) return;
+				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
+				else if (model.getLastRotation() != null) {
+					switch (model.getLastRotation()) {
 						case HORAIRE:
 							if (model.getInertia() <= model.rotationSpeed) model.setInertia(model.getInertia() + 0.004);
 							break;
 						case ANTI_HORAIRE:
 							model.setInertia(model.getInertia() * 0.9);
 							break;
-						}
 					}
-					break;
-				case KeyEvent.VK_D:
-					if (numWheel != 2) break;
-					if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
-					else if (model.getLastRotation() != null) {
-						switch (model.getLastRotation()) {
+				}
+				return;
+			}
+			if(e.getKeyCode()==KeyEvent.VK_D){
+				if (numWheel != 2) return;
+				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
+				else if (model.getLastRotation() != null) {
+					switch (model.getLastRotation()) {
 						case HORAIRE:
 							model.setInertia(model.getInertia() * 0.9);
 							break;
 						case ANTI_HORAIRE:
 							if (model.getInertia() <= model.rotationSpeed) model.setInertia(model.getInertia() + 0.004);
 							break;
-						}
 					}
-					break;
-				case KeyEvent.VK_SHIFT:
-					model.setStopMovement(true);
-					model.setWheelMovement(Direction.RIGHT);
-					break;
-				case KeyEvent.VK_CONTROL:
-					model.setStopMovement(true);
-					model.setWheelMovement(Direction.LEFT);
-					break;
+				}
+				return;
+			}
+			if(e.getKeyCode()==CommandsView.keyButton[3]){
+				model.setStopMovement(true);
+				model.setWheelMovement(Direction.RIGHT);
+				return;
+			}
+			if(e.getKeyCode()==CommandsView.keyButton[2]){
+				model.setStopMovement(true);
+				model.setWheelMovement(Direction.LEFT);
+				return;
 			}
 		}
 	}
@@ -198,36 +203,28 @@ public class WheelController implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (game.getState() == GameState.ON_GAME) {
-			switch(e.getKeyCode()) {
-			case KeyEvent.VK_RIGHT:
-				if (numWheel != 1) break;
+			if(e.getKeyCode()==CommandsView.keyButton[0]){
+				if (numWheel != 1) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
-				break;
-			case KeyEvent.VK_LEFT:
-				if (numWheel != 1) break;
-				model.stopWheelRotation();
-				if (settings.getInertie()) model.setWheelBreaking(true);
-				break;
-
-			case KeyEvent.VK_Q:
-				if (numWheel != 2) break;
-				model.stopWheelRotation();
-				if (settings.getInertie()) model.setWheelBreaking(true);
-				break;
-			case KeyEvent.VK_D:
-				if (numWheel != 2) break;
-				model.stopWheelRotation();
-				if (settings.getInertie()) model.setWheelBreaking(true);
-				break;
-
-			case KeyEvent.VK_SHIFT:
-				model.setStopMovement(false);
-				break;
-			case KeyEvent.VK_CONTROL:
-				model.setStopMovement(false);
-				break;
 			}
+			if(e.getKeyCode()==CommandsView.keyButton[1]){
+				if (numWheel != 1) return;
+				model.stopWheelRotation();
+				if (settings.getInertie()) model.setWheelBreaking(true);
+			}
+			if(e.getKeyCode()==KeyEvent.VK_Q){
+				if (numWheel != 2) return;
+				model.stopWheelRotation();
+				if (settings.getInertie()) model.setWheelBreaking(true);
+			}
+			if(e.getKeyCode()==KeyEvent.VK_D){
+				if (numWheel != 2) return;
+				model.stopWheelRotation();
+				if (settings.getInertie()) model.setWheelBreaking(true);
+			}
+			if(e.getKeyCode()==CommandsView.keyButton[3]) model.setStopMovement(false);
+			if(e.getKeyCode()==CommandsView.keyButton[4]) model.setStopMovement(false);
 		}
 	}
 	public void setWheelRotating(RotationType dir) {

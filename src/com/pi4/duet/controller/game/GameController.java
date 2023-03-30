@@ -15,6 +15,7 @@ import com.pi4.duet.model.game.data.ObstacleQueueStatus;
 import com.pi4.duet.model.game.data.PatternData;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameView;
+import com.pi4.duet.view.home.CommandsView;
 
 public abstract class GameController implements KeyListener {
 
@@ -108,29 +109,29 @@ public abstract class GameController implements KeyListener {
 	public final GameState getState() {
 		// TODO Auto-generated method stub
 		return model.getState();
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == GameState.ON_GAME){
-			switch(e.getKeyCode()) {
-				case KeyEvent.VK_SPACE:
-					this.setBackgroundMovement(true);
-					wheelController.stopWheelRotation();
-					model.setState(GameState.PAUSED);
-					view.affichePause();
-					for(int i=0;i<model.getObstacles().size();i++){
-						model.getObstacles().get(i).setVelocity(0.1);
-					}
-					break;
-				case KeyEvent.VK_DOWN:
-					for(int i=0;i<model.getObstacles().size();i++){
-						model.getObstacles().get(i).setVelocity(0.1);
-					}
+			if(e.getKeyCode()==CommandsView.keyButton[4]){
+				this.setBackgroundMovement(true);
+				wheelController.stopWheelRotation();
+				model.setState(GameState.PAUSED);
+				view.affichePause();
+				for(int i=0;i<model.getObstacles().size();i++){
+					model.getObstacles().get(i).setVelocity(0.1);
+				}
+			}
+			if(e.getKeyCode()==CommandsView.keyButton[5]){
+				for(int i=0;i<model.getObstacles().size();i++){
+					model.getObstacles().get(i).setVelocity(0.1);
+				}
 			}
 		}
 		else {
-			if (KeyEvent.VK_SPACE == e.getKeyCode()) {
+			if (CommandsView.keyButton[4] == e.getKeyCode()) {
 				model.setState(GameState.ON_GAME);
 			}
 		}

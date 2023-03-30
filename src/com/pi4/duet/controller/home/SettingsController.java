@@ -1,15 +1,35 @@
 package com.pi4.duet.controller.home;
 
+import com.pi4.duet.model.game.Game;
 import com.pi4.duet.model.home.Settings;
+import com.pi4.duet.view.game.GameWindow;
+import com.pi4.duet.view.home.CommandsView;
 import com.pi4.duet.view.home.SettingsView;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class SettingsController {
 	private SettingsView sv;
+	private GameWindow gw;
+
+
+	public HomePageViewController getHpvC() {
+		return hpvC;
+	}
+
 	private HomePageViewController hpvC;
 	private Settings model;
+	private CommandsView cv;
+	private CommandsController cc;
 
-	public SettingsController(HomePageViewController hpvC){
+	public SettingsController(HomePageViewController hpvC,GameWindow gw,CommandsView cv){
 		this.hpvC = hpvC;
+		this.gw=gw;
+		cc=new CommandsController();
+		this.cv=cv;
+		cc.setCv(cv);
+		this.cv=cv;
 	}
 
 	public void setModel(Settings model) { this.model = model; }
@@ -20,6 +40,13 @@ public class SettingsController {
 		if(val) { hpvC.runMusic(); }
 		else { hpvC.stopMusic(); }
 	}
+	public void showCommands(CommandsView cv,GameWindow gw) {
+		this.gw=gw;
+		sv.setVisible(false);
+		cv.setVisible(true);
+		gw.setMainContainer(cv);
+	}
+
 
 	public void setEffects(boolean val) {
 		model.setEffects(val);
@@ -32,6 +59,9 @@ public class SettingsController {
 
 	public void setInertie(boolean val) {
 		model.setInertie(val);
+	}
+	public void setCv(CommandsView cv) {
+		this.cv = cv;
 	}
 
 	public boolean getInertie() {
@@ -56,6 +86,9 @@ public class SettingsController {
 
 	public void save() {
 		model.save();
+	}
+	public GameWindow getGw() {
+		return gw;
 	}
 
 }

@@ -15,6 +15,7 @@ import com.pi4.duet.model.game.data.ObstacleQueue;
 import com.pi4.duet.model.game.data.ObstacleQueueStatus;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.ObstacleView;
+import com.pi4.duet.view.home.CommandsView;
 
 public class GameLevelController extends GameController {
 
@@ -162,7 +163,7 @@ public class GameLevelController extends GameController {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode()==KeyEvent.VK_DOWN){
+		if(e.getKeyCode()== CommandsView.keyButton[5]){
 			for(int i=0;i<model.getObstacles().size();i++){
 				model.getObstacles().get(i).setVelocity(1);
 			}
