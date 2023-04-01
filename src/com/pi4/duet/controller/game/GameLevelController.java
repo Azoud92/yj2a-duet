@@ -7,7 +7,6 @@ import java.util.TimerTask;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
-import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.GameLevel;
 import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.Obstacle;
@@ -43,7 +42,7 @@ public class GameLevelController extends GameController {
 					hasWin();
 					if (model.getObstacles().size() > 0) {
 						for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
-							o.updatePosition(Direction.BOTTOM);
+							o.updatePosition();
 							verifyCollision(o);
 							verifyObstacleReached(o);
 							refreshView();

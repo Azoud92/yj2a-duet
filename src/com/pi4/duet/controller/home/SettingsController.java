@@ -1,13 +1,9 @@
 package com.pi4.duet.controller.home;
 
-import com.pi4.duet.model.game.Game;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameWindow;
 import com.pi4.duet.view.home.CommandsView;
 import com.pi4.duet.view.home.SettingsView;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class SettingsController {
 	private SettingsView sv;

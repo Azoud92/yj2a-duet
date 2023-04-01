@@ -1,7 +1,6 @@
 package com.pi4.duet.controller.home;
 
 import com.pi4.duet.view.home.CommandsView;
-import com.pi4.duet.view.home.SettingsView;
 
 public class CommandsController {
     private CommandsView cv;

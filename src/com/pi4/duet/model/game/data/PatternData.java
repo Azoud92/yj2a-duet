@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import com.pi4.duet.Point;
+import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.Obstacle;
 
 public class PatternData extends HashMap<Long, Obstacle> {
@@ -105,6 +106,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 				double velocity = Double.parseDouble(lineSc.next());
 				double rotationSpeed = Double.parseDouble(lineSc.next());
 				double angle = Double.parseDouble(lineSc.next());
+				Direction dir = Direction.valueOf(lineSc.next());
 
 				//Conversion des points (Un cast d'arrays ne marche pas)
 				Object[] uncastedPoints = points.toArray();
@@ -114,7 +116,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 				}
 
 				//Placement du résultat
-				res.put(key, new Obstacle(castedPoints, centre, velocity, rotationSpeed, angle, null));
+				res.put(key, new Obstacle(castedPoints, centre, velocity, rotationSpeed, angle, dir, null));
 			} catch (Exception e) {
 				//Arrêter de parser si l'on rencontre une ligne non conforme
 				break;
