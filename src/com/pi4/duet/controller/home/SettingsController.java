@@ -1,48 +1,58 @@
 package com.pi4.duet.controller.home;
 
+import com.pi4.duet.Scale;
+import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameWindow;
 import com.pi4.duet.view.home.CommandsView;
 import com.pi4.duet.view.home.SettingsView;
 
 public class SettingsController {
+	
 	private SettingsView sv;
 	private GameWindow gw;
 
-
-	public HomePageViewController getHpvC() {
-		return hpvC;
-	}
-
 	private HomePageViewController hpvC;
 	private Settings model;
-	private CommandsView cv;
-	private CommandsController cc;
+	
+	private Commands commandsModel;
+	private CommandsView commandsView;
+	private CommandsController commandsController;
+	
+	private Scale scale;
 
-	public SettingsController(HomePageViewController hpvC,GameWindow gw,CommandsView cv){
+	public SettingsController(HomePageViewController hpvC, GameWindow gw, Scale scale){
 		this.hpvC = hpvC;
-		this.gw=gw;
-		cc=new CommandsController();
-		this.cv=cv;
-		cc.setCv(cv);
-		this.cv=cv;
+		this.gw = gw;
+		this.scale = scale;
 	}
 
 	public void setModel(Settings model) { this.model = model; }
 	public void setView(SettingsView sv) { this.sv = sv; }
+	
+	public void initCommands() {
+		this.commandsModel = Commands.read();
+		this.commandsController = new CommandsController();
+		this.commandsController.setModel(commandsModel);
+		this.commandsView = new CommandsView(sv, scale, commandsController);
+	}
+	
+	public HomePageViewController getHpvC() {
+		return hpvC;
+	}
 
 	public void setMusic(boolean val) {
 		model.setMusic(val);
-		if(val) { hpvC.runMusic(); }
+		if (val) { hpvC.runMusic(); }
 		else { hpvC.stopMusic(); }
 	}
-	public void showCommands(CommandsView cv,GameWindow gw) {
-		this.gw=gw;
+	
+	public void showCommands(GameWindow gw) {
+		this.gw = gw;
 		sv.setVisible(false);
-		cv.setVisible(true);
-		gw.setMainContainer(cv);
+		commandsView.setVisible(true);
+		gw.setMainContainer(commandsView);
 	}
-
 
 	public void setEffects(boolean val) {
 		model.setEffects(val);
@@ -52,12 +62,8 @@ public class SettingsController {
 		model.setBackground(val);
 	}
 
-
 	public void setInertie(boolean val) {
 		model.setInertie(val);
-	}
-	public void setCv(CommandsView cv) {
-		this.cv = cv;
 	}
 
 	public boolean getInertie() {
@@ -67,8 +73,7 @@ public class SettingsController {
 	public boolean getMusic() { return model.getMusic(); }
 
 	public boolean getEffects() { return model.getEffects(); }
-
-
+ 
 	public boolean getBackground() {
 		// TODO Auto-generated method stub
 		return model.getBackground();
@@ -83,8 +88,14 @@ public class SettingsController {
 	public void save() {
 		model.save();
 	}
+	
 	public GameWindow getGw() {
 		return gw;
+	}
+
+	public Commands getCommandsModel() {
+		// TODO Auto-generated method stub
+		return commandsModel;
 	}
 
 }

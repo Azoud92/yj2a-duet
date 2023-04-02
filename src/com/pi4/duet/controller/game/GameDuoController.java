@@ -13,6 +13,7 @@ import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.data.ObstacleQueue;
 import com.pi4.duet.model.game.data.ObstacleQueueStatus;
+import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.ObstacleView;
 
@@ -20,9 +21,9 @@ public class GameDuoController extends GameController {
 
 	private WheelController wheelTopController;
 
-	public GameDuoController(HomePageViewController hpvC, Settings settings, Scale scale){
-		super(hpvC, settings, scale);
-		this.wheelTopController = new WheelController(settings, this, 2);
+	public GameDuoController(HomePageViewController hpvC, Settings settings, Commands commands, Scale scale){
+		super(hpvC, settings, commands, scale);
+		this.wheelTopController = new WheelController(settings, commands, this, 2);
 	}
 
 	public WheelController getWheelTopController() { return wheelTopController; }

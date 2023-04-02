@@ -8,9 +8,9 @@ import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.RotationType;
 import com.pi4.duet.model.game.Wheel;
+import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.WheelView;
-import com.pi4.duet.view.home.CommandsView;
 
 public class WheelController implements KeyListener {
 
@@ -20,11 +20,13 @@ public class WheelController implements KeyListener {
 	private GameController game;
 
 	private Settings settings;
+	private Commands commands;
 
 	public final int numWheel; // sert à enregistrer le numéro de volant dans le cas multijoueur, pour gérer les évén. claviers
 
-	public WheelController(Settings settings, GameController gameController, int numWheel) {
+	public WheelController(Settings settings, Commands commands, GameController gameController, int numWheel) {
 		this.settings = settings;
+		this.commands = commands;
 		this.game = gameController;
 		this.numWheel = numWheel;
 	}
@@ -127,7 +129,7 @@ public class WheelController implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (game.getState() == GameState.ON_GAME){
-			if(e.getKeyCode()== CommandsView.keyButton[1]){
+			if(e.getKeyCode()== commands.getTurnRight()){
 				if (numWheel != 1) return;
 				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
 				else if (model.getLastRotation() != null) {
@@ -142,7 +144,7 @@ public class WheelController implements KeyListener {
 				}
 				return;
 			}
-			if(e.getKeyCode()==CommandsView.keyButton[0]){
+			if(e.getKeyCode() == commands.getTurnLeft()){
 				if (numWheel != 1) return;
 				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
 				else if (model.getLastRotation() != null) {
@@ -187,12 +189,12 @@ public class WheelController implements KeyListener {
 				}
 				return;
 			}
-			if(e.getKeyCode()==CommandsView.keyButton[3]){
+			if(e.getKeyCode() == commands.getTurnRight()){
 				model.setStopMovement(true);
 				model.setWheelMovement(Direction.RIGHT);
 				return;
 			}
-			if(e.getKeyCode()==CommandsView.keyButton[2]){
+			if(e.getKeyCode() == commands.getTurnLeft()){
 				model.setStopMovement(true);
 				model.setWheelMovement(Direction.LEFT);
 				return;
@@ -203,28 +205,28 @@ public class WheelController implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (game.getState() == GameState.ON_GAME) {
-			if(e.getKeyCode()==CommandsView.keyButton[0]){
+			if(e.getKeyCode() == commands.getTurnLeft()){
 				if (numWheel != 1) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
-			if(e.getKeyCode()==CommandsView.keyButton[1]){
+			if(e.getKeyCode() == commands.getTurnRight()){
 				if (numWheel != 1) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
-			if(e.getKeyCode()==KeyEvent.VK_Q){
+			if(e.getKeyCode() == KeyEvent.VK_Q){
 				if (numWheel != 2) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
-			if(e.getKeyCode()==KeyEvent.VK_D){
+			if(e.getKeyCode() == KeyEvent.VK_D){
 				if (numWheel != 2) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
-			if(e.getKeyCode()==CommandsView.keyButton[2]) model.setStopMovement(false);
-			if(e.getKeyCode()==CommandsView.keyButton[3]) model.setStopMovement(false);
+			if(e.getKeyCode() == commands.getMoveLeft()) model.setStopMovement(false);
+			if(e.getKeyCode() == commands.getMoveRight()) model.setStopMovement(false);
 		}
 	}
 	public void setWheelRotating(RotationType dir) {

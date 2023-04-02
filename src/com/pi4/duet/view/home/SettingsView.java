@@ -11,7 +11,6 @@ import javax.swing.SwingConstants;
 
 import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Scale;
-import com.pi4.duet.controller.home.CommandsController;
 import com.pi4.duet.controller.home.SettingsController;
 import com.pi4.duet.view.game.GameWindow;
 
@@ -28,8 +27,7 @@ public class SettingsView extends JPanel {
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 
 	private SettingsController controller;
-	private CommandsView cv;
-
+	
 	public void setGw(GameWindow gw) {
 		this.gw = gw;
 	}
@@ -57,15 +55,14 @@ public class SettingsView extends JPanel {
 			controller.back();
 			controller.save();
 		});
-		commands=new JButton(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/commands.png")),this.size.width/10, this.size.width/10));
+		
+		commands = new JButton(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/commands.png")),this.size.width/10, this.size.width/10));
 		commands.setBounds((this.size.width/20)*18, this.size.width/20 ,this.size.width/10, this.size.width/10);
 		commands.setBackground(Color.BLACK);
 		this.add(commands);
+		
 		commands.addActionListener(e->{
-			if(cv==null){
-				this.cv=new CommandsView(this);
-			}
-			controller.showCommands(cv,controller.getHpvC().getWindow());
+			controller.showCommands(controller.getHpvC().getWindow());
 		});
 
 

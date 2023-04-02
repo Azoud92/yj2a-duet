@@ -22,7 +22,6 @@ import com.pi4.duet.view.game.GameDuoView;
 import com.pi4.duet.view.game.GameLevelView;
 import com.pi4.duet.view.game.GameWindow;
 import com.pi4.duet.view.game.ObstacleView;
-import com.pi4.duet.view.home.CommandsView;
 import com.pi4.duet.view.home.HomePageView;
 import com.pi4.duet.view.home.SettingsView;
 
@@ -57,10 +56,11 @@ public class HomePageViewController {
 		this.scale = scale;
 		homeMusic.stop();
 		sm = Settings.read();
-		sc = new SettingsController(this,window,new CommandsView(sv));
+		sc = new SettingsController(this, window, scale);
 		sc.setModel(sm);
-		sv = new SettingsView(size, sc, scale,window);
+		sv = new SettingsView(size, sc, scale, window);
 		sc.setView(sv);
+		sc.initCommands();
 	}
 
 	public void runLevel(GameWindow window, HomePageView view, int numLevel, boolean replay) {
@@ -71,7 +71,7 @@ public class HomePageViewController {
 			obstaclesViews = gv.getObstacles();
 		}
 
-		gc = new GameLevelController(this, sm, scale);
+		gc = new GameLevelController(this, sm, sc.getCommandsModel(), scale);
 		gp = new GameLevel(size.width / 3, size.height, new Point(size.width / 6, size.height - 150), numLevel);
 		gc.getWheelController().setModel(gp.getWheel());
 		gc.setModel(gp);
@@ -112,7 +112,7 @@ public class HomePageViewController {
 			obstaclesViews = gdv.getObstacles();
 		}
 
-		gdc = new GameDuoController(this, sm, scale);
+		gdc = new GameDuoController(this, sm, sc.getCommandsModel(), scale);
 		gpd = new GameDuo(size.width / 3, size.height, new Point(size.width / 6, size.height - 150), new Point(size.width / 6, 150));
 		gdc.getWheelController().setModel(gpd.getWheel());
 		gdc.getWheelTopController().setModel(gpd.getTopWheel());

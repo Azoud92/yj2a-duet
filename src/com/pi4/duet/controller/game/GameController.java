@@ -13,15 +13,16 @@ import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.data.ObstacleQueue;
 import com.pi4.duet.model.game.data.ObstacleQueueStatus;
 import com.pi4.duet.model.game.data.PatternData;
+import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameView;
-import com.pi4.duet.view.home.CommandsView;
 
 public abstract class GameController implements KeyListener {
 
 	protected Game model;
 	protected GameView view;
 	protected Settings settings;
+	protected Commands commands;
 	protected Scale scale;
 
 	protected Sound defeatSound = new Sound("defeat.wav", false);
@@ -34,13 +35,14 @@ public abstract class GameController implements KeyListener {
 
 	protected boolean backgroundMovement;
 
-	public GameController(HomePageViewController hpvC, Settings settings, Scale scale) {
+	public GameController(HomePageViewController hpvC, Settings settings, Commands commands, Scale scale) {
 		this.hpvC = hpvC;
 		this.settings = settings;
+		this.commands = commands;
 		music.stop();
 		this.scale = scale;
 		gameTimer = new ObstacleQueue(this, scale);
-		this.wheelController = new WheelController(settings, this, 1);
+		this.wheelController = new WheelController(settings, commands, this, 1);
 	}
 
 	public final void setModel(Game model) { this.model = model; }
@@ -115,23 +117,23 @@ public abstract class GameController implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == GameState.ON_GAME){
-			if(e.getKeyCode()==CommandsView.keyButton[4]){
+			if(e.getKeyCode() == commands.getPause()){
 				this.setBackgroundMovement(true);
 				wheelController.stopWheelRotation();
 				model.setState(GameState.PAUSED);
 				view.affichePause();
-				for(int i=0;i<model.getObstacles().size();i++){
+				for(int i = 0; i < model.getObstacles().size(); i++){
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
 			}
-			if(e.getKeyCode()==CommandsView.keyButton[5]){
-				for(int i=0;i<model.getObstacles().size();i++){
+			if(e.getKeyCode() == commands.getFallObs()){
+				for(int i = 0;i <model.getObstacles().size(); i++){
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
 			}
 		}
 		else {
-			if (CommandsView.keyButton[4] == e.getKeyCode()) {
+			if (commands.getPause() == e.getKeyCode()) {
 				model.setState(GameState.ON_GAME);
 			}
 		}
