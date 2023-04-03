@@ -92,7 +92,7 @@ public abstract class GameView extends JPanel {
 
 	public void afficheWin(){
 		JLabel win1 = new JLabel();
-		win1.setText("VOUS AVEZ GAGNÉ");
+		win1.setText("VOUS AVEZ GAGNï¿½");
 		win1.setBounds(size.width/6, this.size.height/5*2 , this.size.width/6 * 4, this.size.height/6);
 		win1.setFont(new Font("Arial", Font.BOLD, 43));
 		win1.setForeground(Color.WHITE);

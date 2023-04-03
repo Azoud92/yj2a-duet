@@ -23,6 +23,8 @@ public class CommandsView extends JPanel implements KeyListener {
     private JButton back;
     private JLabel differentButton;
     public static int[]keyButton={37,39,17,16,32,40};
+    // Dans l'ordre : bouton pour
+    // {tourner sens horaire,toucher sens anti-horaire,volant va à gauche,volant va à droite,pause,faire tomber l'obstacle}
     public CommandsView(SettingsView sv){
         this.addKeyListener(this);
         setFocusable(true);

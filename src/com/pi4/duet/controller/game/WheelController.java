@@ -91,7 +91,7 @@ public class WheelController implements KeyListener {
 
 		if(model.getStopMovement()) {
 			if (model.getWheelMovement() == Direction.LEFT) {
-				model.move(Direction.LEFT);
+				model.move(Direction.LEFT,(int)view.getSize().getWidth()/3);
 				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
 						model.getCenterBall1().getY() - model.getBallRadius()));
 				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
@@ -99,7 +99,7 @@ public class WheelController implements KeyListener {
 
 
 			} else if (model.getWheelMovement() == Direction.RIGHT) {
-				model.move(Direction.RIGHT);
+				model.move(Direction.RIGHT,(int)view.getSize().getWidth()/3);
 				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
 						model.getCenterBall1().getY() - model.getBallRadius()));
 				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),

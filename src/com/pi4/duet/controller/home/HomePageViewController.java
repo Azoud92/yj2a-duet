@@ -1,7 +1,6 @@
 package com.pi4.duet.controller.home;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -91,7 +90,7 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 		
 		try {
-			gc.addPattern(PatternData.read("src/resources/levels/level" + numLevel + ".ser"));
+			gc.addPattern(PatternData.read("2022-yj2-g2-duet/src/resources/levels/level" + numLevel + ".ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
