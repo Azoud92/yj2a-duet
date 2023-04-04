@@ -47,13 +47,13 @@ public class Wheel { // représente le volant du jeu
 
 	public void move(Direction dir,int borneMax) {
 		if(dir==Direction.RIGHT && center.getX()<borneMax-radius-ballRadius) {
-			ball_2.centerBall.setX(getCenterBall2().getX() + 2);
-			ball_1.centerBall.setX(getCenterBall1().getX() + 2);
-			center.setX(center.getX() + 2);
+			ball_2.centerBall.setX(getCenterBall2().getX() + 0.5);
+			ball_1.centerBall.setX(getCenterBall1().getX() + 0.5);
+			center.setX(center.getX() + 0.5);
 		}else if(dir==Direction.LEFT && center.getX()>radius+ballRadius){
-			ball_2.centerBall.setX(getCenterBall2().getX()-2);
-			ball_1.centerBall.setX(getCenterBall1().getX()-2);
-			center.setX(center.getX()-2);
+			ball_2.centerBall.setX(getCenterBall2().getX()-0.5);
+			ball_1.centerBall.setX(getCenterBall1().getX()-0.5);
+			center.setX(center.getX()-0.5);
 		}
 
 	}

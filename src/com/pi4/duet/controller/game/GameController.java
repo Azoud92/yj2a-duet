@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 
 import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
+import com.pi4.duet.controller.home.CommandsController;
 import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.game.Game;
 import com.pi4.duet.model.game.GameState;
@@ -115,7 +116,7 @@ public abstract class GameController implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == GameState.ON_GAME){
-			if(e.getKeyCode()==CommandsView.keyButton[4]){
+			if(e.getKeyCode()==CommandsController.keyButton[4]){
 				this.setBackgroundMovement(true);
 				wheelController.stopWheelRotation();
 				model.setState(GameState.PAUSED);
@@ -124,14 +125,14 @@ public abstract class GameController implements KeyListener {
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
 			}
-			if(e.getKeyCode()==CommandsView.keyButton[5]){
+			if(e.getKeyCode()==CommandsController.keyButton[5]){
 				for(int i=0;i<model.getObstacles().size();i++){
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
 			}
 		}
 		else {
-			if (CommandsView.keyButton[4] == e.getKeyCode()) {
+			if (CommandsController.keyButton[4] == e.getKeyCode()) {
 				model.setState(GameState.ON_GAME);
 			}
 		}

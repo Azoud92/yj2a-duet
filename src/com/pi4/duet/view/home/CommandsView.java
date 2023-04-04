@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class CommandsView extends JPanel implements KeyListener {
+public class CommandsView extends JPanel{
     private static final long serialVersionUID = 8809186306938504775L;
     private Dimension size;
     private CommandsController controller;
@@ -21,13 +21,17 @@ public class CommandsView extends JPanel implements KeyListener {
     private JLabel turnLeft,turnRight,moveLeft,moveRight,pause,fallObs;
     private JButton[] allJButton;
     private JButton back;
+
+
+
     private JLabel differentButton;
-    public static int[]keyButton={37,39,17,16,32,40};
+
     // Dans l'ordre : bouton pour
     // {tourner sens horaire,toucher sens anti-horaire,volant va à gauche,volant va à droite,pause,faire tomber l'obstacle}
     public CommandsView(SettingsView sv){
-        this.addKeyListener(this);
+
         setFocusable(true);
+        this.controller=new CommandsController(this);
         setFocusTraversalKeysEnabled(true);
         this.setLayout(new GridLayout(1,3));
         this.add(new JPanel());
@@ -171,46 +175,16 @@ public class CommandsView extends JPanel implements KeyListener {
         milieu.add(allJButton[5]);
         this.add(milieu);
         this.add(new JPanel());
-
-
+    }
+    public JButton[] getAllJButton() {
+        return allJButton;
     }
 
-
-    @Override
-    public void keyTyped(KeyEvent keyEvent) {
-
+    public void setAllJButton(JButton[] allJButton) {
+        this.allJButton = allJButton;
     }
-    @Override
-    public void keyPressed(KeyEvent keyEvent) {
-        for(int i=0;i<allJButton.length;++i){
-            if(allJButton[i]!=null){
-                if(allJButton[i].getText().equals("Veuillez chosir une touche")){
-                    int keyCode=keyEvent.getKeyCode();
-                    allJButton[i].setText(KeyEvent.getKeyText(keyCode));
-                    allJButton[i].setFont(new Font("Arial",Font.BOLD,30));
-                    keyButton[i]=keyCode;
-                    allJButton[i].setForeground(Color.GREEN);
-                    System.out.println(keyButton[i]);
-                }
-            }
 
-        }
-
-    }
-    @Override
-    public void keyReleased(KeyEvent keyEvent) {
-        for(int i=0;i<keyButton.length-1;i++){
-            for(int j=i+1;j<keyButton.length;j++){
-                if(allJButton[i]!=null&&allJButton[j]!=null){
-                    if(keyButton[i]==keyButton[j]){
-                        differentButton.setText("Il y a des touches identiques");
-                        differentButton.setForeground(Color.red);
-                        return;
-                    }else{
-                        differentButton.setText("");
-                    }
-                }
-            }
-        }
+    public JLabel getDifferentButton() {
+        return differentButton;
     }
 }

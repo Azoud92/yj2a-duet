@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
+import com.pi4.duet.controller.home.CommandsController;
 import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.game.GameLevel;
 import com.pi4.duet.model.game.GameState;
@@ -162,7 +163,7 @@ public class GameLevelController extends GameController {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode()== CommandsView.keyButton[5]){
+		if(e.getKeyCode()== CommandsController.keyButton[5]){
 			for(int i=0;i<model.getObstacles().size();i++){
 				model.getObstacles().get(i).setVelocity(1);
 			}

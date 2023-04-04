@@ -22,9 +22,7 @@ public class SettingsController {
 	public SettingsController(HomePageViewController hpvC,GameWindow gw,CommandsView cv){
 		this.hpvC = hpvC;
 		this.gw=gw;
-		cc=new CommandsController();
 		this.cv=cv;
-		cc.setCv(cv);
 		this.cv=cv;
 	}
 
