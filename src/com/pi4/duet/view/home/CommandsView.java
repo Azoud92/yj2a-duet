@@ -31,7 +31,6 @@ public class CommandsView extends JPanel{
     public CommandsView(SettingsView sv){
 
         setFocusable(true);
-        this.controller=new CommandsController(this);
         setFocusTraversalKeysEnabled(true);
         this.setLayout(new GridLayout(1,3));
         this.add(new JPanel());
@@ -175,6 +174,8 @@ public class CommandsView extends JPanel{
         milieu.add(allJButton[5]);
         this.add(milieu);
         this.add(new JPanel());
+        this.controller=new CommandsController(this);
+
     }
     public JButton[] getAllJButton() {
         return allJButton;
