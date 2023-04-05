@@ -61,7 +61,39 @@ public class CommandsController {
 		case 5:
 			model.setFallObs(keyCode);
 			break;
+		case 6:
+			model.setTurnLeftDuo(keyCode);
+			break;
+		case 7:
+			model.setTurnRightDuo(keyCode);
+			break;
+		case 8:
+			model.setMoveLeftDuo(keyCode);
+			break;
+		case 9:
+			model.setMoveRightDuo(keyCode);
+			break;
 		}
+	}
+
+	public int getTurnLeftDuo() {
+		// TODO Auto-generated method stub
+		return model.getTurnLeftDuo();
+	}
+
+	public int getTurnRightDuo() {
+		// TODO Auto-generated method stub
+		return model.getTurnRightDuo();
+	}
+
+	public int getMoveLeftDuo() {
+		// TODO Auto-generated method stub
+		return model.getMoveLeftDuo();
+	}
+
+	public int getMoveRightDuo() {
+		// TODO Auto-generated method stub
+		return model.getTurnRightDuo();
 	}
 
 }

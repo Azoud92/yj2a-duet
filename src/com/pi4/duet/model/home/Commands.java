@@ -20,7 +20,8 @@ public class Commands implements Serializable {
 	 */
 	private static final long serialVersionUID = -4586835493215068372L;
 	
-	private int turnLeft = 37, turnRight = 39, moveLeft = 17, moveRight = 16, pause = 32, fallObs = 40;
+	private int turnLeft = 37, turnRight = 39, moveLeft = 17, moveRight = 16, pause = 32, fallObs = 40,
+			turnLeftDuo = 81, turnRightDuo = 68, moveLeftDuo = 69, moveRightDuo = 84;
 	
 	public int getTurnLeft() {
 		return turnLeft;
@@ -78,6 +79,10 @@ public class Commands implements Serializable {
 		compare.add(moveRight);
 		compare.add(pause);
 		compare.add(fallObs);
+		compare.add(turnLeftDuo);
+		compare.add(turnRightDuo);
+		compare.add(moveLeftDuo);
+		compare.add(moveRightDuo);
 
 		HashSet<Integer> set = new HashSet<Integer>(compare);
         return set.size() != compare.size();
@@ -129,6 +134,38 @@ public class Commands implements Serializable {
 			// TODO Auto-generated catch block
 			return new Commands();
 		}
+	}
+
+	public int getTurnLeftDuo() {
+		return turnLeftDuo;
+	}
+
+	public void setTurnLeftDuo(int turnLeftDuo) {
+		this.turnLeftDuo = turnLeftDuo;
+	}
+
+	public int getTurnRightDuo() {
+		return turnRightDuo;
+	}
+
+	public void setTurnRightDuo(int turnRightDuo) {
+		this.turnRightDuo = turnRightDuo;
+	}
+
+	public int getMoveLeftDuo() {
+		return moveLeftDuo;
+	}
+
+	public void setMoveLeftDuo(int moveLeftDuo) {
+		this.moveLeftDuo = moveLeftDuo;
+	}
+
+	public int getMoveRightDuo() {
+		return moveRightDuo;
+	}
+
+	public void setMoveRightDuo(int moveRightDuo) {
+		this.moveRightDuo = moveRightDuo;
 	}
 
 }

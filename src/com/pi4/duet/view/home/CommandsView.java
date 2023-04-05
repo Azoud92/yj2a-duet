@@ -23,7 +23,7 @@ public class CommandsView extends JPanel implements KeyListener {
     private CommandsController controller;
     private Scale scale;
 
-    private LabelView turnLeft, turnRight, moveLeft, moveRight, pause, fallObs;
+    private LabelView turnLeft, turnRight, turnLeftDuo, turnRightDuo, moveLeft, moveRight, moveLeftDuo, moveRightDuo, pause, fallObs;
     private TouchButtonView[] allJButton;
     private JButton back;
     private LabelView differentButton;
@@ -38,7 +38,7 @@ public class CommandsView extends JPanel implements KeyListener {
         setFocusTraversalKeysEnabled(true);
         this.setLayout(new GridLayout(1, 3));
         this.add(new JPanel());
-        JPanel milieu = new JPanel(new GridLayout(7, 2));
+        JPanel milieu = new JPanel(new GridLayout(11, 2));
         milieu.setBackground(Color.black);
 
         ImageIcon backIcon = new ImageIcon(this.getClass().getResource("/resources/img/back.png"));
@@ -51,7 +51,7 @@ public class CommandsView extends JPanel implements KeyListener {
         });
         milieu.add(back);
 
-        differentButton = new LabelView("", 23);
+        differentButton = new LabelView("", 20);
         milieu.add(differentButton);
 
         turnLeft = new LabelView("Tourner à gauche");
@@ -61,7 +61,12 @@ public class CommandsView extends JPanel implements KeyListener {
         pause = new LabelView("Pause");
         fallObs = new LabelView("Accélération de la desc.");
 
-        allJButton = new TouchButtonView[6];
+        turnLeftDuo = new LabelView("Tourner à gauche (1v1)");
+        turnRightDuo = new LabelView("Tourner à droite (1v1)");
+        moveLeftDuo = new LabelView("Se déplacer à gauche (1v1)");
+        moveRightDuo = new LabelView("Se déplacer à droite (1v1)");
+
+        allJButton = new TouchButtonView[10];
 
         allJButton[0] = new TouchButtonView(KeyEvent.getKeyText(controller.getTurnLeft()));
         allJButton[1] = new TouchButtonView(KeyEvent.getKeyText(controller.getTurnRight()));
@@ -69,17 +74,34 @@ public class CommandsView extends JPanel implements KeyListener {
         allJButton[3] = new TouchButtonView(KeyEvent.getKeyText(controller.getMoveRight()));
         allJButton[4] = new TouchButtonView(KeyEvent.getKeyText(controller.getPause()));
         allJButton[5] = new TouchButtonView(KeyEvent.getKeyText(controller.getFallObs()));
+        allJButton[6] = new TouchButtonView(KeyEvent.getKeyText(controller.getTurnLeftDuo()));
+        allJButton[7] = new TouchButtonView(KeyEvent.getKeyText(controller.getTurnRightDuo()));
+        allJButton[8] = new TouchButtonView(KeyEvent.getKeyText(controller.getMoveLeftDuo()));
+        allJButton[9] = new TouchButtonView(KeyEvent.getKeyText(controller.getMoveRightDuo()));
+        
         milieu.add(turnLeft);
         milieu.add(allJButton[0]);
 
         milieu.add(turnRight);
         milieu.add(allJButton[1]);
+        
+        milieu.add(turnLeftDuo);
+        milieu.add(allJButton[6]);
+        
+        milieu.add(turnRightDuo);
+        milieu.add(allJButton[7]);
 
         milieu.add(moveLeft);
         milieu.add(allJButton[2]);
 
         milieu.add(moveRight);
         milieu.add(allJButton[3]);
+        
+        milieu.add(moveLeftDuo);
+        milieu.add(allJButton[8]);
+
+        milieu.add(moveRightDuo);
+        milieu.add(allJButton[9]);
         
         milieu.add(pause);
         milieu.add(allJButton[4]);
@@ -98,7 +120,7 @@ public class CommandsView extends JPanel implements KeyListener {
                 if(allJButton[i].isPressed){
                     int keyCode = keyEvent.getKeyCode();
                     allJButton[i].setText(KeyEvent.getKeyText(keyCode));
-                    allJButton[i].setFont(new Font("Arial", Font.BOLD, 30));
+                    allJButton[i].setFont(new Font("Arial", Font.BOLD, (int) (45 * scale.getScaleY())));
                     allJButton[i].setForeground(Color.GREEN);
                     allJButton[i].isPressed = false;
                     controller.updateCommands(i, keyCode);
@@ -140,7 +162,7 @@ public class CommandsView extends JPanel implements KeyListener {
     	}
 		
 		LabelView(String text) {
-			this(text, 28);
+			this(text, 25);
     	}    	
     }
     
@@ -158,7 +180,7 @@ public class CommandsView extends JPanel implements KeyListener {
     		this.setBackground(Color.BLACK);
     		this.setForeground(Color.GREEN);
     		this.setPreferredSize(this.getSize());
-    		this.setFont(new Font("Arial", Font.BOLD, (int) (50 * scale.getScaleY())));
+    		this.setFont(new Font("Arial", Font.BOLD, (int) (45 * scale.getScaleY())));
     		this.addActionListener(e -> {
     			this.setText("Appuyez sur une touche");
     			this.setFont(new Font("Arial", Font.BOLD, (int) (25 * scale.getScaleY())));

@@ -160,7 +160,7 @@ public class WheelController implements KeyListener {
 				}
 				return;
 			}
-			if(e.getKeyCode()==KeyEvent.VK_Q){
+			if(e.getKeyCode() == commands.getTurnLeftDuo()){
 				if (numWheel != 2) return;
 				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
 				else if (model.getLastRotation() != null) {
@@ -175,7 +175,7 @@ public class WheelController implements KeyListener {
 				}
 				return;
 			}
-			if(e.getKeyCode()==KeyEvent.VK_D){
+			if(e.getKeyCode() == commands.getTurnRightDuo()){
 				if (numWheel != 2) return;
 				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
 				else if (model.getLastRotation() != null) {
@@ -192,12 +192,28 @@ public class WheelController implements KeyListener {
 			}
 
 			if(e.getKeyCode() == commands.getMoveRight()){
+				if (numWheel != 1) return;
 				model.setStopMovement(true);
 				model.setWheelMovement(Direction.RIGHT);
 				return;
 			}
 
 			if(e.getKeyCode() == commands.getMoveLeft()){
+				if (numWheel != 1) return;
+				model.setStopMovement(true);
+				model.setWheelMovement(Direction.LEFT);
+				return;
+			}
+			
+			if(e.getKeyCode() == commands.getMoveRightDuo()){
+				if (numWheel != 2) return;
+				model.setStopMovement(true);
+				model.setWheelMovement(Direction.RIGHT);
+				return;
+			}
+
+			if(e.getKeyCode() == commands.getMoveLeftDuo()){
+				if (numWheel != 2) return;
 				model.setStopMovement(true);
 				model.setWheelMovement(Direction.LEFT);
 				return;
@@ -221,19 +237,36 @@ public class WheelController implements KeyListener {
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
-			if(e.getKeyCode() == KeyEvent.VK_Q){
+			if(e.getKeyCode() == commands.getTurnLeftDuo()){
 				if (numWheel != 2) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
-			if(e.getKeyCode() == KeyEvent.VK_D){
+			if(e.getKeyCode() == commands.getTurnRightDuo()){
 				if (numWheel != 2) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
+			}
+			
+			if(e.getKeyCode() == commands.getMoveRightDuo()){
+				if (numWheel != 2) return;
+				model.setStopMovement(false);
 			}
 
-			if(e.getKeyCode() == commands.getMoveLeft()) model.setStopMovement(false);
-			if(e.getKeyCode() == commands.getMoveRight()) model.setStopMovement(false);
+			if(e.getKeyCode() == commands.getMoveLeftDuo()){
+				if (numWheel != 2) return;
+				model.setStopMovement(false);
+				return;
+			}
+
+			if(e.getKeyCode() == commands.getMoveLeft()) {
+				if (numWheel != 1) return;
+				model.setStopMovement(false);
+			}
+			if(e.getKeyCode() == commands.getMoveRight()) {
+				if (numWheel != 1) return;
+				model.setStopMovement(false);
+			}
 
 		}
 	}
