@@ -4,9 +4,8 @@ import com.pi4.duet.view.game.GameWindow;
 
 public class Runner {
 
-	public static void main(String[] args) {
-		@SuppressWarnings("unused")
-		GameWindow gw = new GameWindow();
+	public static void main(String[] args) {		
+		new GameWindow();
 	}
 
 }

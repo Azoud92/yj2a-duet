@@ -2,10 +2,18 @@ package com.pi4.duet.view.home;
 
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.CommandsController;
-import javax.swing.*;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 
 public class CommandsView extends JPanel implements KeyListener {

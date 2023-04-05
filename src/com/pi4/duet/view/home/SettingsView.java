@@ -1,6 +1,10 @@
 package com.pi4.duet.view.home;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
