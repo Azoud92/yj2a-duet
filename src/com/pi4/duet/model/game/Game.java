@@ -19,6 +19,18 @@ public abstract class Game {
 		this.wheel = new Wheel(coordsWheel);
 	}
 
+	public int indice(){
+		int indice=0;
+		for(int i=0;i<obstacles.size();i++){
+			if(obstacles.get(i).getCenter().getY()<wheel.getCenter().getY()){
+				break;
+			}else{
+				indice++;
+			}
+		}
+		return indice;
+	}
+
 	public final void addObstacle(Obstacle o) {
 		this.obstacles.add(o);
 	}
