@@ -133,7 +133,7 @@ public abstract class GameController implements KeyListener {
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
 			}
-			if(e.getKeyCode() == KeyEvent.VK_A){
+			if(e.getKeyCode() == KeyEvent.VK_UP){
 				if(view.getProgression()>=165 && view.getAppuyer()==false ) {
 					view.setAppuyer(true);
 					view.setAppuyer(true);

@@ -91,13 +91,13 @@ public abstract class GameView extends JPanel {
 		});
 		timer.setRepeats(false);
 		timer.start();
-		jboite2.createDialog(this, "TENEZ VOUS PRÊT").setVisible(true);
+		jboite2.createDialog(this, "TENEZ VOUS PRÃŠT").setVisible(true);
 		controller.setBackgroundMovement(false);
 	}
 
 	public void afficheWin(){
 		JLabel win1 = new JLabel();
-		win1.setText("VOUS AVEZ GAGN�");
+		win1.setText("VOUS AVEZ GAGNï¿½");
 		win1.setBounds(size.width/6, this.size.height/5*2 , this.size.width/6 * 4, this.size.height/6);
 		win1.setFont(new Font("Arial", Font.BOLD, 43));
 		win1.setForeground(Color.WHITE);
@@ -161,20 +161,20 @@ public abstract class GameView extends JPanel {
 		if(progression < 165 && progression > -1) {
 			progression++;
 			g.setColor(Color.red);
-			g.fillRoundRect(5, 620, 80 * progression/100, 30, 20, 20);
+			g.fillRoundRect(100, 10, 80 * progression/100, 30, 20, 20);
 
 			g.setColor(Color.white);
-			g.drawRoundRect(5, 620, 130 , 30, 20, 20);
+			g.drawRoundRect(100, 10, 130 , 30, 20, 20);
 		}
 		if(progression>=165 && appuyer==false){
 			g.setColor(Color.red);
-			g.fillRoundRect(5, 620, 130 , 30, 20, 20);
+			g.fillRoundRect(100, 10, 130 , 30, 20, 20);
 
 			g.setColor(Color.white);
-			g.drawRoundRect(5, 620, 130 , 30, 20, 20);
+			g.drawRoundRect(100, 10, 130 , 30, 20, 20);
 
-			w.setText("Appuyer sur 'A' pour faire disparaitre un obstacle");
-			w.setBounds(140,625,300,20);
+			w.setText("Appuyez sur '↑' pour faire disparaitre un obstacle");
+			w.setBounds(240,15,300,20);
 			w.setForeground(Color.WHITE);
 			w.setVisible(true);
 			this.add(w);
@@ -243,7 +243,7 @@ public abstract class GameView extends JPanel {
 		this.repaint();
 	}
 
-	// On réaffiche la partie
+	// On rÃ©affiche la partie
 	protected void reset() {
 		this.remove(back);
 		this.remove(replay);
