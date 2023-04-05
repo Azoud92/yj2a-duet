@@ -130,6 +130,15 @@ public abstract class GameController implements KeyListener {
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
 			}
+			if(e.getKeyCode() == KeyEvent.VK_A){
+				if(view.getProgression()>=165 && view.getAppuyer()==false ) {
+					view.setAppuyer(true);
+					view.setAppuyer(true);
+					model.removeObstacle(model.getObstacles().get(model.indice()));
+					view.removeObstacle(view.getObstacles().get(view.indice()));
+
+				}
+			}
 		}
 		else {
 			if (CommandsController.keyButton[4] == e.getKeyCode()) {
