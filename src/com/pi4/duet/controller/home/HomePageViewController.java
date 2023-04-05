@@ -68,6 +68,7 @@ public class HomePageViewController {
 		this.window = window;
 
 		if (replay) {
+			gv.setVisible(false);
 			obstaclesViews = gv.getObstacles();
 		}
 

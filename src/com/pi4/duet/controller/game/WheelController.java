@@ -191,14 +191,13 @@ public class WheelController implements KeyListener {
 				return;
 			}
 
-			if(e.getKeyCode() == commands.getTurnRight()){
+			if(e.getKeyCode() == commands.getMoveRight()){
 				model.setStopMovement(true);
 				model.setWheelMovement(Direction.RIGHT);
 				return;
 			}
 
-			if(e.getKeyCode() == commands.getTurnLeft()){
-
+			if(e.getKeyCode() == commands.getMoveLeft()){
 				model.setStopMovement(true);
 				model.setWheelMovement(Direction.LEFT);
 				return;
