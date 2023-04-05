@@ -67,6 +67,7 @@ public abstract class GameController implements KeyListener {
 	public abstract void verifyObstacleReached(Obstacle o);
 
 	public void hasWin() {
+		System.out.println(gameTimer.getStatus());
 		if (model.getObstacles().size() == 0 && gameTimer.getStatus() == ObstacleQueueStatus.FINISHED) {
 			this.setBackgroundMovement(true);
 			gameStop();

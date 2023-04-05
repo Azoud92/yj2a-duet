@@ -18,7 +18,7 @@ import com.pi4.duet.Point;
 import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.Obstacle;
 
-public class PatternData extends HashMap<Long, Obstacle> {
+public class PatternData extends HashMap<Obstacle, Long> {
 
 	private static final long serialVersionUID = -8250741712843302226L;
 
@@ -116,7 +116,7 @@ public class PatternData extends HashMap<Long, Obstacle> {
 				}
 
 				//Placement du résultat
-				res.put(key, new Obstacle(castedPoints, centre, velocity, rotationSpeed, angle, dir, null));
+				res.put(new Obstacle(castedPoints, centre, velocity, rotationSpeed, angle, dir, null), key);
 			} catch (Exception e) {
 				//Arrêter de parser si l'on rencontre une ligne non conforme
 				break;
@@ -131,8 +131,8 @@ public class PatternData extends HashMap<Long, Obstacle> {
 	public String toString() {
 		String res = "";
 		int i = 0;
-		for (Long l : keySet()) {
-			res += l + ":" + get(l);
+		for (Long l : values()) {
+			res += l + ":" + l;
 			if (i < keySet().size() -1) res += "\n";
 			i++;
 		}
@@ -142,8 +142,8 @@ public class PatternData extends HashMap<Long, Obstacle> {
 	public String toHTMLString() {
 		String res = "";
 		int i = 0;
-		for (Long l : keySet()) {
-			res += l + ":" + get(l);
+		for (Long l : values()) {
+			res += l + ":" + l;
 			if (i < keySet().size() -1) res += "<br>";
 			i++;
 		}

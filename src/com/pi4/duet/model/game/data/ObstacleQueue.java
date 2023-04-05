@@ -1,9 +1,12 @@
 package com.pi4.duet.model.game.data;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameController;
@@ -44,6 +47,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 			@Override
 			public void run() {
 				addObstacle(o);
+				
 				status = s;
 			}
 		}, delay);
@@ -63,9 +67,17 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	public void putPattern(PatternData data) {
 		int i = 0;
 		
-		for (Long delay : data.keySet()) {
-			if (data.keySet().size() == 1 || i == data.keySet().size() - 1)	putObstacle(data.get(delay), delay, ObstacleQueueStatus.FINISHED);
-			else putObstacle(data.get(delay), delay, ObstacleQueueStatus.DELIVERY_IN_PROGRESS);		
+		// trier la HashMap par valeurs
+		List<Entry<Obstacle, Long>> sortedEntries = new ArrayList<>(data.entrySet());
+		Collections.sort(sortedEntries, Entry.comparingByValue());
+				
+		for (Entry<Obstacle, Long> entry : sortedEntries) {
+			if (sortedEntries.size() == 1 || i == sortedEntries.size() - 1) {
+				putObstacle(entry.getKey(), entry.getValue(), ObstacleQueueStatus.FINISHED);
+			}
+			else {
+				putObstacle(entry.getKey(), entry.getValue(), ObstacleQueueStatus.DELIVERY_IN_PROGRESS);		
+			}
 			i++;
 		}
 	}
