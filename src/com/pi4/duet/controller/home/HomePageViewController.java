@@ -76,7 +76,7 @@ public class HomePageViewController {
 		gp = new GameLevel(size.width / 3, size.height, new Point(size.width / 6, size.height - 150), numLevel);
 		gc.getWheelController().setModel(gp.getWheel());
 		gc.setModel(gp);
-		gv = new GameLevelView(size, gc);
+		gv = new GameLevelView(size, scale, gc);
 		gc.getWheelController().setView(gv.getWheel());
 		gc.setView(gv);
 		gv.addKeyListener(gc);
@@ -118,7 +118,7 @@ public class HomePageViewController {
 		gdc.getWheelController().setModel(gpd.getWheel());
 		gdc.getWheelTopController().setModel(gpd.getTopWheel());
 		gdc.setModel(gpd);
-		gdv = new GameDuoView(size, gdc);
+		gdv = new GameDuoView(size, scale, gdc);
 		gdc.getWheelController().setView(gdv.getWheel());
 		gdc.getWheelTopController().setView(gdv.getWheelTopView());
 		gdc.setView(gdv);

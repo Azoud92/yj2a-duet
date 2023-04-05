@@ -2,6 +2,7 @@ package com.pi4.duet.view.game;
 
 import java.awt.Dimension;
 
+import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameDuoController;
 
 public class GameDuoView extends GameView {
@@ -10,8 +11,8 @@ public class GameDuoView extends GameView {
 
 	private WheelView wheelTopView;
 
-	public GameDuoView(Dimension size, GameDuoController controller) {
-		super(size, controller);
+	public GameDuoView(Dimension size, Scale scale, GameDuoController controller) {
+		super(size, scale, controller);
 		wheelTopView = new WheelView(size, controller.getWheelTopController());
 		this.add(wheelTopView);
 		this.addKeyListener(wheelTopView.getController());

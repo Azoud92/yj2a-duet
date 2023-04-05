@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameController;
 
 public abstract class GameView extends JPanel {
@@ -41,10 +42,14 @@ public abstract class GameView extends JPanel {
 	private JLabel w=new JLabel();
 
 	private boolean appuyer=false;
-	public GameView(Dimension size, GameController controller) {
+	
+	private Scale scale;
+	
+	public GameView(Dimension size, Scale scale, GameController controller) {
 		this.size = new Dimension(size.width / 3, size.height);
 		this.controller = controller;
-
+		this.scale = scale;
+		
 		Dimension dim = new Dimension(size.width / 3, size.height);
 		this.setPreferredSize(dim);
 
@@ -97,17 +102,17 @@ public abstract class GameView extends JPanel {
 
 	public void afficheWin(){
 		JLabel win1 = new JLabel();
-		win1.setText("VOUS AVEZ GAGNï¿½");
+		win1.setText("VOUS AVEZ GAGNÉ !");
 		win1.setBounds(size.width/6, this.size.height/5*2 , this.size.width/6 * 4, this.size.height/6);
-		win1.setFont(new Font("Arial", Font.BOLD, 43));
+		win1.setFont(new Font("Arial", Font.BOLD, (int) (43 * scale.getScaleY())));
 		win1.setForeground(Color.WHITE);
 		win1.setVisible(true);
 		this.add(win1);
 
 		JLabel win2 = new JLabel();
 		win2.setText("BRAVO");
-		win2.setBounds((this.size.width/6)+140, (this.size.height/5)*2+50, this.size.width/6 * 4, this.size.height/6);
-		win2.setFont(new Font("Arial", Font.BOLD, 43));
+		win2.setBounds((this.size.width/6)+(int) (140 * scale.getScaleX()), (this.size.height/5)*2+ (int) (50 * scale.getScaleY()), this.size.width/6 * 4, this.size.height/6);
+		win2.setFont(new Font("Arial", Font.BOLD, (int) (43 * scale.getScaleY())));
 		win2.setForeground(Color.WHITE);
 		win2.setVisible(true);
 		this.add(win2);
@@ -214,7 +219,7 @@ public abstract class GameView extends JPanel {
 		back.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
 		back.setForeground(Color.RED);
 		back.setBackground(Color.BLACK);
-		back.setFont(new Font("Arial", Font.BOLD, 50));
+		back.setFont(new Font("Arial", Font.BOLD, (int) (50 * scale.getScaleY())));
 		back.setVisible(true);
 		this.add(back);
 		setComponentZOrder(back, 1);
@@ -223,7 +228,7 @@ public abstract class GameView extends JPanel {
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
 		replay.setBackground(Color.BLACK);
 		replay.setForeground(Color.BLUE);
-		replay.setFont(new Font("Arial", Font.BOLD, 50));
+		replay.setFont(new Font("Arial", Font.BOLD, (int) (50 * scale.getScaleY())));
 		replay.setVisible(true);
 		add(replay);
 		setComponentZOrder(replay, 0);
