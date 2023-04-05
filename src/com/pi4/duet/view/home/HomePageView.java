@@ -19,7 +19,6 @@ import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
-import com.pi4.duet.model.home.HomePage;
 import com.pi4.duet.view.game.GameWindow;
 
 public class HomePageView extends JPanel {

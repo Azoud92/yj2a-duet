@@ -130,5 +130,9 @@ public class ObstacleView extends JPanel {
 		}
 	}
 
+	public ObstacleController getController() {
+		return controller;
+	}
+
 
 }

@@ -15,23 +15,25 @@ public class Obstacle implements Serializable, Cloneable {
 	private Point[] points; // les coordonnées de l'obstacle
 	private Point center;
 	private transient boolean reached = false; // détermine si un obstacle a franchi l'écran (et est invisible)
+	private Direction direction;
 
 	private transient ObstacleController controller;
 
 	private double velocity = 0.1, rotationSpeed = 0.1; // la vitesse d'animation, et la vitesse de rotation (s'il y a lieu)
 	private double angle = 0; // l'angle actuel de l'obstacle (en radians)
 
-	public Obstacle(Point points[], Point center, ObstacleController controller) {
+	public Obstacle(Point points[], Point center, Direction dir, ObstacleController controller) {
 		this.points = new Point[points.length];
 		for (int i = 0; i < points.length; i++) {
 			this.points[i] = points[i].clone();
 		}
 		this.center = center.clone();
 		this.controller = controller;
+		this.direction = dir;
 	}
 
-	public Obstacle(Point points[], Point center, double velocity, double rotationSpeed, double angle, ObstacleController controller) {
-		this(points, center, controller);
+	public Obstacle(Point points[], Point center, double velocity, double rotationSpeed, double angle, Direction dir, ObstacleController controller) {
+		this(points, center, dir, controller);
 		this.velocity = velocity;
 		this.rotationSpeed = rotationSpeed;
 		this.angle = angle;
@@ -42,11 +44,13 @@ public class Obstacle implements Serializable, Cloneable {
 	@Override
 	public Obstacle clone() {
 		ObstacleController oc = new ObstacleController();
-		Obstacle o = new Obstacle(this.points, this.center, this.velocity, this.rotationSpeed, this.angle, this.controller);
+		Obstacle o = new Obstacle(this.points, this.center, this.velocity, this.rotationSpeed, this.angle, this.direction, this.controller);
 		oc.setModel(o);
 		return o;
 	}
 
+	public void updatePosition() { this.updatePosition(this.getDirection()); }
+	
 	public void updatePosition(Direction dir) {
 		for (Point p : points) { // mise à jour de chaque point de l'obstacle
 			switch(dir) {
@@ -136,6 +140,10 @@ public class Obstacle implements Serializable, Cloneable {
 
 	public void setVelocity(double velocity) {
 		this.velocity = velocity;
+	}
+	
+	public Direction getDirection() {
+		return direction;
 	}
 /*
 	@Override

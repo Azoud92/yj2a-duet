@@ -7,20 +7,19 @@ import java.util.TimerTask;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
-import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.GameLevel;
 import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.data.ObstacleQueue;
 import com.pi4.duet.model.game.data.ObstacleQueueStatus;
+import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.ObstacleView;
-import com.pi4.duet.view.home.CommandsView;
 
 public class GameLevelController extends GameController {
 
-	public GameLevelController(HomePageViewController hpvC, Settings settings, Scale scale) {
-		super(hpvC, settings, scale);
+	public GameLevelController(HomePageViewController hpvC, Settings settings, Commands commands, Scale scale) {
+		super(hpvC, settings, commands, scale);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -43,7 +42,7 @@ public class GameLevelController extends GameController {
 					hasWin();
 					if (model.getObstacles().size() > 0) {
 						for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
-							o.updatePosition(Direction.BOTTOM);
+							o.updatePosition();
 							verifyCollision(o);
 							verifyObstacleReached(o);
 							refreshView();
@@ -163,7 +162,8 @@ public class GameLevelController extends GameController {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode()== CommandsView.keyButton[5]){
+
+		if(e.getKeyCode() == commands.getFallObs()){
 			for(int i=0;i<model.getObstacles().size();i++){
 				model.getObstacles().get(i).setVelocity(1);
 			}
