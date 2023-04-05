@@ -23,6 +23,7 @@ public class SettingsController {
 
 	public SettingsController(HomePageViewController hpvC, GameWindow gw, Scale scale){
 		this.hpvC = hpvC;
+
 		this.gw = gw;
 		this.scale = scale;
 	}

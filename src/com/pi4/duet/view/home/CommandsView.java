@@ -7,8 +7,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+
 public class CommandsView extends JPanel implements KeyListener {
-	
+
     private static final long serialVersionUID = 8809186306938504775L;
     
     private CommandsController controller;
@@ -24,6 +25,7 @@ public class CommandsView extends JPanel implements KeyListener {
     	this.controller = controller;
     	
         this.addKeyListener(this);
+        
         setFocusable(true);
         setFocusTraversalKeysEnabled(true);
         this.setLayout(new GridLayout(1, 3));

@@ -97,6 +97,8 @@ public class WheelView extends JPanel {
 	public void updateBall_2(Point coords) {
 		ball_2.coords = coords;
 	}
+	@Override
+	public Dimension getSize() {return size;}
 
 	private class Ball {
 		Point coords;

@@ -162,6 +162,7 @@ public class GameLevelController extends GameController {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+
 		if(e.getKeyCode() == commands.getFallObs()){
 			for(int i=0;i<model.getObstacles().size();i++){
 				model.getObstacles().get(i).setVelocity(1);

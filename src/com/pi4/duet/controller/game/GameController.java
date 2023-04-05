@@ -117,6 +117,7 @@ public abstract class GameController implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (model.getState() == GameState.ON_GAME){
+
 			if(e.getKeyCode() == commands.getPause()){
 				this.setBackgroundMovement(true);
 				wheelController.stopWheelRotation();
@@ -126,9 +127,19 @@ public abstract class GameController implements KeyListener {
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
 			}
+
 			if(e.getKeyCode() == commands.getFallObs()){
 				for(int i = 0;i <model.getObstacles().size(); i++){
 					model.getObstacles().get(i).setVelocity(0.1);
+				}
+			}
+			if(e.getKeyCode() == KeyEvent.VK_A){
+				if(view.getProgression()>=165 && view.getAppuyer()==false ) {
+					view.setAppuyer(true);
+					view.setAppuyer(true);
+					model.removeObstacle(model.getObstacles().get(model.indice()));
+					view.removeObstacle(view.getObstacles().get(view.indice()));
+
 				}
 			}
 		}

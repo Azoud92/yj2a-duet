@@ -1,7 +1,6 @@
 package com.pi4.duet.controller.home;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 

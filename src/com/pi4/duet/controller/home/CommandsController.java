@@ -1,24 +1,12 @@
 package com.pi4.duet.controller.home;
 
 import com.pi4.duet.model.home.Commands;
-import com.pi4.duet.view.home.CommandsView;
 
 public class CommandsController {
 	
 	private Commands model;
-    private SettingsController controller;
-
+	
     public void setModel(Commands model) { this.model = model; }
-    
-    public void setCv(CommandsView view) { }
-
-    public SettingsController getController() {
-        return controller;
-    }
-
-    public void setController(SettingsController controller) {
-        this.controller = controller;
-    }
     
     public int getTurnLeft() {
 		return model.getTurnLeft();
@@ -75,4 +63,5 @@ public class CommandsController {
 			break;
 		}
 	}
+
 }

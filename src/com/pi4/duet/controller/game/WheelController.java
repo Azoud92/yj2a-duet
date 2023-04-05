@@ -93,7 +93,7 @@ public class WheelController implements KeyListener {
 
 		if(model.getStopMovement()) {
 			if (model.getWheelMovement() == Direction.LEFT) {
-				model.move(Direction.LEFT);
+				model.move(Direction.LEFT,(int)view.getSize().getWidth()/3);
 				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
 						model.getCenterBall1().getY() - model.getBallRadius()));
 				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
@@ -101,7 +101,7 @@ public class WheelController implements KeyListener {
 
 
 			} else if (model.getWheelMovement() == Direction.RIGHT) {
-				model.move(Direction.RIGHT);
+				model.move(Direction.RIGHT,(int)view.getSize().getWidth()/3);
 				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
 						model.getCenterBall1().getY() - model.getBallRadius()));
 				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
@@ -144,6 +144,7 @@ public class WheelController implements KeyListener {
 				}
 				return;
 			}
+
 			if(e.getKeyCode() == commands.getTurnLeft()){
 				if (numWheel != 1) return;
 				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
@@ -189,12 +190,15 @@ public class WheelController implements KeyListener {
 				}
 				return;
 			}
+
 			if(e.getKeyCode() == commands.getTurnRight()){
 				model.setStopMovement(true);
 				model.setWheelMovement(Direction.RIGHT);
 				return;
 			}
+
 			if(e.getKeyCode() == commands.getTurnLeft()){
+
 				model.setStopMovement(true);
 				model.setWheelMovement(Direction.LEFT);
 				return;
@@ -205,12 +209,15 @@ public class WheelController implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (game.getState() == GameState.ON_GAME) {
+
 			if(e.getKeyCode() == commands.getTurnLeft()){
 				if (numWheel != 1) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
+
 			if(e.getKeyCode() == commands.getTurnRight()){
+
 				if (numWheel != 1) return;
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
@@ -225,8 +232,10 @@ public class WheelController implements KeyListener {
 				model.stopWheelRotation();
 				if (settings.getInertie()) model.setWheelBreaking(true);
 			}
+
 			if(e.getKeyCode() == commands.getMoveLeft()) model.setStopMovement(false);
 			if(e.getKeyCode() == commands.getMoveRight()) model.setStopMovement(false);
+
 		}
 	}
 	public void setWheelRotating(RotationType dir) {
