@@ -7,7 +7,7 @@ public class Wheel { // représente le volant du jeu
 	private Ball ball_1, ball_2; // resp. balle rouge & balle bleue
 
 	private int radius = 100; // rayon du volant
-	public final double rotationSpeed = 0.25;
+	public final double rotationSpeed = 0.15;
 	private final int ballRadius = 10; // rayon de la balle
 
 	private double angle = 0; // angle des balles
