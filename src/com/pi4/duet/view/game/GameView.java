@@ -213,20 +213,28 @@ public abstract class GameView extends JPanel {
 		back = new JButton("RETOUR");
 		back.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
 		back.setForeground(Color.RED);
-		back.setBackground(Color.BLACK);
 		back.setFont(new Font("Arial", Font.BOLD, 50));
 		back.setVisible(true);
+		back.setBorderPainted(false);
+		back.setContentAreaFilled(false);
+		back.setFocusPainted(false);
 		this.add(back);
 		setComponentZOrder(back, 1);
 
+		
+
 		replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
-		replay.setBackground(Color.BLACK);
 		replay.setForeground(Color.BLUE);
 		replay.setFont(new Font("Arial", Font.BOLD, 50));
 		replay.setVisible(true);
+		replay.setBorderPainted(false);
+		replay.setContentAreaFilled(false);
+		replay.setFocusPainted(false);
 		add(replay);
 		setComponentZOrder(replay, 0);
+		
+		
 
 		back.addActionListener(e -> {
 			reset();

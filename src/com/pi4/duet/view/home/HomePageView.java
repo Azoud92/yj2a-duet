@@ -114,8 +114,10 @@ public class HomePageView extends JPanel {
 
 		settings_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/settings.png")), this.size.width/13, this.size.width/13);
 		settings = new JButton(settings_i);
-		settings.setBounds(this.size.width - this.size.width/20 - this.size.width/10, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
-		settings.setBackground(Color.BLACK);
+		settings.setBounds(this.size.width - this.size.width/10, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
+		settings.setBorderPainted(false);
+		settings.setContentAreaFilled(false);
+		settings.setFocusPainted(false);
 		this.add(settings);
 
 		settings.addActionListener(e -> {
@@ -125,8 +127,10 @@ public class HomePageView extends JPanel {
 
 		quit_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/quit.png")), this.size.width/10, this.size.width/10);
 		quit = new JButton(quit_i);
-		quit.setBounds(this.size.width/20, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
-		quit.setBackground(Color.BLACK);
+		quit.setBounds(0, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
+		quit.setBorderPainted(false);
+		quit.setContentAreaFilled(false);
+		quit.setFocusPainted(false);
 		this.add(quit);
 
 		quit.addActionListener(e -> {
