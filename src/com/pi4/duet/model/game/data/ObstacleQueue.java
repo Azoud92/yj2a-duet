@@ -81,10 +81,6 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 
 
-	public void putPattern(String path) throws IOException, ClassNotFoundException {
-		new ObstacleQueue(controller, scale, PatternData.read(path));
-	}
-
 	public void setStatus(ObstacleQueueStatus status) { ObstacleQueue.status = status; }
 	public ObstacleQueueStatus getStatus() { return status; }
 
