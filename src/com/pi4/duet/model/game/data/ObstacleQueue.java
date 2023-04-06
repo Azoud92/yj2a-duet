@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameController;
+import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.Obstacle;
 
 public class ObstacleQueue extends Timer { // représente la liste avec les délais d'apparition des obstacles
@@ -18,6 +19,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	private final GameController controller;
 	private static ObstacleQueueStatus status = ObstacleQueueStatus.WAITING;
 	private Scale scale;
+	private int time = 0;
 
 	public ObstacleQueue(GameController gameController, Scale scale) {
 		controller = gameController;
@@ -26,32 +28,45 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 	public ObstacleQueue(GameController c, Scale scale, PatternData data) {
 		this(c, scale);
-		putPattern(data);
+		this.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				putObs(data, time);
+				time++;
+			}
+		}, 0, 1);
 	}
+
 
 	public ObstacleQueue(GameController c, Scale scale, String path) throws IOException, ClassNotFoundException {
 		this(c, scale, PatternData.read(path));
 	}
-
-	public void putObstacle(Obstacle o, long delay) { // delay est en millisecondes
-		this.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				addObstacle(o);
+	
+	protected void putObs(PatternData data, int time) {
+		int i = 0;
+		List<Entry<Obstacle, Long>> sortedEntries = new ArrayList<>(data.entrySet());
+		Collections.sort(sortedEntries, Entry.comparingByValue());
+		
+		for (Entry<Obstacle, Long> entry : sortedEntries) {
+			if (sortedEntries.size() == 1 || i == sortedEntries.size() - 1) {
+				if(time == entry.getValue()) {
+					addObstacle(entry.getKey());
+					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
+					
+				}
 			}
-		}, delay);
+			else {
+				if(time == entry.getValue()) {
+					addObstacle(entry.getKey());
+					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
+					}	
+			}
+			i++;
+		}
+		
 	}
 
-	public void putObstacle(Obstacle o, long delay, ObstacleQueueStatus s) { // delay est en millisecondes
-		this.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				addObstacle(o);
-				
-				status = s;
-			}
-		}, delay);
-	}
+	
 
 	private void addObstacle(Obstacle o) {
 		// On met l'obstacle aux normes quand à l'échelle d'affichage
@@ -64,26 +79,10 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		controller.addObstacle(o);
 	}
 
-	public void putPattern(PatternData data) {
-		int i = 0;
-		
-		// trier la HashMap par valeurs
-		List<Entry<Obstacle, Long>> sortedEntries = new ArrayList<>(data.entrySet());
-		Collections.sort(sortedEntries, Entry.comparingByValue());
-				
-		for (Entry<Obstacle, Long> entry : sortedEntries) {
-			if (sortedEntries.size() == 1 || i == sortedEntries.size() - 1) {
-				putObstacle(entry.getKey(), entry.getValue(), ObstacleQueueStatus.FINISHED);
-			}
-			else {
-				putObstacle(entry.getKey(), entry.getValue(), ObstacleQueueStatus.DELIVERY_IN_PROGRESS);		
-			}
-			i++;
-		}
-	}
+
 
 	public void putPattern(String path) throws IOException, ClassNotFoundException {
-		putPattern(PatternData.read(path));
+		new ObstacleQueue(controller, scale, PatternData.read(path));
 	}
 
 	public void setStatus(ObstacleQueueStatus status) { ObstacleQueue.status = status; }
