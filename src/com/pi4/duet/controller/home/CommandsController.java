@@ -93,7 +93,7 @@ public class CommandsController {
 
 	public int getMoveRightDuo() {
 		// TODO Auto-generated method stub
-		return model.getTurnRightDuo();
+		return model.getMoveRightDuo();
 	}
 
 }

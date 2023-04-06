@@ -270,6 +270,7 @@ public class WheelController implements KeyListener {
 
 		}
 	}
+	
 	public void setWheelRotating(RotationType dir) {
 		// TODO Auto-generated method stub
 		model.setWheelRotating(dir);
