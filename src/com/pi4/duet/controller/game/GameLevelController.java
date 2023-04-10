@@ -140,7 +140,7 @@ public class GameLevelController extends GameController {
 	@Override
 	public void hasWin() {
 		super.hasWin();
-		if (!hpvC.getLevelsAvailable().contains(((GameLevel) model).numLevel + 1)) { // on ajoute seulement le niveau suivant à la liste des niveaux disponibles si ce dernier n'y figure pas
+		if (!hpvC.getLevelsAvailable().contains(((GameLevel) model).numLevel + 1)) { // on ajoute seulement le niveau suivant Ã  la liste des niveaux disponibles si ce dernier n'y figure pas
 			hpvC.addLevel(((GameLevel) model).numLevel + 1);
 			hpvC.save();
 		}
@@ -166,6 +166,7 @@ public class GameLevelController extends GameController {
 			for(int i=0;i<model.getObstacles().size();i++){
 				model.getObstacles().get(i).setVelocity(1);
 			}
+			gameTimer.fall();
 		}
 
 

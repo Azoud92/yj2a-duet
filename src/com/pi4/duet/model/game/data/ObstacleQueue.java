@@ -19,7 +19,9 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	private final GameController controller;
 	private static ObstacleQueueStatus status = ObstacleQueueStatus.WAITING;
 	private Scale scale;
-	private int time = 0;
+	private static int time = 0;
+	private static int add = 1;
+	private PatternData data;
 
 	public ObstacleQueue(GameController gameController, Scale scale) {
 		controller = gameController;
@@ -28,11 +30,12 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 	public ObstacleQueue(GameController c, Scale scale, PatternData data) {
 		this(c, scale);
+		this.data = data;
 		this.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				putObs(data, time);
-				time++;
+				putObs(time);
+				time += add;
 			}
 		}, 0, 1);
 	}
@@ -42,24 +45,43 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		this(c, scale, PatternData.read(path));
 	}
 	
-	protected void putObs(PatternData data, int time) {
+	public void fall() {
+		add =10;
+	}
+	
+	public void stopFall() {add = 1;}
+	
+	protected void putObs(int time) {
 		int i = 0;
 		List<Entry<Obstacle, Long>> sortedEntries = new ArrayList<>(data.entrySet());
 		Collections.sort(sortedEntries, Entry.comparingByValue());
 		
 		for (Entry<Obstacle, Long> entry : sortedEntries) {
+			if(entry.getValue()>time+1)return;
+			
 			if (sortedEntries.size() == 1 || i == sortedEntries.size() - 1) {
-				if(time == entry.getValue()) {
+				if(time == entry.getValue() && add == 1) {
 					addObstacle(entry.getKey());
 					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
 					
 				}
+				
+				else if(add == 10 && entry.getValue()> time-10 && entry.getValue()<= time) {
+					addObstacle(entry.getKey());
+					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
+				}
 			}
+			
 			else {
-				if(time == entry.getValue()) {
+				if(time == entry.getValue() && add == 1) {
 					addObstacle(entry.getKey());
 					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
-					}	
+					}
+				
+				else if(add == 10 && entry.getValue()> time-10 && entry.getValue()<= time) {
+					addObstacle(entry.getKey());
+					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
+				}
 			}
 			i++;
 		}
@@ -83,5 +105,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 	public void setStatus(ObstacleQueueStatus status) { ObstacleQueue.status = status; }
 	public ObstacleQueueStatus getStatus() { return status; }
+
+	
 
 }

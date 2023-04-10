@@ -101,7 +101,9 @@ public abstract class GameController implements KeyListener {
 
 	public final boolean isBackgroundEnabled() { return settings.getBackground(); }
 
-	public final void addPattern(PatternData d) { gameTimer = new ObstacleQueue(this, scale, d); }
+	public final void addPattern(PatternData d) { 
+		gameTimer = new ObstacleQueue(this, scale, d);
+		}
 
 	public final Boolean getBackgroundMouvement() { return this.backgroundMovement; }
 	public final void setBackgroundMovement(boolean b) { this.backgroundMovement = b; }
@@ -129,16 +131,18 @@ public abstract class GameController implements KeyListener {
 				for(int i = 0; i < model.getObstacles().size(); i++){
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
+
 			}
 
 			if(e.getKeyCode() == commands.getFallObs()){
 				for(int i = 0;i <model.getObstacles().size(); i++){
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
+				gameTimer.stopFall();
 			}
 			
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				if (model.getCanUseEffect()) {
+				if (model.getCanUseEffect() && model.getObstacles().size() > 0) {
 					model.useEffect();
 					int firstObstacleVisibleView = view.getFirstIndexObstacleVisible();
 					model.removeObstacle(model.getObstacles().get(0));
