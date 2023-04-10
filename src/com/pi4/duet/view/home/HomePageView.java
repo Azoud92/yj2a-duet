@@ -20,7 +20,6 @@ import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.view.game.GameWindow;
-import com.pi4.duet.model.game.data.LogBuffer;
 
 public class HomePageView extends JPanel {
 

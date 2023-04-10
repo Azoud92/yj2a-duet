@@ -13,7 +13,7 @@ public abstract class Game {
 	private ArrayList<Obstacle> obstacles = new ArrayList<>();
 	private GameState gameState = GameState.READY;
 	
-	private double effectDelaySpeed = 0.1;
+	private double effectDelaySpeed = 0.01;
 	private double progressionEffect = 0;
 	private boolean canUseEffect = false;
 

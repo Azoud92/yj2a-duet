@@ -57,6 +57,7 @@ public abstract class GameController implements KeyListener {
 
 	public final void gameStop() {
 		gameTimer.cancel();
+		gameTimer.purge();
 		music.stop();
 	}
 
