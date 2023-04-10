@@ -40,7 +40,6 @@ public abstract class GameController implements KeyListener {
 		this.commands = commands;
 		music.stop();
 		this.scale = scale;
-		gameTimer = new ObstacleQueue(this, scale);
 		this.wheelController = new WheelController(settings, commands, this, 1);
 	}
 
@@ -102,7 +101,7 @@ public abstract class GameController implements KeyListener {
 
 	public final boolean isBackgroundEnabled() { return settings.getBackground(); }
 
-	public final void addPattern(PatternData d) { gameTimer.putPattern(d); }
+	public final void addPattern(PatternData d) { gameTimer = new ObstacleQueue(this, scale, d); }
 
 	public final Boolean getBackgroundMouvement() { return this.backgroundMovement; }
 	public final void setBackgroundMovement(boolean b) { this.backgroundMovement = b; }

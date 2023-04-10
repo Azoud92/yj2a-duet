@@ -16,6 +16,7 @@ import javax.swing.Timer;
 
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameController;
+import com.pi4.duet.model.game.data.LogBuffer;
 
 public abstract class GameView extends JPanel {
 
@@ -32,6 +33,7 @@ public abstract class GameView extends JPanel {
 
 	protected double y_background = 0;
 	protected double background_speed = 0.5;
+	private LogBuffer log = new LogBuffer("", "test");
 
 	private ArrayList<ObstacleView> obstacles = new ArrayList<>();
 	private int firstIndexObstacleVisible = 0;
@@ -67,6 +69,9 @@ public abstract class GameView extends JPanel {
 	}
 
 	public final void affichePause() {
+		log.appendLn(System.currentTimeMillis() + " : Affichage du menu de pause");
+		log.write();
+		log.flush();
 		String[] option = {"Reprendre le jeu", "Revenir au menu", "Quitter le jeu"};
 		int indice = JOptionPane.showOptionDialog(this,
 				"Le jeu est en pause, veuillez choisir une option",
@@ -185,20 +190,28 @@ public abstract class GameView extends JPanel {
 		back = new JButton("RETOUR");
 		back.setBounds(size.width/5, this.size.height/6 , this.size.width/5 * 3, this.size.height/6);
 		back.setForeground(Color.RED);
-		back.setBackground(Color.BLACK);
 		back.setFont(new Font("Arial", Font.BOLD, (int) (50 * scale.getScaleY())));
 		back.setVisible(true);
+		back.setBorderPainted(false);
+		back.setContentAreaFilled(false);
+		back.setFocusPainted(false);
 		this.add(back);
 		setComponentZOrder(back, 1);
 
+		
+
 		replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
-		replay.setBackground(Color.BLACK);
 		replay.setForeground(Color.BLUE);
 		replay.setFont(new Font("Arial", Font.BOLD, (int) (50 * scale.getScaleY())));
 		replay.setVisible(true);
+		replay.setBorderPainted(false);
+		replay.setContentAreaFilled(false);
+		replay.setFocusPainted(false);
 		add(replay);
 		setComponentZOrder(replay, 0);
+		
+		
 
 		back.addActionListener(e -> {
 			reset();
