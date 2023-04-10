@@ -34,14 +34,13 @@ public abstract class GameView extends JPanel {
 	protected double background_speed = 0.5;
 
 	private ArrayList<ObstacleView> obstacles = new ArrayList<>();
+	private int firstIndexObstacleVisible = 0;
 
 	protected Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 
-	private int progression;
+	private double progression;
 
-	private JLabel w=new JLabel();
-
-	private boolean appuyer=false;
+	private JLabel effectLabel = new JLabel();
 	
 	private Scale scale;
 	
@@ -55,6 +54,12 @@ public abstract class GameView extends JPanel {
 
 		wheelView = new WheelView(size, controller.getWheelController());
 		this.add(wheelView);
+		
+		effectLabel.setText("Appuyez sur '↑' pour faire disparaître un obstacle");
+		effectLabel.setBounds(125, 30, (int) (400 * scale.getScaleX()), 30);
+		effectLabel.setForeground(Color.WHITE);
+		effectLabel.setVisible(false);
+		this.add(effectLabel);
 
 		this.addKeyListener(controller);
 		this.addKeyListener(wheelView.getController());
@@ -126,10 +131,9 @@ public abstract class GameView extends JPanel {
 		timer.start();
 	}
 
-	public void timerFinish(ConfettiView cv) {
+	protected void timerFinish(ConfettiView cv) {
 		controller.affMenu();
-		cv.finish();
-		
+		cv.finish();		
 	}
 
 
@@ -146,6 +150,7 @@ public abstract class GameView extends JPanel {
 
 	public final void removeObstacle(ObstacleView ov) {
 		this.remove(ov);
+		this.incrFirstIndexObstacleVisible();
 	}
 
 	@Override
@@ -162,52 +167,14 @@ public abstract class GameView extends JPanel {
 			y_background -= background_speed;
 			repaint();
 		}
-
-		if(progression < 165 && progression > -1) {
-			progression++;
-			g.setColor(Color.red);
-			g.fillRoundRect(100, 10, 80 * progression/100, 30, 20, 20);
-
-			g.setColor(Color.white);
-			g.drawRoundRect(100, 10, 130 , 30, 20, 20);
-		}
-		if(progression>=165 && appuyer==false){
-			g.setColor(Color.red);
-			g.fillRoundRect(100, 10, 130 , 30, 20, 20);
-
-			g.setColor(Color.white);
-			g.drawRoundRect(100, 10, 130 , 30, 20, 20);
-
-			w.setText("Appuyez sur '↑' pour faire disparaitre un obstacle");
-			w.setBounds(240,15,300,20);
-			w.setForeground(Color.WHITE);
-			w.setVisible(true);
-			this.add(w);
-		}
-
-		if(appuyer){
-			w.setVisible(false);
-		}
-	}
-
-	public int indice(){
-		int indice=0;
-		for(int i=0;i<obstacles.size();i++) {
-			if (wheelView.getController().getCenterBall_1().getY() > wheelView.getController().getCenterBall_2().getY()) {
-				if ((((wheelView.getController().getCenterBall_1().getY()-wheelView.getController().getCenterBall_2().getY())/2)+wheelView.getController().getCenterBall_2().getY())>obstacles.get(i).getController().getCenter().getY() ){
-					break;
-				}else{
-					indice++;
-				}
-			}else{
-				if ((((wheelView.getController().getCenterBall_2().getY()-wheelView.getController().getCenterBall_1().getY())/2)+wheelView.getController().getCenterBall_1().getY())>obstacles.get(i).getController().getCenter().getY()){
-					break;
-				}else{
-					indice++;
-				}
-			}
-		}
-		return indice;
+		
+		if(progression < 101 && progression > -1) {
+		    g.setColor(Color.MAGENTA);
+		    g.fillRoundRect(30, 30, (int) (30 * 3 * progression / 100), 30, 20, 20);
+		    
+		    g.setColor(Color.white);
+		    g.drawRoundRect(30, 30, 30 * 3 , 30, 20, 20);
+	    }
 	}
 
 	// Affichage lorsqu'un joueur perd la partie
@@ -248,7 +215,7 @@ public abstract class GameView extends JPanel {
 		this.repaint();
 	}
 
-	// On rÃ©affiche la partie
+	// On réaffiche la partie
 	protected void reset() {
 		this.remove(back);
 		this.remove(replay);
@@ -270,13 +237,27 @@ public abstract class GameView extends JPanel {
 		// TODO Auto-generated method stub
 		return wheelView;
 	}
+	
+	public void effectCanBeUsed() {
+		effectLabel.setVisible(true);
+	}
 
-	public int getProgression(){return this.progression;}
-	public void setProgression(int progression){ this.progression=progression;}
+	public void updateProgressionEffect() {
+		// TODO Auto-generated method stub
+		this.progression = controller.getProgressionEffect();
+	}
 
-	public boolean getAppuyer(){return this.appuyer;}
-	public void setAppuyer(boolean appuyer){ this.appuyer=appuyer;}
+	public void useEffect() {
+		// TODO Auto-generated method stub
+		this.effectLabel.setVisible(false);
+	}
 
-	public JLabel getW(){return this.w;}
+	public int getFirstIndexObstacleVisible() {
+		return firstIndexObstacleVisible;
+	}
+
+	public void incrFirstIndexObstacleVisible() {
+		this.firstIndexObstacleVisible += 1;
+	}
 
 }

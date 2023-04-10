@@ -47,8 +47,10 @@ public class GameLevelController extends GameController {
 							verifyObstacleReached(o);
 							refreshView();
 						}
-					}
+					}					
 					else refreshView();
+					incrEffectDelaySpeed();
+					if (model.getCanUseEffect()) view.effectCanBeUsed();
 					wheelController.animateWheel();
 				}
 			}
@@ -60,9 +62,6 @@ public class GameLevelController extends GameController {
 		if (model.getState() == GameState.FINISHED) return;
 		int res = model.getWheel().isInCollision(o);
 		ObstacleController oc = o.getController();
-
-		/*int oX = (int) o.getPoints()[0].getX();
-		int oY = (int) o.getPoints()[0].getY();*/
 		
 		int oX = (int) o.getCenter().getX();
 		int oY = (int) o.getCenter().getY();

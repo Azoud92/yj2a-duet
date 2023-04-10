@@ -3,7 +3,6 @@ package com.pi4.duet.controller.game;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
 import com.pi4.duet.controller.home.HomePageViewController;
@@ -107,6 +106,11 @@ public abstract class GameController implements KeyListener {
 
 	public final Boolean getBackgroundMouvement() { return this.backgroundMovement; }
 	public final void setBackgroundMovement(boolean b) { this.backgroundMovement = b; }
+	
+	public void incrEffectDelaySpeed() {
+		model.incrProgressionEffect();
+		view.updateProgressionEffect();
+	}
 
 	public final GameState getState() {
 		// TODO Auto-generated method stub
@@ -133,13 +137,14 @@ public abstract class GameController implements KeyListener {
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
 			}
-			if(e.getKeyCode() == KeyEvent.VK_UP){
-				if(view.getProgression()>=165 && view.getAppuyer()==false ) {
-					view.setAppuyer(true);
-					view.setAppuyer(true);
-					model.removeObstacle(model.getObstacles().get(model.indice()));
-					view.removeObstacle(view.getObstacles().get(view.indice()));
-
+			
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				if (model.getCanUseEffect()) {
+					model.useEffect();
+					int firstObstacleVisibleView = view.getFirstIndexObstacleVisible();
+					model.removeObstacle(model.getObstacles().get(0));
+					view.removeObstacle(view.getObstacles().get(firstObstacleVisibleView));
+					view.useEffect();
 				}
 			}
 		}
@@ -149,4 +154,10 @@ public abstract class GameController implements KeyListener {
 			}
 		}
 	}
+
+	public double getProgressionEffect() {
+		// TODO Auto-generated method stub
+		return model.getProgressionEffect();
+	}
+	
 }

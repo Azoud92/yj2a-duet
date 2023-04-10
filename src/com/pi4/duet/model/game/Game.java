@@ -12,6 +12,10 @@ public abstract class Game {
 	protected Wheel wheel;
 	private ArrayList<Obstacle> obstacles = new ArrayList<>();
 	private GameState gameState = GameState.READY;
+	
+	private double effectDelaySpeed = 0.1;
+	private double progressionEffect = 0;
+	private boolean canUseEffect = false;
 
 	public Game(int width, int height, Point coordsWheel) {
 		this.width = width;
@@ -50,6 +54,28 @@ public abstract class Game {
 
 	public final void setState(GameState s) {
 		this.gameState = s;
+	}
+
+	public boolean getCanUseEffect() {
+		return canUseEffect;
+	}
+
+	public void setCanUseEffect(boolean canUseEffect) {
+		this.canUseEffect = canUseEffect;
+	}
+	
+	public double getProgressionEffect() { return progressionEffect; }
+	
+	public void incrProgressionEffect() {		
+		if (this.progressionEffect >= 100) {
+			this.canUseEffect = true;
+		}
+		else this.progressionEffect += effectDelaySpeed;
+	}
+	
+	public void useEffect() {
+		this.progressionEffect = 0;
+		this.canUseEffect = false;
 	}
 
 }
