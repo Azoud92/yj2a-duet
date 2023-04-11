@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameController;
+import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.Obstacle;
 
 public class ObstacleQueue extends Timer { // représente la liste avec les délais d'apparition des obstacles
@@ -39,13 +40,16 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 		sortedEntries = new ArrayList<>(data.entrySet());
 		Collections.sort(sortedEntries, Entry.comparingByValue());
-
+		
 		this.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				if (status == ObstacleQueueStatus.FINISHED) this.cancel();
-				putObs(time);
-				time += add;
+				if (controller.getState() == GameState.ON_GAME) {
+					putObs(time);
+					time += add;
+				}
+				
 			}
 		}, 0, 1);
 	}
@@ -62,7 +66,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	}
 
 	public void fall() {
-		add =10;
+		add = 10;
 	}
 
 	public void stopFall() {add = 1;}
