@@ -3,6 +3,7 @@ package com.pi4.duet.model.game.data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Timer;
@@ -22,16 +23,23 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	private static int add = 1;
 	private PatternData data;
 
+	private List<Entry<Obstacle, Long>> sortedEntries;
+
+
 	public ObstacleQueue(GameController gameController, Scale scale) {
 		controller = gameController;
 		this.scale = scale;
 		time = 0;
-		add = 1;
+		add = 1;		
 	}
 
 	public ObstacleQueue(GameController c, Scale scale, PatternData data) {
 		this(c, scale);
 		this.data = data;
+
+		sortedEntries = new ArrayList<>(data.entrySet());
+		Collections.sort(sortedEntries, Entry.comparingByValue());
+
 		this.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -46,51 +54,51 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	public ObstacleQueue(GameController c, Scale scale, String path) throws IOException, ClassNotFoundException {
 		this(c, scale, PatternData.read(path));
 	}
-	
+
 	@Override
 	public void cancel() {
 		super.cancel();
 		status = ObstacleQueueStatus.FINISHED;
 	}
-	
+
 	public void fall() {
 		add =10;
 	}
-	
+
 	public void stopFall() {add = 1;}
-	
+
 	protected void putObs(int time) {
 		int i = 0;
-		List<Entry<Obstacle, Long>> sortedEntries = new ArrayList<>(data.entrySet());
-		Collections.sort(sortedEntries, Entry.comparingByValue());
-		
-		for (Entry<Obstacle, Long> entry : sortedEntries) {
-			if(entry.getValue()>time)return;
-			
+
+		Iterator<Entry<Obstacle, Long>> iter = sortedEntries.iterator();
+
+		while (iter.hasNext()) {
+			Entry<Obstacle, Long> entry = iter.next();
+			if(entry.getValue()>time) return;
+
 			if (sortedEntries.size() == 1 || i == sortedEntries.size() - 1) {
 				if(time >= entry.getValue()) {
 					addObstacle(entry.getKey());
 					data.remove(entry.getKey());
+					iter.remove();
 					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
 					System.out.println(time);
 				}
 			}
-			
+
 			else {
 				if(time >= entry.getValue()) {
 					addObstacle(entry.getKey());
 					data.remove(entry.getKey());
+					iter.remove();
 					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
 					System.out.println(time);
-					}
-				
+				}
+
 			}
 			i++;
 		}
-		
 	}
-
-	
 
 	private void addObstacle(Obstacle o) {
 		Thread obstacleCreation = new Thread() {
@@ -110,9 +118,9 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		};
 		obstacleCreation.start();
 	}
-	
-	
+
+
 	public void setStatus(ObstacleQueueStatus status) { ObstacleQueue.status = status; }
 	public ObstacleQueueStatus getStatus() { return status; }
-	
+
 }
