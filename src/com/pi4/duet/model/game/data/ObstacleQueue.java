@@ -65,31 +65,25 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		Collections.sort(sortedEntries, Entry.comparingByValue());
 		
 		for (Entry<Obstacle, Long> entry : sortedEntries) {
-			if(entry.getValue()>time+1)return;
+			if(entry.getValue()>time)return;
 			
 			if (sortedEntries.size() == 1 || i == sortedEntries.size() - 1) {
-				if(time == entry.getValue() && add == 1) {
+				if(time >= entry.getValue()) {
 					addObstacle(entry.getKey());
+					data.remove(entry.getKey());
 					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
-					
-				}
-				
-				else if(add == 10 && entry.getValue()> time-10 && entry.getValue()<= time) {
-					addObstacle(entry.getKey());
-					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
+					System.out.println(time);
 				}
 			}
 			
 			else {
-				if(time == entry.getValue() && add == 1) {
+				if(time >= entry.getValue()) {
 					addObstacle(entry.getKey());
+					data.remove(entry.getKey());
 					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
+					System.out.println(time);
 					}
 				
-				else if(add == 10 && entry.getValue()> time-10 && entry.getValue()<= time) {
-					addObstacle(entry.getKey());
-					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
-				}
 			}
 			i++;
 		}
@@ -103,7 +97,9 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		for (Point p : o.getPoints()) {
 			p.setX(p.getX() * scale.getScaleX());
 			p.setY(p.getY() * scale.getScaleY());
+			System.out.println(p.getX()+","+p.getY()+" ");
 		}
+		System.out.println();
 		o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
 		o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
 		controller.addObstacle(o);
