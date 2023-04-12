@@ -1,11 +1,18 @@
 package com.pi4.duet.controller.home;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
+import javax.swing.JPanel;
+
 import com.pi4.duet.Scale;
+import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.GameWindow;
 import com.pi4.duet.view.home.CommandsView;
 import com.pi4.duet.view.home.SettingsView;
+import com.pi4.duet.view.home.Transition;
 
 public class SettingsController {
 	
@@ -52,8 +59,18 @@ public class SettingsController {
 		this.gw = gw;
 		sv.setVisible(false);
 		commandsView.setVisible(true);
-		gw.setMainContainer(commandsView);
+		Transition t = new Transition(sv, commandsView, hpvC.getSize().width, hpvC.getSize().height, Direction.LEFT);
+		JPanel container = new JPanel(new GridLayout(1, 3));
+		container.add(new JPanel());
+		container.add(t);
+		container.add(new JPanel());
+		gw.setMainContainer(container);
+		t.transition();
+		
+
 	}
+
+
 
 	public void setEffects(boolean val) {
 		model.setEffects(val);
@@ -82,8 +99,15 @@ public class SettingsController {
 
 	public void back() {
 		sv.setVisible(false);
-		hpvC.getWindow().remove(sv);
-		hpvC.runHomePage();
+		commandsView.setVisible(true);
+		Transition t = new Transition(hpvC.getView(), sv, hpvC.getSize().width, hpvC.getSize().height, Direction.RIGHT);
+		JPanel container = new JPanel(new GridLayout(1, 3));
+		container.add(new JPanel());
+		container.add(t);
+		container.add(new JPanel());
+		gw.setMainContainer(container);
+		t.transition();
+		
 	}
 
 	public void save() {
@@ -97,6 +121,11 @@ public class SettingsController {
 	public Commands getCommandsModel() {
 		// TODO Auto-generated method stub
 		return commandsModel;
+	}
+
+	public void setGw(GameWindow gw) {
+		this.gw = gw;
+		
 	}
 
 }

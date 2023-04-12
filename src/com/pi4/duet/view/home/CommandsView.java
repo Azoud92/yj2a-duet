@@ -4,6 +4,7 @@ import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.CommandsController;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
@@ -31,28 +32,24 @@ public class CommandsView extends JPanel implements KeyListener {
     public CommandsView(SettingsView sv, Scale scale, CommandsController controller) {
     	this.scale = scale;
     	this.controller = controller;
-    	
         this.addKeyListener(this);
         
         setFocusable(true);
         setFocusTraversalKeysEnabled(true);
-        this.setLayout(new GridLayout(1, 3));
-        this.add(new JPanel());
-        JPanel milieu = new JPanel(new GridLayout(11, 2));
-        milieu.setBackground(Color.black);
+        this.setLayout(new GridLayout(11, 2));
+        this.setBackground(Color.black);
 
         ImageIcon backIcon = new ImageIcon(this.getClass().getResource("/resources/img/back.png"));
         back = new JButton(backIcon);
         back.setIcon(backIcon);
         back.setBackground(Color.BLACK);
         back.addActionListener(e -> {
-            this.setVisible(false);
-            sv.setVisible(true);
+            controller.backSettings(this, sv);
         });
-        milieu.add(back);
+        this.add(back);
 
         differentButton = new LabelView("", 20);
-        milieu.add(differentButton);
+        this.add(differentButton);
 
         turnLeft = new LabelView("Tourner à gauche");
         turnRight = new LabelView("Tourner à droite");
@@ -79,38 +76,35 @@ public class CommandsView extends JPanel implements KeyListener {
         allJButton[8] = new TouchButtonView(KeyEvent.getKeyText(controller.getMoveLeftDuo()));
         allJButton[9] = new TouchButtonView(KeyEvent.getKeyText(controller.getMoveRightDuo()));
         
-        milieu.add(turnLeft);
-        milieu.add(allJButton[0]);
+        this.add(turnLeft);
+        this.add(allJButton[0]);
 
-        milieu.add(turnRight);
-        milieu.add(allJButton[1]);
+        this.add(turnRight);
+        this.add(allJButton[1]);
         
-        milieu.add(turnLeftDuo);
-        milieu.add(allJButton[6]);
+        this.add(turnLeftDuo);
+        this.add(allJButton[6]);
         
-        milieu.add(turnRightDuo);
-        milieu.add(allJButton[7]);
+        this.add(turnRightDuo);
+        this.add(allJButton[7]);
 
-        milieu.add(moveLeft);
-        milieu.add(allJButton[2]);
+        this.add(moveLeft);
+        this.add(allJButton[2]);
 
-        milieu.add(moveRight);
-        milieu.add(allJButton[3]);
+        this.add(moveRight);
+        this.add(allJButton[3]);
         
-        milieu.add(moveLeftDuo);
-        milieu.add(allJButton[8]);
+        this.add(moveLeftDuo);
+        this.add(allJButton[8]);
 
-        milieu.add(moveRightDuo);
-        milieu.add(allJButton[9]);
+        this.add(moveRightDuo);
+        this.add(allJButton[9]);
         
-        milieu.add(pause);
-        milieu.add(allJButton[4]);
+        this.add(pause);
+        this.add(allJButton[4]);
         
-        milieu.add(fallObs);
-        milieu.add(allJButton[5]);
-        
-        this.add(milieu);
-        this.add(new JPanel());
+        this.add(fallObs);
+        this.add(allJButton[5]);
     } 
         
     @Override

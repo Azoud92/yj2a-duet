@@ -155,6 +155,7 @@ public abstract class GameView extends JPanel {
 
 	public final void removeObstacle(ObstacleView ov) {
 		this.remove(ov);
+		this.repaint();
 		this.incrFirstIndexObstacleVisible();
 	}
 

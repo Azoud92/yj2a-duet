@@ -136,10 +136,10 @@ public abstract class GameController implements KeyListener {
 			}
 
 			if(e.getKeyCode() == commands.getFallObs()){
+				gameTimer.stopFall();
 				for(int i = 0;i <model.getObstacles().size(); i++){
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
-				gameTimer.stopFall();
 			}
 			
 			if (e.getKeyCode() == KeyEvent.VK_UP) {

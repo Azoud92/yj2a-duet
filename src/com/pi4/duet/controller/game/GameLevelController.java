@@ -163,10 +163,11 @@ public class GameLevelController extends GameController {
 		// TODO Auto-generated method stub
 
 		if(e.getKeyCode() == commands.getFallObs()){
+			gameTimer.fall();
 			for(int i=0;i<model.getObstacles().size();i++){
 				model.getObstacles().get(i).setVelocity(1);
 			}
-			gameTimer.fall();
+			
 		}
 
 

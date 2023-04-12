@@ -34,6 +34,7 @@ public class SettingsView extends JPanel {
 	
 	public void setGw(GameWindow gw) {
 		this.gw = gw;
+		controller.setGw(gw);
 	}
 
 	public GameWindow getGw() {
@@ -222,6 +223,10 @@ public class SettingsView extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (controller.getBackground()) g.drawImage(background, 0, 0, size.width, size.height, this);
+	}
+	
+	public Dimension getSize() {
+		return size;
 	}
 
 }

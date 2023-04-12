@@ -1,6 +1,14 @@
 package com.pi4.duet.controller.home;
 
+import java.awt.GridLayout;
+
+import javax.swing.JPanel;
+
+import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.home.Commands;
+import com.pi4.duet.view.home.CommandsView;
+import com.pi4.duet.view.home.SettingsView;
+import com.pi4.duet.view.home.Transition;
 
 public class CommandsController {
 	
@@ -39,7 +47,19 @@ public class CommandsController {
 	public void save() {
 		model.save();
 	}
-
+	
+	public void backSettings(CommandsView cv, SettingsView sv) {
+		cv.setVisible(false);
+		sv.setVisible(true);
+		Transition t = new Transition(sv, cv, sv.getSize().width, sv.getSize().height, Direction.RIGHT);
+		JPanel container = new JPanel(new GridLayout(1, 3));
+		container.add(new JPanel());
+		container.add(t);
+		container.add(new JPanel());
+		sv.getGw().setMainContainer(container);
+		t.transition();
+	}
+	
 	public void updateCommands(int idCmd, int keyCode) {
 		// TODO Auto-generated method stub
 		switch(idCmd) {

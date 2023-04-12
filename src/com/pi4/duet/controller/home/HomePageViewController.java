@@ -12,6 +12,7 @@ import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
 import com.pi4.duet.controller.game.GameDuoController;
 import com.pi4.duet.controller.game.GameLevelController;
+import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.GameDuo;
 import com.pi4.duet.model.game.GameLevel;
 import com.pi4.duet.model.game.GameState;
@@ -24,6 +25,7 @@ import com.pi4.duet.view.game.GameWindow;
 import com.pi4.duet.view.game.ObstacleView;
 import com.pi4.duet.view.home.HomePageView;
 import com.pi4.duet.view.home.SettingsView;
+import com.pi4.duet.view.home.Transition;
 
 public class HomePageViewController {
 
@@ -73,7 +75,7 @@ public class HomePageViewController {
 		}
 
 		gc = new GameLevelController(this, sm, sc.getCommandsModel(), scale);
-		gp = new GameLevel(size.width / 3, size.height, new Point(size.width / 6, size.height - 150), numLevel);
+		gp = new GameLevel(size.width, size.height, new Point(size.width / 6, size.height - 150), numLevel);
 		gc.getWheelController().setModel(gp.getWheel());
 		gc.setModel(gp);
 		gv = new GameLevelView(size, scale, gc);
@@ -114,7 +116,7 @@ public class HomePageViewController {
 		}
 
 		gdc = new GameDuoController(this, sm, sc.getCommandsModel(), scale);
-		gpd = new GameDuo(size.width / 3, size.height, new Point(size.width / 6, size.height - 150), new Point(size.width / 6, 150));
+		gpd = new GameDuo(size.width, size.height, new Point(size.width / 6, size.height - 150), new Point(size.width / 6, 150));
 		gdc.getWheelController().setModel(gpd.getWheel());
 		gdc.getWheelTopController().setModel(gpd.getTopWheel());
 		gdc.setModel(gpd);
@@ -175,13 +177,17 @@ public class HomePageViewController {
 
 	public void runSettings(Dimension size, GameWindow window) {
 		this.window = window;
+		this.size = size;
 		sv.setVisible(true);
+		Transition t = new Transition(view, sv, size.width, size.height, Direction.LEFT);
 		JPanel container = new JPanel(new GridLayout(1, 3));
 		container.add(new JPanel());
-		container.add(sv);
+		container.add(t);
 		container.add(new JPanel());
 		window.setMainContainer(container);
 		sv.setGw(this.window);
+		t.transition();
+		
 	}
 
 	public void stopMusic() {
@@ -217,7 +223,10 @@ public class HomePageViewController {
 		// TODO Auto-generated method stub
 		model.save();
 	}
-
+	
+	public Dimension getSize() {
+		return size;
+	}
 	public void addLevel(int i) {
 		// TODO Auto-generated method stub
 		model.addLevel(i);
