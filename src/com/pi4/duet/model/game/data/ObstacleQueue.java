@@ -105,7 +105,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	}
 
 	private void addObstacle(Obstacle o) {
-		/*Thread obstacleCreation = new Thread() {
+		Thread obstacleCreation = new Thread() {
 			@Override
 			public void run() {
 				// On met l'obstacle aux normes quand à l'échelle d'affichage
@@ -120,18 +120,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				controller.addObstacle(o);
 			}
 		};
-		obstacleCreation.start();*/
-		
-		// On met l'obstacle aux normes quand à l'échelle d'affichage
-		for (Point p : o.getPoints()) {
-			p.setX(p.getX() * scale.getScaleX());
-			p.setY(p.getY() * scale.getScaleY());
-			System.out.println(p.getX()+","+p.getY()+" ");
-		}
-		System.out.println();
-		o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
-		o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
-		controller.addObstacle(o);
+		obstacleCreation.start();
 	}
 
 
