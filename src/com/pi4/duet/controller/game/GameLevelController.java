@@ -124,8 +124,7 @@ public class GameLevelController extends GameController {
 	}
 
 	@Override
-	public void addObstacle(Obstacle o) {
-		if (fallAcceleration) o.setVelocity(1);
+	public void addObstacle(Obstacle o) {		
 		ObstacleController oc = new ObstacleController();
 		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), oc);
 
@@ -136,9 +135,10 @@ public class GameLevelController extends GameController {
 		}
 		oc.setView(ov);
 		o.setController(oc);
-		oc.setModel(o);
+		oc.setModel(o);		
+		if (fallAcceleration) o.setVelocity(1);
 		model.addObstacle(o);
-		view.addObstacle(ov);
+		view.addObstacle(ov);		
 	}
 
 	@Override
