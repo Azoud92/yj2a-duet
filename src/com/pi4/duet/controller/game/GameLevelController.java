@@ -168,6 +168,7 @@ public class GameLevelController extends GameController {
 
 		if(e.getKeyCode() == commands.getFallObs()){
 			fallAcceleration = true;
+			gameTimer.fall();
 			for(int i = 0; i < model.getObstacles().size(); i++){
 				model.getObstacles().get(i).setVelocity(1);
 			}
