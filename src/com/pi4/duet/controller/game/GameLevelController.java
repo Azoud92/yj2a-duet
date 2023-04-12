@@ -47,6 +47,7 @@ public class GameLevelController extends GameController {
 							o.updatePosition();
 							verifyCollision(o);
 							verifyObstacleReached(o);
+							if(fallAcceleration==false) model.setVelocityTo01();
 							refreshView();
 						}
 					}					
