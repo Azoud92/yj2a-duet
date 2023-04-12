@@ -135,7 +135,7 @@ public class GameLevelController extends GameController {
 		}
 		oc.setView(ov);
 		o.setController(oc);
-		oc.setModel(o);		
+		oc.setModel(o);
 		if (fallAcceleration) o.setVelocity(1);
 		model.addObstacle(o);
 		view.addObstacle(ov);		

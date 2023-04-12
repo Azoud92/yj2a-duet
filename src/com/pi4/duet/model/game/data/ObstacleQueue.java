@@ -26,12 +26,14 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 	private List<Entry<Obstacle, Long>> sortedEntries;
 
+	private static boolean addingObstacle = false;
 
 	public ObstacleQueue(GameController gameController, Scale scale) {
 		controller = gameController;
 		this.scale = scale;
 		time = 0;
-		add = 1;		
+		add = 1;
+		addingObstacle = false;
 	}
 
 	public ObstacleQueue(GameController c, Scale scale, PatternData data) {
@@ -48,6 +50,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				if (controller.getState() == GameState.ON_GAME) {
 					putObs();
 					time += add;
+					System.out.println("add : " + add);
 				}
 				
 			}
@@ -66,10 +69,12 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	}
 
 	public void fall() {
-		add = 10;
+		if (!addingObstacle) add = 10;
 	}
 
-	public void stopFall() {add = 1;}
+	public void stopFall() {
+		add = 1;
+	}
 
 	protected void putObs() {
 		int i = 0;
@@ -105,9 +110,12 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	}
 
 	private void addObstacle(Obstacle o) {
+		addingObstacle = true;
+		int tmp = add;
+		add = 1;
 		Thread obstacleCreation = new Thread() {
 			@Override
-			public void run() {
+			public void run() {				
 				// On met l'obstacle aux normes quand à l'échelle d'affichage
 				for (Point p : o.getPoints()) {
 					p.setX(p.getX() * scale.getScaleX());
@@ -118,11 +126,12 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
 				o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
 				controller.addObstacle(o);
+				addingObstacle = false;
+				add = tmp;
 			}
 		};
 		obstacleCreation.start();
 	}
-
 
 	public void setStatus(ObstacleQueueStatus status) { ObstacleQueue.status = status; }
 	public ObstacleQueueStatus getStatus() { return status; }
