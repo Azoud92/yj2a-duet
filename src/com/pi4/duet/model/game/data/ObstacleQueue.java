@@ -46,7 +46,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 			public void run() {
 				if (status == ObstacleQueueStatus.FINISHED) this.cancel();
 				if (controller.getState() == GameState.ON_GAME) {
-					putObs(time);
+					putObs();
 					time += add;
 				}
 				
@@ -71,7 +71,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 	public void stopFall() {add = 1;}
 
-	protected void putObs(int time) {
+	protected void putObs() {
 		int i = 0;
 
 		Iterator<Entry<Obstacle, Long>> iter = sortedEntries.iterator();
@@ -105,7 +105,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	}
 
 	private void addObstacle(Obstacle o) {
-		Thread obstacleCreation = new Thread() {
+		/*Thread obstacleCreation = new Thread() {
 			@Override
 			public void run() {
 				// On met l'obstacle aux normes quand à l'échelle d'affichage
@@ -120,7 +120,18 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				controller.addObstacle(o);
 			}
 		};
-		obstacleCreation.start();
+		obstacleCreation.start();*/
+		
+		// On met l'obstacle aux normes quand à l'échelle d'affichage
+		for (Point p : o.getPoints()) {
+			p.setX(p.getX() * scale.getScaleX());
+			p.setY(p.getY() * scale.getScaleY());
+			System.out.println(p.getX()+","+p.getY()+" ");
+		}
+		System.out.println();
+		o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
+		o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
+		controller.addObstacle(o);
 	}
 
 
