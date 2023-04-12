@@ -11,17 +11,16 @@ import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
 import com.pi4.duet.controller.game.GameDuoController;
+import com.pi4.duet.controller.game.GameInfiniController;
 import com.pi4.duet.controller.game.GameLevelController;
 import com.pi4.duet.model.game.GameDuo;
+import com.pi4.duet.model.game.GameInfini;
 import com.pi4.duet.model.game.GameLevel;
 import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.data.PatternData;
 import com.pi4.duet.model.home.HomePage;
 import com.pi4.duet.model.home.Settings;
-import com.pi4.duet.view.game.GameDuoView;
-import com.pi4.duet.view.game.GameLevelView;
-import com.pi4.duet.view.game.GameWindow;
-import com.pi4.duet.view.game.ObstacleView;
+import com.pi4.duet.view.game.*;
 import com.pi4.duet.view.home.HomePageView;
 import com.pi4.duet.view.home.SettingsView;
 
@@ -43,6 +42,10 @@ public class HomePageViewController {
 	private GameDuoView gdv;
 	private GameDuoController gdc;
 	private GameDuo gpd;
+
+	private GameInfini gi;
+	private GameInfiniView giv;
+	private GameInfiniController gic;
 
 	private Scale scale;
 	private Dimension size;
@@ -92,7 +95,7 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 		
 		try {
-			gc.addPattern(PatternData.read("src/resources/levels/level" + numLevel + ".ser"));
+			gc.addPattern(PatternData.read("2022-yj2-g2-duet/src/resources/levels/level" + numLevel + ".ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -136,7 +139,7 @@ public class HomePageViewController {
 		gdv.setFocusable(true);
 
 		try {
-			gdc.addPattern(PatternData.read("src/resources/levels/levelDuo.ser"));
+			gdc.addPattern(PatternData.read("2022-yj2-g2-duet/src/resources/levels/levelDuo.ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -147,6 +150,28 @@ public class HomePageViewController {
 
 		gdc.gameStart();
 		homeMusic.stop();
+	}
+	public void runLevelInfini(GameWindow window,HomePageView view,boolean replay){
+		this.view = view;
+		this.window = window;
+
+		if (replay) {
+			giv.setVisible(false);
+			obstaclesViews = giv.getObstacles();
+		}
+
+		gic = new GameInfiniController(this, sm, sc.getCommandsModel(), scale);
+		gi= new GameInfini(size.width / 3, size.height, new Point(size.width / 6, size.height - 150));
+
+		JPanel container = new JPanel(new GridLayout(1, 3));
+
+		container.add(new JPanel());
+		container.add(giv);
+		container.add(new JPanel());
+		window.setMainContainer(container);
+
+		giv.requestFocus();
+		giv.setFocusable(true);
 	}
 
 
