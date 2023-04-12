@@ -58,6 +58,7 @@ public class HomePageViewController {
 
 	public HomePageViewController(Dimension size, Scale scale) {
 		this.size = size;
+		System.out.println(size);
 		this.scale = scale;
 		homeMusic.stop();
 		sm = Settings.read();
@@ -78,7 +79,7 @@ public class HomePageViewController {
 		}
 
 		gc = new GameLevelController(this, sm, sc.getCommandsModel(), scale);
-		gp = new GameLevel(size.width, size.height, new Point(size.width / 6, size.height - 150), numLevel);
+		gp = new GameLevel(size.width, size.height, new Point(size.width / 2, size.height - 150), numLevel);
 		gc.getWheelController().setModel(gp.getWheel());
 		gc.setModel(gp);
 		gv = new GameLevelView(size, scale, gc);
@@ -119,7 +120,7 @@ public class HomePageViewController {
 		}
 
 		gdc = new GameDuoController(this, sm, sc.getCommandsModel(), scale);
-		gpd = new GameDuo(size.width, size.height, new Point(size.width / 6, size.height - 150), new Point(size.width / 6, 150));
+		gpd = new GameDuo(size.width, size.height, new Point(size.width / 2, size.height - 150), new Point(size.width / 2, 150));
 		gdc.getWheelController().setModel(gpd.getWheel());
 		gdc.getWheelTopController().setModel(gpd.getTopWheel());
 		gdc.setModel(gpd);
@@ -200,8 +201,10 @@ public class HomePageViewController {
 		window.setMainContainer(container);
 	}
 
-	public void runSettings(GameWindow window) {
+	public void runSettings(Dimension size, GameWindow window) {
 		this.window = window;
+		this.size = size;
+		System.out.println(size);
 		sv.setVisible(true);
 		Transition t = new Transition(view, sv, size.width, size.height, Direction.LEFT);
 		JPanel container = new JPanel(new GridLayout(1, 3));

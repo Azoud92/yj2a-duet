@@ -52,9 +52,9 @@ public class GameWindow extends JFrame { // fenêtre principale
 			
 
 			HomePage hp = HomePage.read();
-			HomePageViewController hpc = new HomePageViewController(size, scale);
+			HomePageViewController hpc = new HomePageViewController(new Dimension(size.width/3, size.height), scale);
 			hpc.setModel(hp);
-			HomePageView hpv = new HomePageView(size, frame, this, hpc, scale);
+			HomePageView hpv = new HomePageView(new Dimension(size.width/3, size.height), frame, this, hpc, scale);
 			hpc.setView(hpv);
 			container.add(hpv);
 

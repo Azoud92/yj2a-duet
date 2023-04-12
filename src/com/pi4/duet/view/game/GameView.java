@@ -47,11 +47,11 @@ public abstract class GameView extends JPanel {
 	private Scale scale;
 	
 	public GameView(Dimension size, Scale scale, GameController controller) {
-		this.size = new Dimension(size.width / 3, size.height);
+		this.size = new Dimension(size.width, size.height);
 		this.controller = controller;
 		this.scale = scale;
 		
-		Dimension dim = new Dimension(size.width / 3, size.height);
+		Dimension dim = new Dimension(size.width, size.height);
 		this.setPreferredSize(dim);
 
 		wheelView = new WheelView(size, controller.getWheelController());

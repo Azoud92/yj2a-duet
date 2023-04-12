@@ -44,7 +44,7 @@ public class HomePageView extends JPanel {
 		this.scale = scale;
 		this.window = window;
 		this.setBackground(Color.black);
-		Dimension dim = new Dimension(size.width / 3, size.height);
+		Dimension dim = new Dimension(size.width, size.height);
 		this.size = dim;
 		this.setPreferredSize(dim);
 		this.setLayout(null);
@@ -122,7 +122,7 @@ public class HomePageView extends JPanel {
 
 		settings.addActionListener(e -> {
 			this.setVisible(false);
-			controller.runSettings(window);
+			controller.runSettings(size, window);
 		});
 
 		quit_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/quit.png")), this.size.width/10, this.size.width/10);

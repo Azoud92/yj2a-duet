@@ -45,7 +45,7 @@ public class SettingsView extends JPanel {
 		this.controller = controller;
 		this.gw=gw;
 		this.setBackground(Color.black);
-		Dimension dim = new Dimension(size.width / 3, size.height);
+		Dimension dim = new Dimension(size.width, size.height);
 		this.size = dim;
 		this.setPreferredSize(this.size);
 		this.setLayout(null);
