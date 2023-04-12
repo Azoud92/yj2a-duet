@@ -28,7 +28,7 @@ public class HomePageView extends JPanel {
 	private Dimension size;
 	private LevelButton level1, level2, level3, level4, level5;
 	private JLabel title1, title2;
-	private JButton settings, quit, lvlDuo;
+	private JButton settings, quit, lvlDuo,levelInf;
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
 	private Scale scale;
@@ -122,7 +122,7 @@ public class HomePageView extends JPanel {
 
 		settings.addActionListener(e -> {
 			this.setVisible(false);
-			controller.runSettings(size, window);
+			controller.runSettings(window);
 		});
 
 		quit_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/quit.png")), this.size.width/10, this.size.width/10);
@@ -140,17 +140,24 @@ public class HomePageView extends JPanel {
 		});
 
 		lvlDuo = new JButton("1 vs 1");
-		lvlDuo.setBounds(level4.getX(), quit.getY() - this.size.width/5 - quit.getHeight(), level5.getX() + level5.getWidth() - level4.getX(), this.size.width/5);
+		lvlDuo.setBounds(level4.getX()-30, quit.getY() - this.size.width/5 - quit.getHeight(), (level5.getX() + level5.getWidth() - level4.getX())/2, this.size.width/5);
 		lvlDuo.setBackground(Color.BLACK);
 		lvlDuo.setForeground(Color.white);
 		lvlDuo.setFocusable(false);
-		lvlDuo.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
+		lvlDuo.setFont(new Font("Arial", Font.BOLD, (int) (40 * scale.getScaleY())));
 		this.add(lvlDuo);
 		lvlDuo.addActionListener(e -> {
 			this.setVisible(false);
 			controller.runLvlDuo(window, this, false);
 		});
-		
+		levelInf = new JButton(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/infini.png")),this.size.width/10, this.size.width/10));
+		levelInf.setBounds(level5.getX()-(30+level4.getHeight())+level4.getWidth(),quit.getY() - this.size.width/5 - quit.getHeight(),(level5.getX() + level5.getWidth() - level4.getX())/2,this.size.width/5);
+		levelInf.setBackground(Color.BLACK);
+		this.add(levelInf);
+		levelInf.addActionListener(e->{
+			this.setVisible(false);
+			controller.runLevelInfini(window,this,false);
+		});
 		controller.runMusic();
 	}
 

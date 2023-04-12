@@ -46,7 +46,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 			public void run() {
 				if (status == ObstacleQueueStatus.FINISHED) this.cancel();
 				if (controller.getState() == GameState.ON_GAME) {
-					putObs(time);
+					putObs();
 					time += add;
 				}
 				
@@ -71,7 +71,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 	public void stopFall() {add = 1;}
 
-	protected void putObs(int time) {
+	protected void putObs() {
 		int i = 0;
 
 		Iterator<Entry<Obstacle, Long>> iter = sortedEntries.iterator();

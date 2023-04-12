@@ -34,6 +34,9 @@ public abstract class GameController implements KeyListener {
 
 	protected boolean backgroundMovement;
 
+	protected boolean fallAcceleration = false;
+	
+	
 	public GameController(HomePageViewController hpvC, Settings settings, Commands commands, Scale scale) {
 		this.hpvC = hpvC;
 		this.settings = settings;
@@ -140,6 +143,10 @@ public abstract class GameController implements KeyListener {
 				for(int i = 0;i <model.getObstacles().size(); i++){
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
+
+				fallAcceleration = false;
+				gameTimer.stopFall();
+
 			}
 			
 			if (e.getKeyCode() == KeyEvent.VK_UP) {

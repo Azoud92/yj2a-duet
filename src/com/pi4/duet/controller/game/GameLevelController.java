@@ -18,6 +18,8 @@ import com.pi4.duet.view.game.ObstacleView;
 
 public class GameLevelController extends GameController {
 
+	
+	
 	public GameLevelController(HomePageViewController hpvC, Settings settings, Commands commands, Scale scale) {
 		super(hpvC, settings, commands, scale);
 		// TODO Auto-generated constructor stub
@@ -122,6 +124,7 @@ public class GameLevelController extends GameController {
 
 	@Override
 	public void addObstacle(Obstacle o) {
+		if (fallAcceleration) o.setVelocity(1);
 		ObstacleController oc = new ObstacleController();
 		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), oc);
 
@@ -163,8 +166,8 @@ public class GameLevelController extends GameController {
 		// TODO Auto-generated method stub
 
 		if(e.getKeyCode() == commands.getFallObs()){
-			gameTimer.fall();
-			for(int i=0;i<model.getObstacles().size();i++){
+			fallAcceleration = true;
+			for(int i = 0; i < model.getObstacles().size(); i++){
 				model.getObstacles().get(i).setVelocity(1);
 			}
 			
