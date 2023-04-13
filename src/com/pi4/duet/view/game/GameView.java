@@ -66,10 +66,11 @@ public abstract class GameView extends JPanel {
 		effectLabel.setVisible(false);
 		this.add(effectLabel);
 		
-		bar = new JProgressBar();
+		bar = new JProgressBar(0,100);
 		bar.setBounds(30, 30, 90, 30);
 		bar.setValue(progression);
 		bar.setForeground(Color.MAGENTA);
+		bar.setOpaque(false);
 		
 		
 		this.add(bar);

@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Point;
@@ -32,8 +33,9 @@ public class HomePageView extends JPanel {
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
 	private Scale scale;
-	private int progression;
+	private int progression = 0;
 	private Timer timer;
+	private JProgressBar bar;
 
 	private GameWindow window;
 
@@ -48,7 +50,19 @@ public class HomePageView extends JPanel {
 		this.size = dim;
 		this.setPreferredSize(dim);
 		this.setLayout(null);
-		progression = 0;
+		
+		
+		int placeW = size.width/5;
+		int placeH = size.height/7;
+		bar = new JProgressBar(0,100);
+		bar.setBounds(placeW, placeH*3, placeW*3 , placeH);
+		bar.setValue(progression);
+		bar.setForeground(Color.RED);
+		bar.setOpaque(false);
+		bar.setStringPainted(true);
+		bar.setFont(new Font("Verdana", Font.BOLD, (int) (30 * scale.getScaleX())));
+		this.add(bar);
+
 		
 		
 
@@ -72,6 +86,7 @@ public class HomePageView extends JPanel {
 			@Override
 			public void run() {
 				progression++;
+				bar.setValue(progression);
 				repaint();
 				if(progression == 25) {
 					add(title1);
@@ -92,6 +107,8 @@ public class HomePageView extends JPanel {
 	}
 	
 	public void initHPV(JFrame frame) {
+		bar.setVisible(false);
+		
 		int tx1 = (this.size.width - (this.size.width/5*3) ) / 4;
 		int tx2 = (this.size.width - (this.size.width/5*2) ) / 3;
 
@@ -191,14 +208,6 @@ public class HomePageView extends JPanel {
 		super.paintComponent(g);
 		if (controller.getSettings().getBackground()) g.drawImage(background, 0, 0, size.width, size.height, this);
 		
-		if(progression < 101 && progression > -1) {
-			int placeW = size.width /5;
-			int placeH = size.height/7;
-		    g.setColor(Color.red);
-		    g.fillRoundRect(placeW, placeH * 3, placeW * 3 * progression/100, placeH, 20, 20);
-		    
-		    g.setColor(Color.white);
-		    g.drawRoundRect(placeW, placeH*3, placeW*3 , placeH, 20, 20);
-	    }
+		
 	}
 }
