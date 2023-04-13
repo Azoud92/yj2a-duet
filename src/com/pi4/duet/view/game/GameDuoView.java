@@ -16,6 +16,7 @@ public class GameDuoView extends GameView {
 		wheelTopView = new WheelView(size, controller.getWheelTopController());
 		this.add(wheelTopView);
 		this.addKeyListener(wheelTopView.getController());
+		super.getBar().setVisible(false);
 	}
 
 	@Override

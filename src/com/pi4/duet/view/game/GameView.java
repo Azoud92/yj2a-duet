@@ -257,6 +257,10 @@ public abstract class GameView extends JPanel {
 		return wheelView;
 	}
 	
+	public JProgressBar getBar() {
+		return bar;
+	}
+	
 	public void effectCanBeUsed() {
 		effectLabel.setVisible(true);
 	}
