@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -213,7 +215,22 @@ public class HomePageViewController {
 		container.add(new JPanel());
 		window.setMainContainer(container);
 		sv.setGw(this.window);
+		view.ButtonsOff();
+		sv.ButtonsOff();
 		t.transition();
+		
+		Timer temp = new Timer();
+		temp.schedule(new TimerTask(){
+			@Override
+			public void run() {
+				if(!t.getTransition()) {
+					view.ButtonsOn();
+					sv.ButtonsOn();
+					temp.cancel();
+				}
+			}
+		}, 0, 10);
+		
 		
 	}
 

@@ -106,6 +106,20 @@ public class CommandsView extends JPanel implements KeyListener {
         this.add(fallObs);
         this.add(allJButton[5]);
     } 
+    
+    public void ButtonsOff() {
+    	for(TouchButtonView b : allJButton) {
+    		b.setEnabled(false);
+    	}
+    	back.setEnabled(false);
+    }
+    
+    public void ButtonsOn() {
+    	for(TouchButtonView b : allJButton) {
+    		b.setEnabled(true);
+    	}
+    	back.setEnabled(true);
+    }
         
     @Override
     public void keyPressed(KeyEvent keyEvent) {

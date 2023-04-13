@@ -60,7 +60,7 @@ public class HomePageView extends JPanel {
 		bar.setForeground(Color.RED);
 		bar.setOpaque(false);
 		bar.setStringPainted(true);
-		bar.setFont(new Font("Verdana", Font.BOLD, (int) (30 * scale.getScaleX())));
+		bar.setFont(new Font("Verdana", Font.BOLD, (int) (30 * scale.getScaleX()))); 
 		this.add(bar);
 
 		
@@ -176,6 +176,30 @@ public class HomePageView extends JPanel {
 			controller.runLevelInfini(window,this,false);
 		});
 		controller.runMusic();
+	}
+	
+	public void ButtonsOff() {
+		
+		level1.setEnabled(false);
+		level2.setEnabled(false);
+		level3.setEnabled(false);
+		level4.setEnabled(false);
+		level5.setEnabled(false);
+		settings.setEnabled(false);
+		lvlDuo.setEnabled(false);
+		levelInf.setEnabled(false);
+	}
+	
+	public void ButtonsOn() {
+		
+		level1.setEnabled(true);
+		level2.setEnabled(true);
+		level3.setEnabled(true);
+		level4.setEnabled(true);
+		level5.setEnabled(true);
+		settings.setEnabled(true);
+		lvlDuo.setEnabled(true);
+		levelInf.setEnabled(true);
 	}
 
 	private class LevelButton extends JButton {

@@ -32,14 +32,7 @@ public class SettingsView extends JPanel {
 
 	private SettingsController controller;
 	
-	public void setGw(GameWindow gw) {
-		this.gw = gw;
-		controller.setGw(gw);
-	}
-
-	public GameWindow getGw() {
-		return gw;
-	}
+	
 
 	public SettingsView(Dimension size, SettingsController controller, Scale scale, GameWindow gw) {
 		this.controller = controller;
@@ -218,6 +211,36 @@ public class SettingsView extends JPanel {
 			repaint();
 		});
 	}
+	
+	public void ButtonsOff() {
+		son_on.setEnabled(false); 
+		son_off.setEnabled(false); 
+		music_on.setEnabled(false); 
+		music_off.setEnabled(false); 
+		inertie_on.setEnabled(false); 
+		inertie_off.setEnabled(false); 
+		fond_on.setEnabled(false); 
+		fond_off.setEnabled(false);
+		back.setEnabled(false);
+		commands.setEnabled(false);
+	}
+	
+	public void ButtonsOn() {
+		if (controller.getEffects()) {son_on.setEnabled(false);son_off.setEnabled(true); }
+		else {son_on.setEnabled(true); son_off.setEnabled(false);}
+		
+		if (controller.getMusic()) { music_on.setEnabled(false); music_off.setEnabled(true); }
+		else { music_on.setEnabled(true); music_off.setEnabled(false); }
+		
+		if (controller.getInertie()) { inertie_on.setEnabled(false); inertie_off.setEnabled(true);}
+		else { inertie_on.setEnabled(true); inertie_off.setEnabled(false); }
+		
+		if (controller.getBackground()) { fond_off.setEnabled(true); fond_on.setEnabled(false);}
+		else { fond_off.setEnabled(false); fond_on.setEnabled(true); }
+		
+		back.setEnabled(true);
+		commands.setEnabled(true);
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -227,6 +250,15 @@ public class SettingsView extends JPanel {
 	
 	public Dimension getSize() {
 		return size;
+	}
+	
+	public void setGw(GameWindow gw) {
+		this.gw = gw;
+		controller.setGw(gw);
+	}
+
+	public GameWindow getGw() {
+		return gw;
 	}
 
 }

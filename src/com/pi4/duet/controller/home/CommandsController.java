@@ -1,6 +1,8 @@
 package com.pi4.duet.controller.home;
 
 import java.awt.GridLayout;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -57,7 +59,21 @@ public class CommandsController {
 		container.add(t);
 		container.add(new JPanel());
 		sv.getGw().setMainContainer(container);
+		cv.ButtonsOff();
+		sv.ButtonsOff();
 		t.transition();
+		
+		Timer temp = new Timer();
+		temp.schedule(new TimerTask(){
+			@Override
+			public void run() {
+				if(!t.getTransition()) {
+					cv.ButtonsOn();
+					sv.ButtonsOn();
+					temp.cancel();
+				}
+			}
+		}, 0, 10);
 	}
 	
 	public void updateCommands(int idCmd, int keyCode) {

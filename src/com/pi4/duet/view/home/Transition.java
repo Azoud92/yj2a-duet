@@ -16,6 +16,8 @@ public class Transition extends JPanel{
     private int width;
     private int height;
     private Direction dir;
+    private boolean isTransition;
+    
 
     public Transition(JPanel jp1, JPanel jp2, int width, int height, Direction dir) {
     	this.setPreferredSize(new Dimension(width, height));
@@ -41,8 +43,13 @@ public class Transition extends JPanel{
     	this.add(jp2);
 	    	
     }
+    
+    public boolean getTransition() {
+    	return isTransition;
+    }
 
     public void transition() {
+    	isTransition = true;
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
@@ -75,8 +82,12 @@ public class Transition extends JPanel{
                     
                     Thread.sleep(1);
                 }
+            	isTransition = false;
                 return null;
             }
+            
+            
+            
 
             @Override
             protected void done() {

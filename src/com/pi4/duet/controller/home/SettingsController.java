@@ -2,6 +2,8 @@ package com.pi4.duet.controller.home;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -65,7 +67,21 @@ public class SettingsController {
 		container.add(t);
 		container.add(new JPanel());
 		gw.setMainContainer(container);
+		sv.ButtonsOff();
+		commandsView.ButtonsOff();
 		t.transition();
+		
+		Timer temp = new Timer();
+		temp.schedule(new TimerTask(){
+			@Override
+			public void run() {
+				if(!t.getTransition()) {
+					sv.ButtonsOn();
+					commandsView.ButtonsOn();
+					temp.cancel();
+				}
+			}
+		}, 0, 10);
 		
 
 	}
@@ -106,8 +122,21 @@ public class SettingsController {
 		container.add(t);
 		container.add(new JPanel());
 		gw.setMainContainer(container);
+		hpvC.getView().ButtonsOff();
+		sv.ButtonsOff();
 		t.transition();
 		
+		Timer temp = new Timer();
+		temp.schedule(new TimerTask(){
+			@Override
+			public void run() {
+				if(!t.getTransition()) {
+					hpvC.getView().ButtonsOn();
+					sv.ButtonsOn();
+					temp.cancel();
+				}
+			}
+		}, 0, 10);
 	}
 
 	public void save() {
