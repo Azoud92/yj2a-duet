@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
 import com.pi4.duet.Scale;
@@ -40,9 +41,11 @@ public abstract class GameView extends JPanel {
 
 	protected Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 
-	private double progression;
+	private int progression = 0;
 
 	private JLabel effectLabel = new JLabel();
+	
+	private JProgressBar bar;
 	
 	private Scale scale;
 	
@@ -62,7 +65,14 @@ public abstract class GameView extends JPanel {
 		effectLabel.setForeground(Color.WHITE);
 		effectLabel.setVisible(false);
 		this.add(effectLabel);
-
+		
+		bar = new JProgressBar();
+		bar.setBounds(30, 30, 90, 30);
+		bar.setValue(progression);
+		bar.setForeground(Color.MAGENTA);
+		
+		
+		this.add(bar);
 		this.addKeyListener(controller);
 		this.addKeyListener(wheelView.getController());
 		this.setLayout(null);
@@ -174,13 +184,7 @@ public abstract class GameView extends JPanel {
 			repaint();
 		}
 		
-		if(progression < 101 && progression > -1) {
-		    g.setColor(Color.MAGENTA);
-		    g.fillRoundRect(30, 30, (int) (30 * 3 * progression / 100), 30, 20, 20);
-		    
-		    g.setColor(Color.white);
-		    g.drawRoundRect(30, 30, 30 * 3 , 30, 20, 20);
-	    }
+		bar.setValue(progression);
 	}
 
 	// Affichage lorsqu'un joueur perd la partie
@@ -258,7 +262,7 @@ public abstract class GameView extends JPanel {
 
 	public void updateProgressionEffect() {
 		// TODO Auto-generated method stub
-		this.progression = controller.getProgressionEffect();
+		this.progression = (int) controller.getProgressionEffect();
 	}
 
 	public void useEffect() {
