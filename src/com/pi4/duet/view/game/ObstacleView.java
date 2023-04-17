@@ -94,6 +94,10 @@ public class ObstacleView extends JPanel {
 		this.polygon = new Polygon(x, y, points.length);	
 	}
 
+	public void setController(ObstacleController controller) {
+		this.controller = controller;
+	}
+
 	@SuppressWarnings("unchecked")
 	public void setCollisionsMap(LinkedHashMap<CollisionView, Double> collisionsMap) {
 		// TODO Auto-generated method stub
