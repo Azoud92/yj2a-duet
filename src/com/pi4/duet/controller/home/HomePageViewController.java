@@ -100,7 +100,7 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 		
 		try {
-			gc.addPattern(PatternData.read("src/resources/levels/level" + numLevel + ".ser"));
+			gc.addPattern(PatternData.read("2022-yj2-g2-duet/src/resources/levels/level" + numLevel + ".ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -168,6 +168,13 @@ public class HomePageViewController {
 		gic = new GameInfiniController(this, sm, sc.getCommandsModel(), scale);
 		gi= new GameInfini(size.width / 3, size.height, new Point(size.width / 6, size.height - 150));
 
+		gic.getWheelController().setModel(gi.getWheel());
+		gic.setModel(gi);
+		giv = new GameInfiniView(size, scale, gic);
+		gic.getWheelController().setView(giv.getWheel());
+		gic.setView(giv);
+		giv.addKeyListener(gic);
+
 		JPanel container = new JPanel(new GridLayout(1, 3));
 
 		container.add(new JPanel());
@@ -177,6 +184,8 @@ public class HomePageViewController {
 
 		giv.requestFocus();
 		giv.setFocusable(true);
+		gic.gameStart();
+		homeMusic.stop();
 	}
 
 
