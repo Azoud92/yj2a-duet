@@ -132,13 +132,14 @@ public class GameLevelController extends GameController {
 			ov.setCollisionsMap(hpvC.getObstaclesViews().get(0).getCollisionsMap());
 			ov.resetCollisions();
 			hpvC.getObstaclesViews().remove(0);
+			System.out.println("size " + hpvC.getObstaclesViews().size());
 		}
 		oc.setView(ov);
 		o.setController(oc);
 		oc.setModel(o);
 		if (fallAcceleration) o.setVelocity(1);
 		model.addObstacle(o);
-		view.addObstacle(ov);		
+		view.addObstacle(ov);
 	}
 
 	@Override

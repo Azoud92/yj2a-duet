@@ -11,14 +11,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
-
 import com.pi4.duet.Point;
 import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.Obstacle;
 
-public class PatternData extends HashMap<Obstacle, Long> {
+public class PatternData extends LinkedHashMap<Obstacle, Long> {
 
 	private static final long serialVersionUID = -8250741712843302226L;
 

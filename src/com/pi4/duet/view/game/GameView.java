@@ -36,7 +36,7 @@ public abstract class GameView extends JPanel {
 	protected double background_speed = 0.5;
 	private LogBuffer log = new LogBuffer("", "test");
 
-	private ArrayList<ObstacleView> obstacles = new ArrayList<>();
+	private ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
 	private int firstIndexObstacleVisible = 0;
 
 	protected Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();

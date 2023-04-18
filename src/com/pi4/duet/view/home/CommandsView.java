@@ -4,7 +4,6 @@ import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.CommandsController;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;

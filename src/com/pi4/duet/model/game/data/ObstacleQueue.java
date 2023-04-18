@@ -1,10 +1,8 @@
 package com.pi4.duet.model.game.data;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,8 +22,6 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	private static int add = 1;
 	private PatternData data;
 
-	private List<Entry<Obstacle, Long>> sortedEntries;
-
 	private static boolean addingObstacle = false;
 
 	public ObstacleQueue(GameController gameController, Scale scale) {
@@ -39,22 +35,19 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	public ObstacleQueue(GameController c, Scale scale, PatternData data) {
 		this(c, scale);
 		this.data = data;
-
-		sortedEntries = new ArrayList<>(data.entrySet());
-		Collections.sort(sortedEntries, Entry.comparingByValue());
-		
+				
 		this.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				if (status == ObstacleQueueStatus.FINISHED) this.cancel();
 				if (controller.getState() == GameState.ON_GAME) {
 					putObs();
-					time += add;
-					System.out.println("add : " + add);
+					time += add * 1000;
+					//System.out.println("add : " + add);
 				}
 				
 			}
-		}, 0, 1);
+		}, 0, 1000);
 	}
 
 
@@ -79,16 +72,16 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	protected void putObs() {
 		int i = 0;
 
-		Iterator<Entry<Obstacle, Long>> iter = sortedEntries.iterator();
+		Iterator<Map.Entry<Obstacle, Long>> iter = data.entrySet().iterator();
 
 		while (iter.hasNext()) {
 			Entry<Obstacle, Long> entry = iter.next();
+			
 			if(entry.getValue()>time) return;
 
-			if (sortedEntries.size() == 1 || i == sortedEntries.size() - 1) {
+			if (data.size() == 1 || i == data.size() - 1) {
 				if(time >= entry.getValue()) {
 					addObstacle(entry.getKey());
-					data.remove(entry.getKey());
 					iter.remove();
 					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
 					System.out.println(time);
@@ -98,7 +91,6 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 			else {
 				if(time >= entry.getValue()) {
 					addObstacle(entry.getKey());
-					data.remove(entry.getKey());
 					iter.remove();
 					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
 					System.out.println(time);
