@@ -133,10 +133,10 @@ public class GameLevelController extends GameController {
 			Iterator<ObstacleView> iter = hpvC.getObstaclesViews().iterator();
 			while (iter.hasNext()) {
 				ObstacleView ovH = iter.next();
-				System.out.println(ovH.id);
 				if (ovH.id == idObs) {
+					System.out.println("id " + ovH.id);
 					ov.setCollisionsMap(ovH.getCollisionsMap());
-					ov.resetCollisions();
+					//ov.resetCollisions();
 					//iter.remove();
 					break;
 				}				
