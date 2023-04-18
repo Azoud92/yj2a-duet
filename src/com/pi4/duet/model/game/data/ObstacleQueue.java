@@ -42,12 +42,12 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				if (status == ObstacleQueueStatus.FINISHED) this.cancel();
 				if (controller.getState() == GameState.ON_GAME) {
 					putObs();
-					time += add * 1000;
+					time += add * 1;
 					//System.out.println("add : " + add);
 				}
 				
 			}
-		}, 0, 1000);
+		}, 0, 1);
 	}
 
 
