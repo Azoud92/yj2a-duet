@@ -83,7 +83,7 @@ public abstract class GameController implements KeyListener {
 		model.getWheel().setInertia(0);
 	}
 
-	public abstract void addObstacle(Obstacle o);
+	public abstract void addObstacle(Obstacle o, int idObs);
 
 	public final void playMusic() {
 		music.play();

@@ -23,6 +23,8 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	private PatternData data;
 
 	private static boolean addingObstacle = false;
+	
+	private static int nbObstacles = 0;
 
 	public ObstacleQueue(GameController gameController, Scale scale) {
 		controller = gameController;
@@ -30,6 +32,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		time = 0;
 		add = 1;
 		addingObstacle = false;
+		nbObstacles = 0;
 	}
 
 	public ObstacleQueue(GameController c, Scale scale, PatternData data) {
@@ -90,6 +93,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 			else {
 				if(time >= entry.getValue()) {
+					nbObstacles++;
 					addObstacle(entry.getKey());
 					iter.remove();
 					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
@@ -105,6 +109,13 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		addingObstacle = true;
 		int tmp = add;
 		add = 1;
+		
+		int id = nbObstacles;
+		nbObstacles++;
+		
+		System.out.println("add id " + id);
+		
+		
 		Thread obstacleCreation = new Thread() {
 			@Override
 			public void run() {				
@@ -117,7 +128,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				System.out.println();
 				o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
 				o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
-				controller.addObstacle(o);
+				controller.addObstacle(o, id);
 				addingObstacle = false;
 				add = tmp;
 			}

@@ -2,6 +2,7 @@ package com.pi4.duet.controller.game;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
 import java.util.TimerTask;
 
 import com.pi4.duet.Point;
@@ -124,15 +125,22 @@ public class GameLevelController extends GameController {
 	}
 
 	@Override
-	public void addObstacle(Obstacle o) {		
+	public void addObstacle(Obstacle o, int idObs) {		
 		ObstacleController oc = new ObstacleController();
-		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), oc);
+		ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), oc, idObs);
 
 		if (hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 0) {
-			ov.setCollisionsMap(hpvC.getObstaclesViews().get(0).getCollisionsMap());
-			ov.resetCollisions();
-			hpvC.getObstaclesViews().remove(0);
-			System.out.println("size " + hpvC.getObstaclesViews().size());
+			Iterator<ObstacleView> iter = hpvC.getObstaclesViews().iterator();
+			while (iter.hasNext()) {
+				ObstacleView ovH = iter.next();
+				System.out.println(ovH.id);
+				if (ovH.id == idObs) {
+					ov.setCollisionsMap(ovH.getCollisionsMap());
+					ov.resetCollisions();
+					//iter.remove();
+					break;
+				}				
+			}			
 		}
 		oc.setView(ov);
 		o.setController(oc);
