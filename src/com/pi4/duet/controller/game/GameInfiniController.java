@@ -48,7 +48,7 @@ public class GameInfiniController extends GameController {
                     Point[]points={a,b,c,d};
                     Obstacle ob=new Obstacle(points,new Point(160,-50),0.1,0.0,0.0, Direction.BOTTOM,null);
 
-                    ObstacleController oc=new ObstacleController(ob,new ObstacleView(100,100,10,null));
+                    ObstacleController oc=new ObstacleController(ob,new ObstacleView(100,100,10,null,0));
                     oc.getModel().setController(oc);
                     ob.setController(oc);
                     System.out.println(model.getObstacles().size());
@@ -138,9 +138,9 @@ public class GameInfiniController extends GameController {
     }
 
     @Override
-    public void addObstacle(Obstacle o) {
+    public void addObstacle(Obstacle o, int id) {
         ObstacleController oc = new ObstacleController();
-        ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), oc);
+        ObstacleView ov = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), oc, id);
 
         if (hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 0) {
             ov.setCollisionsMap(hpvC.getObstaclesViews().get(0).getCollisionsMap());

@@ -150,14 +150,14 @@ public class GameDuoController extends GameController {
 	}
 
 	@Override
-	public void addObstacle(Obstacle o) {
+	public void addObstacle(Obstacle o, int id) {
 		Obstacle omTop = o.clone();
 
 		ObstacleController ocTop = new ObstacleController();
 		ObstacleController ocBottom = new ObstacleController();
 
-		ObstacleView ovBottom = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), ocBottom);
-		ObstacleView ovTop = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), ocTop);
+		ObstacleView ovBottom = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), ocBottom, id);
+		ObstacleView ovTop = new ObstacleView(view.getWidth(), view.getHeight(), (int) wheelController.getBallRadius(), ocTop, id);
 
 
 		if(hpvC.getObstaclesViews() != null && hpvC.getObstaclesViews().size() > 1) {
