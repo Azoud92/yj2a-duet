@@ -1,6 +1,8 @@
 package com.pi4.duet.controller.home;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ import com.pi4.duet.model.home.Settings;
 import com.pi4.duet.view.game.*;
 import com.pi4.duet.view.home.HomePageView;
 import com.pi4.duet.view.home.SettingsView;
+import com.pi4.duet.view.home.EditorView;
+import com.pi4.duet.model.home.EditorModel;
 import com.pi4.duet.view.home.Transition;
 
 public class HomePageViewController {
@@ -46,6 +50,10 @@ public class HomePageViewController {
 	private GameDuoView gdv;
 	private GameDuoController gdc;
 	private GameDuo gpd;
+	
+	private EditorView edv;
+	private EditorController edc;
+	private EditorModel edm;
 
 	private GameInfini gi;
 	private GameInfiniView giv;
@@ -155,6 +163,34 @@ public class HomePageViewController {
 
 		gdc.gameStart();
 		homeMusic.stop();
+		
+		edv.requestFocus();
+		edv.setFocusable(true);
+	}
+	
+	public void runLvlEditor(GameWindow window, HomePageView view) {
+		this.window = window;
+		this.view = view;
+		
+		edm = new EditorModel();
+		edc = new EditorController(edm);
+		edv = new EditorView(edc, view);
+		
+		JPanel container = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.weightx = .3;
+		container.add(new JPanel(), c);
+		
+		c.gridx = 1;
+		c.weightx = .4;
+		container.add(edv, c);
+		
+		c.gridx = 2;
+		c.weightx = .3;
+		container.add(new JPanel(), c);
+		window.setMainContainer(container);
+
 	}
 	public void runLevelInfini(GameWindow window,HomePageView view,boolean replay){
 		this.view = view;

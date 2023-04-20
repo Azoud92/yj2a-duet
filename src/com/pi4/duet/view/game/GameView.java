@@ -17,7 +17,6 @@ import javax.swing.Timer;
 
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameController;
-import com.pi4.duet.model.game.data.LogBuffer;
 
 public abstract class GameView extends JPanel {
 
@@ -34,7 +33,6 @@ public abstract class GameView extends JPanel {
 
 	protected double y_background = 0;
 	protected double background_speed = 0.5;
-	private LogBuffer log = new LogBuffer("", "test");
 
 	private ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
 	private int firstIndexObstacleVisible = 0;
@@ -80,9 +78,6 @@ public abstract class GameView extends JPanel {
 	}
 
 	public final void affichePause() {
-		log.appendLn(System.currentTimeMillis() + " : Affichage du menu de pause");
-		log.write();
-		log.flush();
 		String[] option = {"Reprendre le jeu", "Revenir au menu", "Quitter le jeu"};
 		int indice = JOptionPane.showOptionDialog(this,
 				"Le jeu est en pause, veuillez choisir une option",
