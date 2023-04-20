@@ -125,13 +125,13 @@ public class PatternData extends LinkedHashMap<Obstacle, Long> {
 
 		return res;
 	}
-
+	
 	@Override
 	public String toString() {
 		String res = "";
 		int i = 0;
-		for (Long l : values()) {
-			res += l + ":" + l;
+		for (Obstacle o : keySet()) {
+			res += get(o) + ":" + o;
 			if (i < keySet().size() -1) res += "\n";
 			i++;
 		}
@@ -141,35 +141,12 @@ public class PatternData extends LinkedHashMap<Obstacle, Long> {
 	public String toHTMLString() {
 		String res = "";
 		int i = 0;
-		for (Long l : values()) {
-			res += l + ":" + l;
+		for (Obstacle o : keySet()) {
+			res += get(o) + ":" + o;
 			if (i < keySet().size() -1) res += "<br>";
 			i++;
 		}
 		return res;
-	}
-
-	public static void main(String[] args) {
-		/*
-		PatternData d = parse("1000:[(3,2) (2,5) (-3,9.2)];(.4,8);1.4;.8;0\n" +
-							  "2000:[(.8,-.902) (3,-7)];(1,0);0;9;9");
-		System.out.println("Original : \n" + d);
-
-		try {
-			d.writeTxt("test.txt");
-			d.write("test.ser");
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-		*/
-		try {
-			PatternData d2 = readTxt("test2.txt");
-			//System.out.println("Lecture texte : \n" + d2);
-			d2 = read("test2.ser");
-			System.out.println("Lecture serie : \n" + d2);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

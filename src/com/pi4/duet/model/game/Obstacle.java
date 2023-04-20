@@ -145,17 +145,21 @@ public class Obstacle implements Serializable, Cloneable {
 	public Direction getDirection() {
 		return direction;
 	}
-/*
+	
+	public double getRotationSpeed() {
+		return rotationSpeed;
+	}
+
 	@Override
 	public String toString() {
 		String res = "[";
-		for (int i = 0 ; i < coords.length ; i++) {
-			res += coords[i];
-			if (i < coords.length - 1) res += " ";
+		for (int i = 0 ; i < points.length ; i++) {
+			res += points[i];
+			if (i < points.length - 1) res += " ";
 		}
 		res += "];" + center + ";" + velocity + ";"
 				+ rotationSpeed + ";" + angle;
 		return res;
-	}*/
+	}
 
 }

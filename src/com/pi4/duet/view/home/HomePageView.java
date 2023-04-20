@@ -29,7 +29,7 @@ public class HomePageView extends JPanel {
 	private Dimension size;
 	private LevelButton level1, level2, level3, level4, level5;
 	private JLabel title1, title2;
-	private JButton settings, quit, lvlDuo,levelInf;
+	private JButton settings, quit, lvlDuo, lvlMaker, levelInf;
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
 	private Scale scale;
@@ -167,6 +167,19 @@ public class HomePageView extends JPanel {
 			this.setVisible(false);
 			controller.runLvlDuo(window, this, false);
 		});
+		
+		lvlMaker = new JButton("Créer");
+		lvlMaker.setBounds(level4.getX(), quit.getY() - this.size.width/20, level5.getX() + level5.getWidth() - level4.getX(), this.size.width/5);
+		lvlMaker.setBackground(Color.BLACK);
+		lvlMaker.setForeground(Color.WHITE);
+		lvlMaker.setFocusable(false);
+		lvlMaker.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
+		this.add(lvlMaker);
+		lvlMaker.addActionListener(e -> {
+			this.setVisible(false);
+			controller.runLvlEditor(window, this);
+		});
+		
 		levelInf = new JButton(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/infini.png")),this.size.width/10, this.size.width/10));
 		levelInf.setBounds(level5.getX()-(30+level4.getHeight())+level4.getWidth(),quit.getY() - this.size.width/5 - quit.getHeight(),(level5.getX() + level5.getWidth() - level4.getX())/2,this.size.width/5);
 		levelInf.setBackground(Color.BLACK);
