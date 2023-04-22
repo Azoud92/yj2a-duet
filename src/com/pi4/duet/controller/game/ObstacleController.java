@@ -19,6 +19,10 @@ public class ObstacleController {
 	public Obstacle getModel() {
 		return model;
 	}
+	
+	public ObstacleView getView() {
+		return view;
+	}
 
 	public void setModel(Obstacle model) { this.model = model; }
 	public void setView(ObstacleView view) { this.view = view; }

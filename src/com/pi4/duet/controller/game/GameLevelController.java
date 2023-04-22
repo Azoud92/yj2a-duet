@@ -49,7 +49,9 @@ public class GameLevelController extends GameController {
 							verifyObstacleReached(o);
 							if(fallAcceleration==false) model.setVelocityTo01();
 							refreshView();
+							System.out.println(o.getController().getView().getCollisionsMap().size());
 						}
+						System.out.println();
 					}					
 					else refreshView();
 					incrEffectDelaySpeed();
