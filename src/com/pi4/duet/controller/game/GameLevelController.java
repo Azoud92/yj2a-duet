@@ -45,10 +45,9 @@ public class GameLevelController extends GameController {
 					hasWin();
 					if (model.getObstacles().size() > 0) {
 						for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
-							o.updatePosition();
+							o.updatePosition(gameTimer.getAdd());
 							verifyCollision(o);
 							verifyObstacleReached(o);
-							if(fallAcceleration==false) model.setVelocityTo01();
 							refreshView();
 							System.out.println(o.getController().getView().getCollisionsMap().size());
 						}
@@ -147,7 +146,6 @@ public class GameLevelController extends GameController {
 		oc.setView(ov);
 		o.setController(oc);
 		oc.setModel(o);
-		if (fallAcceleration) o.setVelocity(1);
 		model.addObstacle(o);
 		view.addObstacle(ov);
 	}
@@ -180,9 +178,6 @@ public class GameLevelController extends GameController {
 		if(e.getKeyCode() == commands.getFallObs()){
 			fallAcceleration = true;
 			gameTimer.fall();
-			for(int i = 0; i < model.getObstacles().size(); i++){
-				model.getObstacles().get(i).setVelocity(1);
-			}
 			
 		}
 

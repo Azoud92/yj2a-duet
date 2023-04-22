@@ -108,7 +108,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	private void addObstacle(Obstacle o) {
 		addingObstacle = true;
 		int tmp = add;
-		add = 1;
+		//add = 1;
 		
 		int id = nbObstacles;
 		nbObstacles++;
@@ -130,7 +130,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
 				controller.addObstacle(o, id);
 				addingObstacle = false;
-				add = tmp;
+				//add = tmp;
 			}
 		};
 		obstacleCreation.start();
@@ -138,5 +138,10 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 
 	public void setStatus(ObstacleQueueStatus status) { ObstacleQueue.status = status; }
 	public ObstacleQueueStatus getStatus() { return status; }
+
+	public int getAdd() {
+		// TODO Auto-generated method stub
+		return add;
+	}
 
 }

@@ -49,38 +49,38 @@ public class Obstacle implements Serializable, Cloneable {
 		return o;
 	}
 
-	public void updatePosition() { this.updatePosition(this.getDirection()); }
+	public void updatePosition(int add) { this.updatePosition(this.getDirection(), add); }
 	
-	public void updatePosition(Direction dir) {
+	public void updatePosition(Direction dir, int add) {
 		for (Point p : points) { // mise à jour de chaque point de l'obstacle
 			switch(dir) {
 			case BOTTOM:
-				p.setY(p.getY() + velocity);
+				p.setY(p.getY() + velocity * add);
 				break;
 			case TOP:
-				p.setY(p.getY() - velocity);
+				p.setY(p.getY() - velocity * add);
 				break;
 			case LEFT:
-				p.setX(p.getX() - velocity);
+				p.setX(p.getX() - velocity * add);
 				break;
 			case RIGHT:
-				p.setX(p.getX() + velocity);
+				p.setX(p.getX() + velocity * add);
 				break;
 			}
 		}
 
 		switch(dir) { // mise à jour du centre de l'obstacle
 		case BOTTOM:
-			center.setY(center.getY() + velocity);
+			center.setY(center.getY() + velocity * add);
 			break;
 		case TOP:
-			center.setY(center.getY() - velocity);
+			center.setY(center.getY() - velocity * add);
 			break;
 		case LEFT:
-			center.setX(center.getX() - velocity);
+			center.setX(center.getX() - velocity * add);
 			break;
 		case RIGHT:
-			center.setX(center.getX() + velocity);
+			center.setX(center.getX() + velocity * add);
 			break;
 		}
 

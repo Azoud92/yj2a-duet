@@ -132,19 +132,10 @@ public abstract class GameController implements KeyListener {
 				wheelController.stopWheelRotation();
 				model.setState(GameState.PAUSED);
 				view.affichePause();
-				for(int i = 0; i < model.getObstacles().size(); i++){
-					model.getObstacles().get(i).setVelocity(0.1);
-				}
 
 			}
 
 			if(e.getKeyCode() == commands.getFallObs()){
-				gameTimer.stopFall();
-				for(int i = 0;i <model.getObstacles().size(); i++){
-					model.getObstacles().get(i).setVelocity(0.1);
-				}
-
-				fallAcceleration = false;
 				gameTimer.stopFall();
 
 			}

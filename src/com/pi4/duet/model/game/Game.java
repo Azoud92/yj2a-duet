@@ -23,14 +23,6 @@ public abstract class Game {
 		this.wheel = new Wheel(coordsWheel);
 	}
 
-	public void setVelocityTo01(){
-		for(int i = 0;i <obstacles.size(); i++){
-			obstacles.get(i).setVelocity(0.1);
-		}
-	}
-
-
-
 	public int indice(){
 		int indice=0;
 		for(int i=0;i<obstacles.size();i++){
