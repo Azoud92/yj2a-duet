@@ -29,8 +29,10 @@ public class ObstacleView extends JPanel {
 	private Image collisionRed, collisionBlue;
 
 	private ObstacleController controller;
+	
+	public final int id;
 
-	public ObstacleView(int width, int height, int ballRadius, ObstacleController controller) {
+	public ObstacleView(int width, int height, int ballRadius, ObstacleController controller, int idObs) {
 		this.controller = controller;
 		this.setOpaque(false);
 		this.setSize(new Dimension(width, height));
@@ -39,6 +41,7 @@ public class ObstacleView extends JPanel {
 		this.heightCollision = ballRadius * 8;
 		this.setVisible(true);
 		this.setLayout(null);
+		this.id = idObs;
 
 		collisionBlue = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_blue.png")), widthCollision, heightCollision).getImage();
 		collisionRed = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/collision_red.png")), widthCollision, heightCollision).getImage();

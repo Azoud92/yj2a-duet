@@ -11,7 +11,11 @@ import com.pi4.duet.model.game.Direction;
 
 public class Transition extends JPanel{
 
-    private JPanel jp1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -482790927146276001L;
+	private JPanel jp1;
     private JPanel jp2;
     private int width;
     private int height;
