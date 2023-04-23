@@ -43,7 +43,7 @@ public abstract class GameController implements KeyListener {
 		this.commands = commands;
 		music.stop();
 		this.scale = scale;
-		this.wheelController = new WheelController(settings, commands, this, 1);
+		this.wheelController = new WheelController(settings, commands, this);
 	}
 
 	public final void setModel(Game model) { this.model = model; }
@@ -64,6 +64,8 @@ public abstract class GameController implements KeyListener {
 		music.stop();
 	}
 
+	public abstract void updateGame();
+	
 	public abstract void verifyCollision(Obstacle o);
 
 	public abstract void verifyObstacleReached(Obstacle o);
@@ -160,6 +162,11 @@ public abstract class GameController implements KeyListener {
 	public double getProgressionEffect() {
 		// TODO Auto-generated method stub
 		return model.getProgressionEffect();
+	}
+
+	public Settings getSettings() {
+		// TODO Auto-generated method stub
+		return settings;
 	}
 	
 }

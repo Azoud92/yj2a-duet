@@ -89,7 +89,7 @@ public class HomePageViewController {
 		}
 
 		gc = new GameLevelController(this, sm, sc.getCommandsModel(), scale);
-		gp = new GameLevel(size.width, size.height, new Point(size.width / 2, size.height - 150), numLevel);
+		gp = new GameLevel(size.width, size.height, new Point(size.width / 2, size.height - 150), numLevel, gc);
 		gc.getWheelController().setModel(gp.getWheel());
 		gc.setModel(gp);
 		gv = new GameLevelView(size, scale, gc);

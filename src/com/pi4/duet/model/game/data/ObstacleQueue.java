@@ -12,7 +12,8 @@ import com.pi4.duet.controller.game.GameController;
 import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.Obstacle;
 
-public class ObstacleQueue extends Timer { // représente la liste avec les délais d'apparition des obstacles
+// Classe chargée de gérer la livraison des obstacles et le Timer d'animation du jeu
+public class ObstacleQueue extends Timer {
 
 	// Lien vers un GamePlane pour faire apparaitre les obstacles
 	private final GameController controller;
@@ -22,8 +23,6 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	private static int add = 1;
 	private PatternData data;
 
-	private static boolean addingObstacle = false;
-	
 	private static int nbObstacles = 0;
 
 	public ObstacleQueue(GameController gameController, Scale scale) {
@@ -31,7 +30,6 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		this.scale = scale;
 		time = 0;
 		add = 1;
-		addingObstacle = false;
 		nbObstacles = 0;
 	}
 
@@ -42,11 +40,11 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 		this.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				if (status == ObstacleQueueStatus.FINISHED) this.cancel();
+				//if (status == ObstacleQueueStatus.FINISHED) this.cancel();
 				if (controller.getState() == GameState.ON_GAME) {
 					putObs();
+					controller.updateGame();
 					time += add * 1;
-					//System.out.println("add : " + add);
 				}
 				
 			}
@@ -65,7 +63,7 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	}
 
 	public void fall() {
-		if (!addingObstacle) add = 10;
+		add = 10;
 	}
 
 	public void stopFall() {
@@ -87,7 +85,6 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 					addObstacle(entry.getKey());
 					iter.remove();
 					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
-					System.out.println(time);
 				}
 			}
 
@@ -97,7 +94,6 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 					addObstacle(entry.getKey());
 					iter.remove();
 					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
-					System.out.println(time);
 				}
 
 			}
@@ -106,15 +102,8 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 	}
 
 	private void addObstacle(Obstacle o) {
-		addingObstacle = true;
-		int tmp = add;
-		//add = 1;
-		
 		int id = nbObstacles;
-		nbObstacles++;
-		
-		System.out.println("add id " + id);
-		
+		nbObstacles++;		
 		
 		Thread obstacleCreation = new Thread() {
 			@Override
@@ -123,14 +112,10 @@ public class ObstacleQueue extends Timer { // représente la liste avec les dél
 				for (Point p : o.getPoints()) {
 					p.setX(p.getX() * scale.getScaleX());
 					p.setY(p.getY() * scale.getScaleY());
-					System.out.println(p.getX()+","+p.getY()+" ");
 				}
-				System.out.println();
 				o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
 				o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
 				controller.addObstacle(o, id);
-				addingObstacle = false;
-				//add = tmp;
 			}
 		};
 		obstacleCreation.start();

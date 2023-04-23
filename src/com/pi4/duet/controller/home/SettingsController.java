@@ -1,6 +1,5 @@
 package com.pi4.duet.controller.home;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Timer;
 import java.util.TimerTask;

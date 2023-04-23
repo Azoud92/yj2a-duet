@@ -12,9 +12,6 @@ import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.data.PatternData;
 import com.pi4.duet.model.home.EditorModel;
 import com.pi4.duet.controller.home.EditorController;
-import com.pi4.duet.model.home.HomePage;
-import com.pi4.duet.view.home.HomePageView;
-import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.view.game.GameWindow;
 
 

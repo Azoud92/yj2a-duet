@@ -83,9 +83,8 @@ public class ObstacleView extends JPanel {
 		}
 	}
 
-	public void updatePosition() {
+	public void updatePosition(Point[] points) {
 		// TODO Auto-generated method stub
-		Point[] points = controller.getPoints();
 
 		int[] x = new int[points.length];
 		int[] y = new int [points.length];
@@ -136,10 +135,4 @@ public class ObstacleView extends JPanel {
 			collisionsMap.put(cv,Math.abs(copy.get(cv)));				
 		}
 	}
-
-	public ObstacleController getController() {
-		return controller;
-	}
-
-
 }

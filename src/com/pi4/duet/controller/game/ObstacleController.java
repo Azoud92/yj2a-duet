@@ -10,10 +10,12 @@ public class ObstacleController {
 
 	private Obstacle model;
 	private ObstacleView view;
-	public ObstacleController(){}
-	public ObstacleController(Obstacle model,ObstacleView view){
-		this.model=model;
-		this.view=view;
+	
+	public ObstacleController() {}
+	
+	public ObstacleController(Obstacle model, ObstacleView view){
+		this.model = model;
+		this.view = view;
 	}
 
 	public Obstacle getModel() {
@@ -27,8 +29,8 @@ public class ObstacleController {
 	public void setModel(Obstacle model) { this.model = model; }
 	public void setView(ObstacleView view) { this.view = view; }
 
-	public void update() {
-		view.updatePosition();
+	public void updateView(Point[] points) {
+		view.updatePosition(points);
 	}
 
 	public void addCollisionView(Point point, Color color) {		
@@ -38,21 +40,6 @@ public class ObstacleController {
 	public double getAngle() {
 		// TODO Auto-generated method stub
 		return model.getAngle();
-	}
-
-	public Point[] getPoints() {
-		// TODO Auto-generated method stub
-		Point[] modelPoints = model.getPoints();
-		Point[] res = new Point[modelPoints.length];
-		for (int i = 0; i < res.length; i++) {
-			res[i] = modelPoints[i].clone();
-		}
-		return res;
-	}
-
-	public double getVelocity() {
-		// TODO Auto-generated method stub
-		return model.getVelocity();
 	}
 	
 	public Point getCenter() {

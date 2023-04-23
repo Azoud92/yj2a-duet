@@ -120,7 +120,6 @@ public class WheelView extends JPanel {
 		Ball ball;
 		double[] coordX, coordY;
 
-
 		BallMvt(Ball ball, Color color) {
 			this.setSize(size);
 			this.setVisible(true);

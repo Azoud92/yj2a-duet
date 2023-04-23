@@ -14,21 +14,18 @@ import com.pi4.duet.view.game.WheelView;
 
 public class WheelController implements KeyListener {
 
-	private Wheel model;
+	protected Wheel model;
 	private WheelView view;
 
-	private GameController game;
+	protected GameController game;
 
-	private Settings settings;
-	private Commands commands;
-
-	public final int numWheel; // sert à enregistrer le numéro de volant dans le cas multijoueur, pour gérer les évén. claviers
-
-	public WheelController(Settings settings, Commands commands, GameController gameController, int numWheel) {
+	protected Settings settings;
+	protected Commands commands;
+	
+	public WheelController(Settings settings, Commands commands, GameController gameController) {
 		this.settings = settings;
 		this.commands = commands;
 		this.game = gameController;
-		this.numWheel = numWheel;
 	}
 
 	public void setModel(Wheel model) { this.model = model; }
@@ -40,80 +37,11 @@ public class WheelController implements KeyListener {
 	public double getBallRadius() { return model.getBallRadius(); }
 	public double getWheelRadius() { return model.getRadius(); }
 	public Point getWheelCenter() { return model.getCenter(); }
-	public double getWheelSpeed() { return model.rotationSpeed; }
+	public double getWheelSpeed() { return model.getRotationSpeed(); }
+	
+	public void stopMvt() { view.stopMvt(); }
 
-	public void animateWheel() {
-		// animation du volant selon la direction souhaitée
-		if (model.getWheelRotating() == null) view.stopMvt();
-		double in = model.getInertia();
-
-		if (model.isWheelBreaking()) {
-			if (in > 0) {
-				if(!settings.getInertie()) model.setInertia(model.rotationSpeed);
-				else model.setInertia(in - 0.0004);
-				model.rotate(model.getLastRotation());
-				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
-						model.getCenterBall1().getY() - model.getBallRadius()));
-				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
-						model.getCenterBall2().getY() - model.getBallRadius()));
-				updateMvt(model.getLastRotation());
-			}
-			else {
-				model.setWheelBreaking(false);
-				model.setInertia(0);
-				model.setLastRotation(null);
-			}
-		}
-
-		if (model.getWheelRotating() != null) {
-			if (!model.isWheelBreaking()) {
-				if (in < model.rotationSpeed) {
-					if(!settings.getInertie()) model.setInertia(model.rotationSpeed);
-					else model.setInertia(in + 0.0004);
-				}
-			}
-		}
-
-		if (model.getWheelRotating() == RotationType.ANTI_HORAIRE) {
-			model.rotate(RotationType.ANTI_HORAIRE);
-			view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
-					model.getCenterBall1().getY() - model.getBallRadius()));
-			view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
-					model.getCenterBall2().getY() - model.getBallRadius()));
-			updateMvt(RotationType.ANTI_HORAIRE);
-		}
-		else if (model.getWheelRotating() == RotationType.HORAIRE) {
-			model.rotate(RotationType.HORAIRE);
-			view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
-					model.getCenterBall1().getY() - model.getBallRadius()));
-			view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
-					model.getCenterBall2().getY() - model.getBallRadius()));
-			updateMvt(RotationType.HORAIRE);
-		}
-
-		if(model.getStopMovement()) {
-			if (model.getWheelMovement() == Direction.LEFT) {
-				model.move(Direction.LEFT,(int)view.getSize().getWidth()/3);
-				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
-						model.getCenterBall1().getY() - model.getBallRadius()));
-				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
-						model.getCenterBall2().getY() - model.getBallRadius()));
-
-
-			} else if (model.getWheelMovement() == Direction.RIGHT) {
-				model.move(Direction.RIGHT,(int)view.getSize().getWidth());
-				view.updateBall_1(new Point(model.getCenterBall1().getX() - model.getBallRadius(),
-						model.getCenterBall1().getY() - model.getBallRadius()));
-				view.updateBall_2(new Point(model.getCenterBall2().getX() - model.getBallRadius(),
-						model.getCenterBall2().getY() - model.getBallRadius()));
-
-
-			}
-		}
-	}
-
-	public void updateMvt(RotationType horaire) {
-		double angle = model.getAngle();
+	public void updateMvt(RotationType horaire, double angle) {
 		view.mvt_1_Rotate(horaire, angle);
 		view.mvt_2_Rotate(horaire, angle);
 	}
@@ -123,158 +51,61 @@ public class WheelController implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (game.getState() == GameState.ON_GAME){
-			if(e.getKeyCode()== commands.getTurnRight()){
-				if (numWheel != 1) return;
-				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
-				else if (model.getLastRotation() != null) {
-					switch (model.getLastRotation()) {
-						case HORAIRE:
-							model.setInertia(model.getInertia() * 0.9);
-							break;
-						case ANTI_HORAIRE:
-							if (model.getInertia() <= model.rotationSpeed) model.setInertia(model.getInertia() + 0.004);
-							break;
-					}
-				}
-				return;
-			}
-
-			if(e.getKeyCode() == commands.getTurnLeft()){
-				if (numWheel != 1) return;
-				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
-				else if (model.getLastRotation() != null) {
-					switch (model.getLastRotation()) {
-						case HORAIRE:
-							if (model.getInertia() <= model.rotationSpeed) model.setInertia(model.getInertia() + 0.004);
-							break;
-						case ANTI_HORAIRE:
-							model.setInertia(model.getInertia() * 0.9);
-							break;
-					}
-				}
-				return;
-			}
-			if(e.getKeyCode() == commands.getTurnLeftDuo()){
-				if (numWheel != 2) return;
-				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
-				else if (model.getLastRotation() != null) {
-					switch (model.getLastRotation()) {
-						case HORAIRE:
-							if (model.getInertia() <= model.rotationSpeed) model.setInertia(model.getInertia() + 0.004);
-							break;
-						case ANTI_HORAIRE:
-							model.setInertia(model.getInertia() * 0.9);
-							break;
-					}
-				}
-				return;
-			}
-			if(e.getKeyCode() == commands.getTurnRightDuo()){
-				if (numWheel != 2) return;
-				if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
-				else if (model.getLastRotation() != null) {
-					switch (model.getLastRotation()) {
-						case HORAIRE:
-							model.setInertia(model.getInertia() * 0.9);
-							break;
-						case ANTI_HORAIRE:
-							if (model.getInertia() <= model.rotationSpeed) model.setInertia(model.getInertia() + 0.004);
-							break;
-					}
-				}
-				return;
-			}
-
-			if(e.getKeyCode() == commands.getMoveRight()){
-				if (numWheel != 1) return;
-				model.setStopMovement(true);
-				model.setWheelMovement(Direction.RIGHT);
-				return;
-			}
-
-			if(e.getKeyCode() == commands.getMoveLeft()){
-				if (numWheel != 1) return;
-				model.setStopMovement(true);
-				model.setWheelMovement(Direction.LEFT);
-				return;
-			}
-			
-			if(e.getKeyCode() == commands.getMoveRightDuo()){
-				if (numWheel != 2) return;
-				model.setStopMovement(true);
-				model.setWheelMovement(Direction.RIGHT);
-				return;
-			}
-
-			if(e.getKeyCode() == commands.getMoveLeftDuo()){
-				if (numWheel != 2) return;
-				model.setStopMovement(true);
-				model.setWheelMovement(Direction.LEFT);
-				return;
-			}
+		if (game.getState() != GameState.ON_GAME) return;
+		
+		if (e.getKeyCode() == commands.getTurnRight()) {
+			if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.ANTI_HORAIRE);
+			return;
 		}
-	}
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		if (game.getState() == GameState.ON_GAME) {
 
-			if(e.getKeyCode() == commands.getTurnLeft()){
-				if (numWheel != 1) return;
-				model.stopWheelRotation();
-				if (settings.getInertie()) model.setWheelBreaking(true);
-			}
+		if (e.getKeyCode() == commands.getTurnLeft()) {
+			if (!model.isWheelBreaking()) model.setWheelRotating(RotationType.HORAIRE);
+			return;
+		}
 
-			if(e.getKeyCode() == commands.getTurnRight()){
+		if (e.getKeyCode() == commands.getMoveRight()) {	
+			model.setMoving(true);
+			model.setWheelMovement(Direction.RIGHT);
+			return;
+		}
 
-				if (numWheel != 1) return;
-				model.stopWheelRotation();
-				if (settings.getInertie()) model.setWheelBreaking(true);
-			}
-			if(e.getKeyCode() == commands.getTurnLeftDuo()){
-				if (numWheel != 2) return;
-				model.stopWheelRotation();
-				if (settings.getInertie()) model.setWheelBreaking(true);
-			}
-			if(e.getKeyCode() == commands.getTurnRightDuo()){
-				if (numWheel != 2) return;
-				model.stopWheelRotation();
-				if (settings.getInertie()) model.setWheelBreaking(true);
-			}
-			
-			if(e.getKeyCode() == commands.getMoveRightDuo()){
-				if (numWheel != 2) return;
-				model.setStopMovement(false);
-			}
-
-			if(e.getKeyCode() == commands.getMoveLeftDuo()){
-				if (numWheel != 2) return;
-				model.setStopMovement(false);
-				return;
-			}
-
-			if(e.getKeyCode() == commands.getMoveLeft()) {
-				if (numWheel != 1) return;
-				model.setStopMovement(false);
-			}
-			if(e.getKeyCode() == commands.getMoveRight()) {
-				if (numWheel != 1) return;
-				model.setStopMovement(false);
-			}
-
+		if (e.getKeyCode() == commands.getMoveLeft()) {
+			model.setMoving(true);
+			model.setWheelMovement(Direction.LEFT);
+			return;
 		}
 	}
 	
-	public void setWheelRotating(RotationType dir) {
+	@Override
+	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		model.setWheelRotating(dir);
+		if (game.getState() != GameState.ON_GAME) return;
+		if (e.getKeyCode() == commands.getTurnLeft()) {
+			model.stopWheelRotation();
+			if (settings.getInertie()) model.setWheelBreaking(true);
+		}
+
+		if (e.getKeyCode() == commands.getTurnRight()) {
+			model.stopWheelRotation();
+			if (settings.getInertie()) model.setWheelBreaking(true);
+		}			
+
+		if (e.getKeyCode() == commands.getMoveLeft()) {
+			model.setMoving(false);
+		}
+		if (e.getKeyCode() == commands.getMoveRight()) {
+			model.setMoving(false);
+		}
 	}
-
-
+		
+	public void updateBallsView(Point ball_1, Point ball_2) {
+		// TODO Auto-generated method stub
+		view.updateBall_1(ball_1);
+		view.updateBall_2(ball_2);		
+	}
 }

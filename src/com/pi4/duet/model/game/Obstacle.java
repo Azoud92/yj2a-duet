@@ -14,13 +14,13 @@ public class Obstacle implements Serializable, Cloneable {
 
 	private Point[] points; // les coordonnées de l'obstacle
 	private Point center;
-	private transient boolean reached = false; // détermine si un obstacle a franchi l'écran (et est invisible)
+	private transient boolean reached = false; // détermine si un obstacle a franchi l'écran
 	private Direction direction;
 
 	private transient ObstacleController controller;
 
-	private double velocity = 0.1, rotationSpeed = 0.1; // la vitesse d'animation, et la vitesse de rotation (s'il y a lieu)
-	private double angle = 0; // l'angle actuel de l'obstacle (en radians)
+	private double velocity = 0.1, rotationSpeed = 0; // la vitesse d'animation, et la vitesse de rotation (s'il y a lieu)
+	private double angle = 0; // l'angle de départ de l'obstacle (en radians)
 
 	public Obstacle(Point points[], Point center, Direction dir, ObstacleController controller) {
 		this.points = new Point[points.length];
@@ -48,12 +48,10 @@ public class Obstacle implements Serializable, Cloneable {
 		oc.setModel(o);
 		return o;
 	}
-
-	public void updatePosition(int add) { this.updatePosition(this.getDirection(), add); }
 	
-	public void updatePosition(Direction dir, int add) {
+	public void updatePosition(int add) {
 		for (Point p : points) { // mise à jour de chaque point de l'obstacle
-			switch(dir) {
+			switch(this.direction) {
 			case BOTTOM:
 				p.setY(p.getY() + velocity * add);
 				break;
@@ -69,7 +67,7 @@ public class Obstacle implements Serializable, Cloneable {
 			}
 		}
 
-		switch(dir) { // mise à jour du centre de l'obstacle
+		switch(this.direction) { // mise à jour du centre de l'obstacle
 		case BOTTOM:
 			center.setY(center.getY() + velocity * add);
 			break;
@@ -88,7 +86,7 @@ public class Obstacle implements Serializable, Cloneable {
 			rotate();
 		}
 
-		controller.update();
+		controller.updateView(points);
 	}
 
 	private void rotate() {

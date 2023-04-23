@@ -3,8 +3,6 @@ package com.pi4.duet.controller.game;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
-import java.util.TimerTask;
-
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
@@ -32,34 +30,32 @@ public class GameLevelController extends GameController {
 		model.setState(GameState.ON_GAME);
 		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
 
-		wheelController.setWheelRotating(null);
-
 		if (settings.getMusic()) music.play();
 
 		gameTimer = new ObstacleQueue(this, scale);
-		gameTimer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				if (model.getState() == GameState.ON_GAME){
-					hasWin();
-					if (model.getObstacles().size() > 0) {
-						for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
-							o.updatePosition(gameTimer.getAdd());
-							verifyCollision(o);
-							verifyObstacleReached(o);
-							refreshView();
-							System.out.println(o.getController().getView().getCollisionsMap().size());
-						}
-						System.out.println();
-					}					
-					else refreshView();
-					incrEffectDelaySpeed();
-					if (model.getCanUseEffect()) view.effectCanBeUsed();
-					wheelController.animateWheel();
-				}
+	}
+	
+	@Override
+	public void updateGame() {
+		if (model.getState() == GameState.ON_GAME){
+			hasWin();
+			animateObstacles();
+			incrEffectDelaySpeed();
+			if (model.getCanUseEffect()) view.effectCanBeUsed();
+			model.getWheel().animateWheel();
+		}
+	}
+	
+	public void animateObstacles() {
+		if (model.getObstacles().size() > 0) {
+			for (Obstacle o : model.getObstacles()) { // animation des obstacles pour les faire "tomber"
+				o.updatePosition(gameTimer.getAdd());
+				verifyCollision(o);
+				verifyObstacleReached(o);
+				refreshView();
 			}
-		}, 0, 1);
+		}					
+		else refreshView();
 	}
 
 	@Override
@@ -135,7 +131,6 @@ public class GameLevelController extends GameController {
 			while (iter.hasNext()) {
 				ObstacleView ovH = iter.next();
 				if (ovH.id == idObs) {
-					System.out.println("id " + ovH.id);
 					ov.setCollisionsMap(ovH.getCollisionsMap());
 					//ov.resetCollisions();
 					//iter.remove();
@@ -174,14 +169,10 @@ public class GameLevelController extends GameController {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 		if(e.getKeyCode() == commands.getFallObs()){
 			fallAcceleration = true;
-			gameTimer.fall();
-			
+			gameTimer.fall();			
 		}
-
-
 	}
 
 }
