@@ -130,8 +130,10 @@ public abstract class GameController implements KeyListener {
 			if(e.getKeyCode() == commands.getPause()){
 				this.setBackgroundMovement(true);
 				wheelController.stopWheelRotation();
-				model.setState(GameState.PAUSED);
+				view.refresh();
 				view.affichePause();
+				model.setState(GameState.PAUSED);
+				gameTimer.setStatus(ObstacleQueueStatus.WAITING);
 				for(int i = 0; i < model.getObstacles().size(); i++){
 					model.getObstacles().get(i).setVelocity(0.1);
 				}
@@ -159,16 +161,18 @@ public abstract class GameController implements KeyListener {
 				}
 			}
 		}
-		else {
-			if (commands.getPause() == e.getKeyCode()) {
-				model.setState(GameState.ON_GAME);
-			}
-		}
 	}
 
 	public double getProgressionEffect() {
 		// TODO Auto-generated method stub
 		return model.getProgressionEffect();
+	}
+
+	public void gameResume() {
+		this.setBackgroundMovement(false);
+		model.setState(GameState.ON_GAME);
+		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
+		
 	}
 	
 }
