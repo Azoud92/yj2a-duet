@@ -7,6 +7,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -36,8 +37,7 @@ public class GameWindow extends JFrame { // fenêtre principale
 
 		EventQueue.invokeLater(() -> { // on programme de façon thread-safe
 			frame = new JFrame();
-
-			
+			frame.setIconImage(new ImageIcon(this.getClass().getResource("/resources/img/logo.png")).getImage());
 			frame.setTitle("Duet");
 			frame.setResizable(false);
 			frame.setBounds(size.width, 0, size.width, size.height);
