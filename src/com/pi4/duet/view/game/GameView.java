@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -17,8 +19,9 @@ import javax.swing.Timer;
 
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameController;
+import com.pi4.duet.model.home.Commands;
 
-public abstract class GameView extends JPanel {
+public abstract class GameView extends JPanel implements KeyListener {
 
 	/**
 	 *
@@ -26,6 +29,7 @@ public abstract class GameView extends JPanel {
 	private static final long serialVersionUID = -2419747303611397162L;
 
 	protected GameController controller;
+	protected Commands commands;
 
 	private WheelView wheelView;
 	private JButton back, replay;
@@ -47,10 +51,11 @@ public abstract class GameView extends JPanel {
 	
 	private Scale scale;
 	
-	public GameView(Dimension size, Scale scale, GameController controller) {
+	public GameView(Dimension size, Scale scale, Commands commands, GameController controller) {
 		this.size = new Dimension(size.width, size.height);
 		this.controller = controller;
 		this.scale = scale;
+		this.commands = commands;
 		
 		Dimension dim = new Dimension(size.width, size.height);
 		this.setPreferredSize(dim);
@@ -68,11 +73,10 @@ public abstract class GameView extends JPanel {
 		bar.setBounds(30, 30, 90, 30);
 		bar.setValue(progression);
 		bar.setForeground(Color.MAGENTA);
-		bar.setOpaque(false);
-		
+		bar.setOpaque(false);		
 		
 		this.add(bar);
-		this.addKeyListener(controller);
+		this.addKeyListener(this);
 		this.addKeyListener(wheelView.getController());
 		this.setLayout(null);
 	}
@@ -162,7 +166,7 @@ public abstract class GameView extends JPanel {
 	public final void removeObstacle(ObstacleView ov) {
 		this.remove(ov);
 		this.repaint();
-		this.incrFirstIndexObstacleVisible();
+		this.firstIndexObstacleVisible++;
 	}
 
 	@Override
@@ -269,13 +273,33 @@ public abstract class GameView extends JPanel {
 		// TODO Auto-generated method stub
 		this.effectLabel.setVisible(false);
 	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (controller.isOnGame()) {			
+			if (e.getKeyCode() == commands.getPause()) {
+				controller.setBackgroundMovement(true);				
+				controller.startPause();
+				affichePause();
+			}
 
-	public int getFirstIndexObstacleVisible() {
-		return firstIndexObstacleVisible;
-	}
-
-	public void incrFirstIndexObstacleVisible() {
-		this.firstIndexObstacleVisible += 1;
+			if (e.getKeyCode() == commands.getFallObs()) {
+				controller.stopFall();
+			}
+			
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				if (controller.canUseEffect()) {
+					controller.useEffect();
+					removeObstacle(obstacles.get(firstIndexObstacleVisible));
+					useEffect();
+				}
+			}
+		}
+		else {
+			if (commands.getPause() == e.getKeyCode()) {
+				controller.stopPause();
+			}
+		}
 	}
 
 }

@@ -42,10 +42,6 @@ public class ConfettiView extends JPanel implements Runnable {
         }
     }
     
-    
-
-
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -63,8 +59,7 @@ public class ConfettiView extends JPanel implements Runnable {
         animate = new Thread(this);
         animate.start();
     }
-    
-    
+        
     @Override
     public void run() {
         running = true;
@@ -148,9 +143,7 @@ public class ConfettiView extends JPanel implements Runnable {
     }
 
 	public void finish() {
-		running = false;
-		
-	}
-    
+		running = false;		
+	} 
  
 }

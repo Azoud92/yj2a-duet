@@ -8,26 +8,35 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class Sound { // sert à créer un son que l'on peut jouer
+public class Sound {
 
 	private AudioInputStream audioStream;
 	private Clip clip;
+	
+	private String filename;
+	private boolean loop;
 
 	public Sound(String filename, boolean loop) {
+		this.filename = filename;
+		this.loop = loop;
 		try {
 			audioStream = AudioSystem.getAudioInputStream(this.getClass().getResource("/resources/snd/" + filename));
 			clip = AudioSystem.getClip();
 			clip.open(audioStream);
 			if (loop) {
 				clip.loop(Clip.LOOP_CONTINUOUSLY);
+				clip.stop();
 			}
-		} catch (UnsupportedAudioFileException e) {
+		}
+		catch (UnsupportedAudioFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (LineUnavailableException e) {
+		}
+		catch (LineUnavailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -40,6 +49,14 @@ public class Sound { // sert à créer un son que l'on peut jouer
 
 	public void stop() {
 		clip.stop();
+	}
+	
+	public void close() {
+		clip.close();
+	}
+	
+	public Sound recreate() {
+		return new Sound(this.filename, this.loop);
 	}
 
 }

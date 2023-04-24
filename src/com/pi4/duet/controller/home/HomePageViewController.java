@@ -89,13 +89,13 @@ public class HomePageViewController {
 		}
 
 		gc = new GameLevelController(this, sm, sc.getCommandsModel(), scale);
-		gp = new GameLevel(size.width, size.height, new Point(size.width / 2, size.height - 150), numLevel, gc);
+		gp = new GameLevel(size.width, size.height, new Point(size.width / 2, size.height - 150), numLevel, scale, gc);
 		gc.getWheelController().setModel(gp.getWheel());
 		gc.setModel(gp);
-		gv = new GameLevelView(size, scale, gc);
+		gv = new GameLevelView(size, scale, sc.getCommandsModel(), gc);
 		gc.getWheelController().setView(gv.getWheel());
 		gc.setView(gv);
-		gv.addKeyListener(gc);
+		//gv.addKeyListener(gc);
 
 		JPanel container = new JPanel(new GridLayout(1, 3));
 
@@ -108,7 +108,7 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 		
 		try {
-			gc.addPattern(PatternData.read("src/resources/levels/level" + numLevel + ".ser"));
+			gp.addPattern(PatternData.read("src/resources/levels/level" + numLevel + ".ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,7 +117,7 @@ public class HomePageViewController {
 			e.printStackTrace();
 		}
 
-		gc.gameStart();
+		gp.gameStart();
 		homeMusic.stop();
 	}
 
@@ -138,7 +138,7 @@ public class HomePageViewController {
 		gdc.getWheelController().setView(gdv.getWheel());
 		gdc.getWheelTopController().setView(gdv.getWheelTopView());
 		gdc.setView(gdv);
-		gdv.addKeyListener(gdc);
+		//gdv.addKeyListener(gdc);
 
 
 		JPanel container = new JPanel(new GridLayout(1, 3));
@@ -152,7 +152,7 @@ public class HomePageViewController {
 		gdv.setFocusable(true);
 
 		try {
-			gdc.addPattern(PatternData.read("src/resources/levels/levelDuo.ser"));
+			gpd.addPattern(PatternData.read("src/resources/levels/levelDuo.ser"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,7 +209,7 @@ public class HomePageViewController {
 		giv = new GameInfiniView(size, scale, gic);
 		gic.getWheelController().setView(giv.getWheel());
 		gic.setView(giv);
-		giv.addKeyListener(gic);
+		//giv.addKeyListener(gic);
 
 		JPanel container = new JPanel(new GridLayout(1, 3));
 

@@ -8,7 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
-import com.pi4.duet.controller.game.GameController;
+import com.pi4.duet.model.game.Game;
 import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.Obstacle;
 
@@ -16,44 +16,45 @@ import com.pi4.duet.model.game.Obstacle;
 public class ObstacleQueue extends Timer {
 
 	// Lien vers un GamePlane pour faire apparaitre les obstacles
-	private final GameController controller;
+	// Les attributs statiques sont obligatoires en raison de la manipulation en temps réel de leur valeur
+	private final Game model;
 	private static ObstacleQueueStatus status = ObstacleQueueStatus.WAITING;
 	private Scale scale;
-	private static int time = 0;
-	private static int add = 1;
+	private static int time = 0; // le temps qui s'est écoulé
+	private static int add = 1; // pour modéliser l'accélération du temps
 	private PatternData data;
 
-	private static int nbObstacles = 0;
+	private static int nbObstacles = 0; // pour calculer les ID. d'obstacles
 
-	public ObstacleQueue(GameController gameController, Scale scale) {
-		controller = gameController;
+	public ObstacleQueue(Game game, Scale scale) {
+		this.model = game;
 		this.scale = scale;
+		status = ObstacleQueueStatus.WAITING;
 		time = 0;
 		add = 1;
 		nbObstacles = 0;
 	}
 
-	public ObstacleQueue(GameController c, Scale scale, PatternData data) {
-		this(c, scale);
+	public ObstacleQueue(Game game, Scale scale, PatternData data) {
+		this(game, scale);
 		this.data = data;
 				
 		this.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				//if (status == ObstacleQueueStatus.FINISHED) this.cancel();
-				if (controller.getState() == GameState.ON_GAME) {
+				if (model.getState() == GameState.FINISHED) this.cancel();
+				if (model.getState() == GameState.ON_GAME) {					
 					putObs();
-					controller.updateGame();
+					model.updateGame();
 					time += add * 1;
-				}
-				
+				}				
 			}
 		}, 0, 1);
 	}
 
 
-	public ObstacleQueue(GameController c, Scale scale, String path) throws IOException, ClassNotFoundException {
-		this(c, scale, PatternData.read(path));
+	public ObstacleQueue(Game g, Scale scale, String path) throws IOException, ClassNotFoundException {
+		this(g, scale, PatternData.read(path));
 	}
 
 	@Override
@@ -71,33 +72,22 @@ public class ObstacleQueue extends Timer {
 	}
 
 	protected void putObs() {
-		int i = 0;
-
 		Iterator<Map.Entry<Obstacle, Long>> iter = data.entrySet().iterator();
 
 		while (iter.hasNext()) {
 			Entry<Obstacle, Long> entry = iter.next();
 			
-			if(entry.getValue()>time) return;
+			if (entry.getValue() > time) return;
 
-			if (data.size() == 1 || i == data.size() - 1) {
-				if(time >= entry.getValue()) {
-					addObstacle(entry.getKey());
-					iter.remove();
+			if (time >= entry.getValue()) {
+				nbObstacles++;
+				addObstacle(entry.getKey());
+				iter.remove();
+				if (data.size() == 0) {
 					ObstacleQueue.status = ObstacleQueueStatus.FINISHED;
 				}
+				else ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
 			}
-
-			else {
-				if(time >= entry.getValue()) {
-					nbObstacles++;
-					addObstacle(entry.getKey());
-					iter.remove();
-					ObstacleQueue.status = ObstacleQueueStatus.DELIVERY_IN_PROGRESS;
-				}
-
-			}
-			i++;
 		}
 	}
 
@@ -105,20 +95,28 @@ public class ObstacleQueue extends Timer {
 		int id = nbObstacles;
 		nbObstacles++;		
 		
-		Thread obstacleCreation = new Thread() {
+		/*Thread obstacleCreation = new Thread() {
 			@Override
 			public void run() {				
-				// On met l'obstacle aux normes quand à l'échelle d'affichage
+				// On met l'obstacle aux normes quant à l'échelle d'affichage
 				for (Point p : o.getPoints()) {
 					p.setX(p.getX() * scale.getScaleX());
 					p.setY(p.getY() * scale.getScaleY());
 				}
 				o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
 				o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
-				controller.addObstacle(o, id);
+				model.initObstacle(o, id);
 			}
 		};
-		obstacleCreation.start();
+		obstacleCreation.start();*/
+		
+		for (Point p : o.getPoints()) {
+			p.setX(p.getX() * scale.getScaleX());
+			p.setY(p.getY() * scale.getScaleY());
+		}
+		o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
+		o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
+		model.initObstacle(o, id);
 	}
 
 	public void setStatus(ObstacleQueueStatus status) { ObstacleQueue.status = status; }
