@@ -29,7 +29,7 @@ public class GameWindow extends JFrame { // fenêtre principale
 		size = new Dimension();
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle maximumWindowBounds = graphicsEnvironment.getMaximumWindowBounds();
-		size.width = (int) maximumWindowBounds.getWidth();
+		size.width = ((int) maximumWindowBounds.getWidth()) / 3;
 		size.height = (int) maximumWindowBounds.getHeight();
 
 		Scale scale = new Scale(size.width, size.height);
@@ -37,30 +37,22 @@ public class GameWindow extends JFrame { // fenêtre principale
 		EventQueue.invokeLater(() -> { // on programme de façon thread-safe
 			frame = new JFrame();
 
-			frame.setPreferredSize(size);
-			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			
 			frame.setTitle("Duet");
-			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+			frame.setResizable(false);
+			frame.setBounds(size.width, 0, size.width, size.height);
 
-			frame.setMinimumSize(size);
-			frame.setMaximumSize(size);
-
-			container = new JPanel();
-			container.setLayout(new GridLayout(1, 3));
-			container.add(new JPanel());
 
 			
 
 			HomePage hp = HomePage.read();
-			HomePageViewController hpc = new HomePageViewController(new Dimension(size.width/3, size.height), scale);
+			HomePageViewController hpc = new HomePageViewController(new Dimension(size.width, size.height), scale);
 			hpc.setModel(hp);
-			HomePageView hpv = new HomePageView(new Dimension(size.width/3, size.height), frame, this, hpc, scale);
+			HomePageView hpv = new HomePageView(new Dimension(size.width, size.height), frame, this, hpc, scale);
 			hpc.setView(hpv);
-			container.add(hpv);
 
-			container.add(new JPanel());
 
-			frame.add(container);
+			frame.add(hpv);
 			frame.setVisible(true);
 		});
 	}
