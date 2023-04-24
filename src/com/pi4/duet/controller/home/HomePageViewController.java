@@ -97,12 +97,7 @@ public class HomePageViewController {
 		gc.setView(gv);
 		gv.addKeyListener(gc);
 
-		JPanel container = new JPanel(new GridLayout(1, 3));
-
-		container.add(new JPanel());
-		container.add(gv);
-		container.add(new JPanel());
-		window.setMainContainer(container);
+		window.setMainContainer(gv);
 
 		gv.requestFocus();
 		gv.setFocusable(true);
@@ -141,12 +136,7 @@ public class HomePageViewController {
 		gdv.addKeyListener(gdc);
 
 
-		JPanel container = new JPanel(new GridLayout(1, 3));
-
-		container.add(new JPanel());
-		container.add(gdv);
-		container.add(new JPanel());
-		window.setMainContainer(container);
+		window.setMainContainer(gdv);
 
 		gdv.requestFocus();
 		gdv.setFocusable(true);
@@ -211,12 +201,8 @@ public class HomePageViewController {
 		gic.setView(giv);
 		giv.addKeyListener(gic);
 
-		JPanel container = new JPanel(new GridLayout(1, 3));
 
-		container.add(new JPanel());
-		container.add(giv);
-		container.add(new JPanel());
-		window.setMainContainer(container);
+		window.setMainContainer(giv);
 
 		giv.requestFocus();
 		giv.setFocusable(true);
@@ -241,11 +227,8 @@ public class HomePageViewController {
 		view.repaint();
 		view.paintComponents(view.getGraphics());
 
-		JPanel container = new JPanel(new GridLayout(1, 3));
-		container.add(new JPanel());
-		container.add(view);
-		container.add(new JPanel());
-		window.setMainContainer(container);
+
+		window.setMainContainer(view);
 	}
 
 	public void runSettings(Dimension size, GameWindow window) {
@@ -254,11 +237,8 @@ public class HomePageViewController {
 		System.out.println(size);
 		sv.setVisible(true);
 		Transition t = new Transition(view, sv, size.width, size.height, Direction.LEFT);
-		JPanel container = new JPanel(new GridLayout(1, 3));
-		container.add(new JPanel());
-		container.add(t);
-		container.add(new JPanel());
-		window.setMainContainer(container);
+
+		window.setMainContainer(t);
 		sv.setGw(this.window);
 		view.ButtonsOff();
 		sv.ButtonsOff();

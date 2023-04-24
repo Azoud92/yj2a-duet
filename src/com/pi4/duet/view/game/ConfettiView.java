@@ -9,26 +9,29 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
 import com.pi4.duet.Point;
 
-public class ConfettiView extends JPanel implements Runnable {
+public class ConfettiView extends JPanel{
 
 	private static final long serialVersionUID = 6251420393206375207L;
 	private static int widthC;
     private static int heightC;
 
-    private Thread animate;
     private boolean running;
     private static Point depart;
+    private Timer timer; 
 
     private ArrayList<Confetti> confettis;
 
     public ConfettiView(int widthC, int heightC, Point depart) {
     	this.setVisible(true);
     	this.setOpaque(false);
+    	
     	
     	ConfettiView.depart = depart;
     	ConfettiView.widthC = widthC;
@@ -40,6 +43,28 @@ public class ConfettiView extends JPanel implements Runnable {
             Confetti confetti = new Confetti();
             confettis.add(confetti);
         }
+        
+        running = true;
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+        	public void run() {
+        		if(running) {
+        			for(int i = 0; i < 100; i++) {
+	                    for (Confetti confetti : confettis) {
+	                        confetti.update();
+	                    }
+	                    revalidate();
+	                    repaint();
+        			}
+                
+        		}
+        		else {
+        			timer.purge();
+        			timer.cancel();
+        		}
+        		
+        	}
+        }, 0, 1);
     }
     
     
@@ -57,26 +82,10 @@ public class ConfettiView extends JPanel implements Runnable {
         }
     }
 
-    @Override
-    public void addNotify() {
-        super.addNotify();
-        animate = new Thread(this);
-        animate.start();
-    }
+  
     
     
-    @Override
-    public void run() {
-        running = true;
-
-        while (running) {
-            for (Confetti confetti : confettis) {
-                confetti.update();
-            }
-            revalidate();
-            repaint();
-        }
-    }
+    
 
     private static class Confetti {
         private static final Random RANDOM = new Random();

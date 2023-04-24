@@ -54,11 +54,8 @@ public class CommandsController {
 		cv.setVisible(false);
 		sv.setVisible(true);
 		Transition t = new Transition(sv, cv, sv.getSize().width, sv.getSize().height, Direction.RIGHT);
-		JPanel container = new JPanel(new GridLayout(1, 3));
-		container.add(new JPanel());
-		container.add(t);
-		container.add(new JPanel());
-		sv.getGw().setMainContainer(container);
+
+		sv.getGw().setMainContainer(t);
 		cv.ButtonsOff();
 		sv.ButtonsOff();
 		t.transition();
