@@ -180,5 +180,11 @@ public abstract class Game {
 	public final void initObstacle(Obstacle o, int id) {
 		controller.addObstacle(o, id);
 	}
+	
+	public void gameResume() {
+		controller.setBackgroundMovement(false);
+		gameState = GameState.ON_GAME;
+		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
+	}
 
 }

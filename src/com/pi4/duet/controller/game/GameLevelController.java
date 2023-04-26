@@ -32,5 +32,4 @@ public class GameLevelController extends GameController {
 		}
 	}
 
-
 }

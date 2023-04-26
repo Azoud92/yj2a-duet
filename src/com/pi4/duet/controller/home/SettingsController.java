@@ -1,10 +1,7 @@
 package com.pi4.duet.controller.home;
 
-import java.awt.GridLayout;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.JPanel;
 
 import com.pi4.duet.Scale;
 import com.pi4.duet.model.game.Direction;
@@ -61,11 +58,8 @@ public class SettingsController {
 		sv.setVisible(false);
 		commandsView.setVisible(true);
 		Transition t = new Transition(sv, commandsView, hpvC.getSize().width, hpvC.getSize().height, Direction.LEFT);
-		JPanel container = new JPanel(new GridLayout(1, 3));
-		container.add(new JPanel());
-		container.add(t);
-		container.add(new JPanel());
-		gw.setMainContainer(container);
+
+		gw.setMainContainer(t);
 		sv.ButtonsOff();
 		commandsView.ButtonsOff();
 		t.transition();
@@ -116,11 +110,9 @@ public class SettingsController {
 		sv.setVisible(false);
 		commandsView.setVisible(true);
 		Transition t = new Transition(hpvC.getView(), sv, hpvC.getSize().width, hpvC.getSize().height, Direction.RIGHT);
-		JPanel container = new JPanel(new GridLayout(1, 3));
-		container.add(new JPanel());
-		container.add(t);
-		container.add(new JPanel());
-		gw.setMainContainer(container);
+		//JPanel container = new JPanel(new GridLayout(1, 3));
+
+		gw.setMainContainer(t);
 		hpvC.getView().ButtonsOff();
 		sv.ButtonsOff();
 		t.transition();

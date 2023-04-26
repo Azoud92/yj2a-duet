@@ -173,5 +173,10 @@ public abstract class GameController {
 		// TODO Auto-generated method stub
 		view.removeObstacle(ov);
 	}
-	
+
+	public void gameResume() {
+		// TODO Auto-generated method stub
+		model.gameResume();
+	}
+		
 }
