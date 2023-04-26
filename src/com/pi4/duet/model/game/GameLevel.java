@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameLevelController;
+import com.pi4.duet.model.game.data.ObstacleQueueStatus;
 
 public class GameLevel extends Game {
 
@@ -28,6 +29,21 @@ public class GameLevel extends Game {
 			}
 		}					
 		else controller.refreshView();
-	}		
+	}
+
+	@Override
+	public void updateGame() {
+		super.updateGame();
+		hasWin();
+	}
+	
+	private void hasWin() {
+		if (obstacles.size() == 0 && gameTimer.getStatus() == ObstacleQueueStatus.FINISHED) {
+			gameStop();
+			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
+			gameState = GameState.FINISHED;			
+			((GameLevelController) controller).win();
+		}
+	}
 
 }

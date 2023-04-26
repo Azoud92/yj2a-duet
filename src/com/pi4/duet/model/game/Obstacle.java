@@ -160,4 +160,9 @@ public class Obstacle implements Serializable, Cloneable {
 		return res;
 	}
 
+	public void setDirection(Direction dir) {
+		// TODO Auto-generated method stub
+		this.direction = dir;
+	}
+
 }

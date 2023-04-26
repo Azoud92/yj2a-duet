@@ -66,11 +66,6 @@ public abstract class GameController {
 	public final Boolean getBackgroundMouvement() { return this.backgroundMovement; }
 	public final void setBackgroundMovement(boolean b) { this.backgroundMovement = b; }
 	
-	public void incrEffectDelaySpeed() {
-		model.incrProgressionEffect();
-		view.updateProgressionEffect();
-	}
-
 	public final GameState getState() {
 		// TODO Auto-generated method stub
 		return model.getState();
@@ -109,13 +104,6 @@ public abstract class GameController {
 	public final void stop() {
 		// TODO Auto-generated method stub
 		music.stop();
-	}
-
-	public void win() {
-		// TODO Auto-generated method stub
-		setBackgroundMovement(true);
-		view.afficheWin();
-		view.refresh();
 	}
 
 	public final void start() {
@@ -179,6 +167,11 @@ public abstract class GameController {
 	public void fall() {
 		// TODO Auto-generated method stub
 		model.fall();
+	}
+
+	public void removeObstacle(ObstacleView ov) {
+		// TODO Auto-generated method stub
+		view.removeObstacle(ov);
 	}
 	
 }

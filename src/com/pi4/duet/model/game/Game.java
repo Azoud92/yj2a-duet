@@ -22,11 +22,11 @@ public abstract class Game {
 
 	protected Wheel wheel;
 	protected ArrayList<Obstacle> obstacles = new ArrayList<>();
-	private GameState gameState = GameState.READY;
+	protected GameState gameState = GameState.READY;
 	
 	private double effectDelaySpeed = 0.01;
-	private double progressionEffect = 0;
-	private boolean canUseEffect = false;
+	protected double progressionEffect = 0;
+	protected boolean canUseEffect = false;
 
 	public Game (int width, int height, Point coordsWheel, Scale scale, GameController controller) {
 		this.controller = controller;
@@ -46,26 +46,15 @@ public abstract class Game {
 		gameTimer = new ObstacleQueue(this, scale);
 	}
 	
-	public final void updateGame() {
-		if (gameState == GameState.ON_GAME){
-			hasWin();
-			updateObstacles();
-			incrProgressionEffect();
-			if (getCanUseEffect()) controller.effectCanBeUsed();
-			wheel.animateWheel();
-		}
+	public void updateGame() {
+		if (gameState != GameState.ON_GAME) return;		
+		updateObstacles();
+		incrProgressionEffect();
+		if (getCanUseEffect()) controller.effectCanBeUsed();
+		wheel.animateWheel();
 	}
 	
 	protected abstract void updateObstacles();
-	
-	protected void hasWin() {
-		if (obstacles.size() == 0 && gameTimer.getStatus() == ObstacleQueueStatus.FINISHED) {
-			gameStop();
-			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
-			gameState = GameState.FINISHED;			
-			controller.win();
-		}
-	}
 	
 	protected void verifyCollision(Obstacle o) {
 		if (gameState == GameState.FINISHED) return;
@@ -94,7 +83,7 @@ public abstract class Game {
 		}
 	}
 	
-	protected final void obstacleReached(Obstacle o) {
+	protected void obstacleReached(Obstacle o) {
 		if (!o.getReached()) {
 			boolean reach = false;
 			for (Point p : o.getPoints()) {
@@ -138,12 +127,13 @@ public abstract class Game {
 		gameTimer = new ObstacleQueue(this, scale, d);
 	}
 
-	public final void addObstacle(Obstacle o) {
+	public void addObstacle(Obstacle o) {
 		this.obstacles.add(o);
 	}
 
-	public final void removeObstacle(Obstacle o) {
+	public void removeObstacle(Obstacle o) {
 		this.obstacles.remove(o);
+		controller.removeObstacle(o.getController().getView());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -169,14 +159,14 @@ public abstract class Game {
 	
 	public final double getProgressionEffect() { return progressionEffect; }
 	
-	public final void incrProgressionEffect() {		
+	public void incrProgressionEffect() {		
 		if (this.progressionEffect >= 100) {
 			this.canUseEffect = true;
 		}
 		else this.progressionEffect += effectDelaySpeed;
 	}
 	
-	public final void useEffect() {
+	public void useEffect() {
 		this.progressionEffect = 0;
 		this.canUseEffect = false;
 	}

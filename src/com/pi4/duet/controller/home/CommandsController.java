@@ -42,6 +42,8 @@ public class CommandsController {
 		return model.getFallObs();
 	}
 	
+	public int getEffect() { return model.getEffect(); }
+	
 	public boolean areIdenticalCommands() {
 		return model.areIdenticalCommands();
 	}
@@ -108,6 +110,9 @@ public class CommandsController {
 			break;
 		case 9:
 			model.setMoveRightDuo(keyCode);
+			break;
+		case 10:
+			model.setEffect(keyCode);
 			break;
 		}
 	}

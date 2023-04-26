@@ -24,7 +24,7 @@ public class ObstacleQueue extends Timer {
 	private static int add = 1; // pour modéliser l'accélération du temps
 	private PatternData data;
 
-	private static int nbObstacles = 0; // pour calculer les ID. d'obstacles
+	private static int idsObstacles = 0; // pour calculer les ID. d'obstacles
 
 	public ObstacleQueue(Game game, Scale scale) {
 		this.model = game;
@@ -32,7 +32,7 @@ public class ObstacleQueue extends Timer {
 		status = ObstacleQueueStatus.WAITING;
 		time = 0;
 		add = 1;
-		nbObstacles = 0;
+		idsObstacles = 0;
 	}
 
 	public ObstacleQueue(Game game, Scale scale, PatternData data) {
@@ -80,7 +80,6 @@ public class ObstacleQueue extends Timer {
 			if (entry.getValue() > time) return;
 
 			if (time >= entry.getValue()) {
-				nbObstacles++;
 				addObstacle(entry.getKey());
 				iter.remove();
 				if (data.size() == 0) {
@@ -92,24 +91,9 @@ public class ObstacleQueue extends Timer {
 	}
 
 	private void addObstacle(Obstacle o) {
-		int id = nbObstacles;
-		nbObstacles++;		
-		
-		/*Thread obstacleCreation = new Thread() {
-			@Override
-			public void run() {				
-				// On met l'obstacle aux normes quant à l'échelle d'affichage
-				for (Point p : o.getPoints()) {
-					p.setX(p.getX() * scale.getScaleX());
-					p.setY(p.getY() * scale.getScaleY());
-				}
-				o.getCenter().setX(o.getCenter().getX() * scale.getScaleX());
-				o.getCenter().setY(o.getCenter().getY() * scale.getScaleY());
-				model.initObstacle(o, id);
-			}
-		};
-		obstacleCreation.start();*/
-		
+		int id = idsObstacles;
+		idsObstacles += 5;		
+				
 		for (Point p : o.getPoints()) {
 			p.setX(p.getX() * scale.getScaleX());
 			p.setY(p.getY() * scale.getScaleY());

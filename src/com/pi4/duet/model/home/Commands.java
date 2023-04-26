@@ -21,7 +21,7 @@ public class Commands implements Serializable {
 	private static final long serialVersionUID = -4586835493215068372L;
 	
 	private int turnLeft = 37, turnRight = 39, moveLeft = 17, moveRight = 16, pause = 32, fallObs = 40,
-			turnLeftDuo = 81, turnRightDuo = 68, moveLeftDuo = 69, moveRightDuo = 84;
+			turnLeftDuo = 81, turnRightDuo = 68, moveLeftDuo = 69, moveRightDuo = 84, effect = 38;
 	
 	public int getTurnLeft() {
 		return turnLeft;
@@ -166,6 +166,14 @@ public class Commands implements Serializable {
 
 	public void setMoveRightDuo(int moveRightDuo) {
 		this.moveRightDuo = moveRightDuo;
+	}
+
+	public int getEffect() {
+		return effect;
+	}
+
+	public void setEffect(int effect) {
+		this.effect = effect;
 	}
 
 }

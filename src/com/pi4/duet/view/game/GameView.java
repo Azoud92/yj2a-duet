@@ -38,18 +38,16 @@ public abstract class GameView extends JPanel implements KeyListener {
 	protected double y_background = 0;
 	protected double background_speed = 0.5;
 
-	private ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
-	private int firstIndexObstacleVisible = 0;
+	protected ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
+	protected int firstIndexObstacleVisible = 0;
 
 	protected Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 
-	private int progression = 0;
-
-	private JLabel effectLabel = new JLabel();
+	protected JLabel effectLabel = new JLabel();
 	
-	private JProgressBar bar;
+	protected JProgressBar bar;
 	
-	private Scale scale;
+	protected Scale scale;
 	
 	public GameView(Dimension size, Scale scale, Commands commands, GameController controller) {
 		this.size = new Dimension(size.width, size.height);
@@ -71,7 +69,7 @@ public abstract class GameView extends JPanel implements KeyListener {
 		
 		bar = new JProgressBar(0,100);
 		bar.setBounds(30, 30, 90, 30);
-		bar.setValue(progression);
+		bar.setValue((int) controller.getProgressionEffect());
 		bar.setForeground(Color.MAGENTA);
 		bar.setOpaque(false);		
 		
@@ -111,42 +109,17 @@ public abstract class GameView extends JPanel implements KeyListener {
 				JOptionPane.INFORMATION_MESSAGE, -1,
 				new ImageIcon(getClass().getResource("/resources/img/resume.jpg")));
 		jboite2.setOptions(resume);
-		final Timer timer = new Timer(3000, e -> {
+		final Timer timer = new Timer(3000, e -> {			
 			jboite2.setValue(JOptionPane.CLOSED_OPTION);
+			controller.stopPause();
 		});
 		timer.setRepeats(false);
 		timer.start();
-		jboite2.createDialog(this, "TENEZ VOUS PRÃŠT").setVisible(true);
+		jboite2.createDialog(this, "TENEZ VOUS PRÊT").setVisible(true);
 		controller.setBackgroundMovement(false);
 	}
 
-	public void afficheWin(){
-		JLabel win1 = new JLabel();
-		win1.setText("VOUS AVEZ GAGNÉ !");
-		win1.setBounds(size.width/6, this.size.height/5*2 , this.size.width/6 * 4, this.size.height/6);
-		win1.setFont(new Font("Arial", Font.BOLD, (int) (43 * scale.getScaleY())));
-		win1.setForeground(Color.WHITE);
-		win1.setVisible(true);
-		this.add(win1);
-
-		JLabel win2 = new JLabel();
-		win2.setText("BRAVO");
-		win2.setBounds((this.size.width/6)+(int) (140 * scale.getScaleX()), (this.size.height/5)*2+ (int) (50 * scale.getScaleY()), this.size.width/6 * 4, this.size.height/6);
-		win2.setFont(new Font("Arial", Font.BOLD, (int) (43 * scale.getScaleY())));
-		win2.setForeground(Color.WHITE);
-		win2.setVisible(true);
-		this.add(win2);
-		
-		ConfettiView cv = new ConfettiView(this.getWidth(), this.getHeight(),controller.getWheelController().getWheelCenter());
-		this.add(cv);
-
-		
-		Timer timer = new Timer(3000, e->timerFinish(cv));
-		timer.setRepeats(false);
-		timer.start();
-	}
-
-	protected void timerFinish(ConfettiView cv) {
+	protected final void timerFinish(ConfettiView cv) {
 		controller.affMenu();
 		cv.finish();		
 	}
@@ -169,6 +142,10 @@ public abstract class GameView extends JPanel implements KeyListener {
 		this.firstIndexObstacleVisible++;
 	}
 
+	protected void superPaintComponent(Graphics g) {
+		super.paintComponent(g);
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -184,12 +161,12 @@ public abstract class GameView extends JPanel implements KeyListener {
 			repaint();
 		}
 		
-		bar.setValue(progression);
+		bar.setValue((int) controller.getProgressionEffect());
 	}
 
 	// Affichage lorsqu'un joueur perd la partie
 	public void lostGame() {
-		background =  new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
+		background = new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
 		wheelView.greyWheel();
 
 		back = new JButton("RETOUR");
@@ -203,8 +180,6 @@ public abstract class GameView extends JPanel implements KeyListener {
 		this.add(back);
 		setComponentZOrder(back, 1);
 
-		
-
 		replay = new JButton("REJOUER");
 		replay.setBounds(this.size.width/5, this.size.height/6 * 3, this.size.width/5 * 3, this.size.height/6);
 		replay.setForeground(Color.BLUE);
@@ -216,8 +191,6 @@ public abstract class GameView extends JPanel implements KeyListener {
 		add(replay);
 		setComponentZOrder(replay, 0);
 		
-		
-
 		back.addActionListener(e -> {
 			reset();
 			controller.affMenu();
@@ -256,17 +229,12 @@ public abstract class GameView extends JPanel implements KeyListener {
 		return wheelView;
 	}
 	
-	public JProgressBar getBar() {
+	public final JProgressBar getBar() {
 		return bar;
 	}
 	
-	public void effectCanBeUsed() {
+	public final void effectCanBeUsed() {
 		effectLabel.setVisible(true);
-	}
-
-	public void updateProgressionEffect() {
-		// TODO Auto-generated method stub
-		this.progression = (int) controller.getProgressionEffect();
 	}
 
 	public void useEffect() {
@@ -287,10 +255,9 @@ public abstract class GameView extends JPanel implements KeyListener {
 				controller.stopFall();
 			}
 			
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (e.getKeyCode() == commands.getEffect()) {
 				if (controller.canUseEffect()) {
 					controller.useEffect();
-					removeObstacle(obstacles.get(firstIndexObstacleVisible));
 					useEffect();
 				}
 			}
@@ -299,6 +266,14 @@ public abstract class GameView extends JPanel implements KeyListener {
 			if (commands.getPause() == e.getKeyCode()) {
 				controller.stopPause();
 			}
+		}
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getKeyCode() == commands.getFallObs()){
+			controller.fall();			
 		}
 	}
 

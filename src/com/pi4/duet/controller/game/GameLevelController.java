@@ -5,6 +5,7 @@ import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.game.GameLevel;
 import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
+import com.pi4.duet.view.game.GameLevelView;
 
 public class GameLevelController extends GameController {
 	
@@ -14,18 +15,21 @@ public class GameLevelController extends GameController {
 	}
 
 	@Override
+	public void replay() {
+		// TODO Auto-generated method stub
+		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), ((GameLevel) model).numLevel, true);
+	}
+	
 	public void win() {
-		super.win();
+		// TODO Auto-generated method stub
+		setBackgroundMovement(true);
+		((GameLevelView) view).afficheWin();
+		view.refresh();
+		
 		if (!hpvC.getLevelsAvailable().contains(((GameLevel) model).numLevel + 1)) { // on ajoute seulement le niveau suivant Ã  la liste des niveaux disponibles si ce dernier n'y figure pas
 			hpvC.addLevel(((GameLevel) model).numLevel + 1);
 			hpvC.save();
 		}
-	}
-
-	@Override
-	public void replay() {
-		// TODO Auto-generated method stub
-		hpvC.runLevel(hpvC.getWindow(), hpvC.getView(), ((GameLevel) model).numLevel, true);
 	}
 
 

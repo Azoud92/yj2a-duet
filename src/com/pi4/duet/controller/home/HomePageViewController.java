@@ -130,16 +130,14 @@ public class HomePageViewController {
 		}
 
 		gdc = new GameDuoController(this, sm, sc.getCommandsModel(), scale);
-		gpd = new GameDuo(size.width, size.height, new Point(size.width / 2, size.height - 150), new Point(size.width / 2, 150));
+		gpd = new GameDuo(size.width, size.height, new Point(size.width / 2, size.height - 150), new Point(size.width / 2, 150), scale, gdc);
 		gdc.getWheelController().setModel(gpd.getWheel());
-		gdc.getWheelTopController().setModel(gpd.getTopWheel());
+		gdc.getTopWheelController().setModel(gpd.getTopWheel());
 		gdc.setModel(gpd);
-		gdv = new GameDuoView(size, scale, gdc);
+		gdv = new GameDuoView(size, scale, sc.getCommandsModel(), gdc);
 		gdc.getWheelController().setView(gdv.getWheel());
-		gdc.getWheelTopController().setView(gdv.getWheelTopView());
+		gdc.getTopWheelController().setView(gdv.getWheelTopView());
 		gdc.setView(gdv);
-		//gdv.addKeyListener(gdc);
-
 
 		JPanel container = new JPanel(new GridLayout(1, 3));
 
@@ -161,11 +159,8 @@ public class HomePageViewController {
 			e.printStackTrace();
 		}
 
-		gdc.gameStart();
+		gpd.gameStart();
 		homeMusic.stop();
-		
-		edv.requestFocus();
-		edv.setFocusable(true);
 	}
 	
 	public void runLvlEditor(GameWindow window, HomePageView view) {

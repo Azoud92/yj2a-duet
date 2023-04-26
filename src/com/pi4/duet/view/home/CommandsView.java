@@ -23,7 +23,7 @@ public class CommandsView extends JPanel implements KeyListener {
     private CommandsController controller;
     private Scale scale;
 
-    private LabelView turnLeft, turnRight, turnLeftDuo, turnRightDuo, moveLeft, moveRight, moveLeftDuo, moveRightDuo, pause, fallObs;
+    private LabelView turnLeft, turnRight, turnLeftDuo, turnRightDuo, moveLeft, moveRight, moveLeftDuo, moveRightDuo, pause, fallObs, effect;
     private TouchButtonView[] allJButton;
     private JButton back;
     private LabelView differentButton;
@@ -35,7 +35,7 @@ public class CommandsView extends JPanel implements KeyListener {
         
         setFocusable(true);
         setFocusTraversalKeysEnabled(true);
-        this.setLayout(new GridLayout(11, 2));
+        this.setLayout(new GridLayout(12, 2));
         this.setBackground(Color.black);
 
         ImageIcon backIcon = new ImageIcon(this.getClass().getResource("/resources/img/back.png"));
@@ -61,8 +61,9 @@ public class CommandsView extends JPanel implements KeyListener {
         turnRightDuo = new LabelView("Tourner à droite (1v1)");
         moveLeftDuo = new LabelView("Se déplacer à gauche (1v1)");
         moveRightDuo = new LabelView("Se déplacer à droite (1v1)");
+        effect = new LabelView("Utiliser l'effet");
 
-        allJButton = new TouchButtonView[10];
+        allJButton = new TouchButtonView[11];
 
         allJButton[0] = new TouchButtonView(KeyEvent.getKeyText(controller.getTurnLeft()));
         allJButton[1] = new TouchButtonView(KeyEvent.getKeyText(controller.getTurnRight()));
@@ -74,6 +75,7 @@ public class CommandsView extends JPanel implements KeyListener {
         allJButton[7] = new TouchButtonView(KeyEvent.getKeyText(controller.getTurnRightDuo()));
         allJButton[8] = new TouchButtonView(KeyEvent.getKeyText(controller.getMoveLeftDuo()));
         allJButton[9] = new TouchButtonView(KeyEvent.getKeyText(controller.getMoveRightDuo()));
+        allJButton[10] = new TouchButtonView(KeyEvent.getKeyText(controller.getEffect()));
         
         this.add(turnLeft);
         this.add(allJButton[0]);
@@ -104,6 +106,9 @@ public class CommandsView extends JPanel implements KeyListener {
         
         this.add(fallObs);
         this.add(allJButton[5]);
+        
+        this.add(effect);
+        this.add(allJButton[10]);
     } 
     
     public void ButtonsOff() {
