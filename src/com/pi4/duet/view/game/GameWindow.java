@@ -36,6 +36,7 @@ public class GameWindow extends JFrame { // fenêtre principale
 			frame.setIconImage(new ImageIcon(this.getClass().getResource("/resources/img/logo.png")).getImage());
 			frame.setTitle("Duet");
 			frame.setResizable(false);
+			frame.setUndecorated(true);
 			frame.setBounds(size.width, 0, size.width, size.height);
 
 			HomePage hp = HomePage.read();
