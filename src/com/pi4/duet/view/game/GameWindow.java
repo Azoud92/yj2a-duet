@@ -29,7 +29,7 @@ public class GameWindow extends JFrame { // fenêtre principale
 		size.width = ((int) maximumWindowBounds.getWidth()) / 3;
 		size.height = (int) maximumWindowBounds.getHeight();
 
-		Scale scale = new Scale(size.width, size.height);
+		Scale scale = new Scale(maximumWindowBounds.getWidth(), maximumWindowBounds.getHeight());
 
 		EventQueue.invokeLater(() -> { // on programme de façon thread-safe
 			frame = new JFrame();
@@ -37,9 +37,6 @@ public class GameWindow extends JFrame { // fenêtre principale
 			frame.setTitle("Duet");
 			frame.setResizable(false);
 			frame.setBounds(size.width, 0, size.width, size.height);
-
-
-			
 
 			HomePage hp = HomePage.read();
 			HomePageViewController hpc = new HomePageViewController(new Dimension(size.width, size.height), scale);
