@@ -83,18 +83,18 @@ public class Obstacle implements Serializable, Cloneable {
 		}
 
 		if (rotationSpeed != 0) {
-			rotate();
+			rotate(add);
 		}
 
 		controller.updateView(points);
 	}
 
-	private void rotate() {
-		angle += Math.toRadians(rotationSpeed); // ce paramètre ne nous sert pas dans le calcul des nouvelles coordonnées car sinon les rotations seraient exponentielles
+	private void rotate(int add) {
+		angle += Math.toRadians(rotationSpeed * add); // ce paramètre ne nous sert pas dans le calcul des nouvelles coordonnées car sinon les rotations seraient exponentielles
 
 		for (Point p : points) {
-			double newX = center.getX() + (p.getX() - center.getX()) * Math.cos(Math.toRadians(rotationSpeed)) - (p.getY() - center.getY()) * Math.sin(Math.toRadians(rotationSpeed));
-			double newY = center.getY() + (p.getX() - center.getX()) * Math.sin(Math.toRadians(rotationSpeed)) + (p.getY() - center.getY()) * Math.cos(Math.toRadians(rotationSpeed));
+			double newX = center.getX() + (p.getX() - center.getX()) * Math.cos(Math.toRadians(rotationSpeed * add)) - (p.getY() - center.getY()) * Math.sin(Math.toRadians(rotationSpeed * add));
+			double newY = center.getY() + (p.getX() - center.getX()) * Math.sin(Math.toRadians(rotationSpeed * add)) + (p.getY() - center.getY()) * Math.cos(Math.toRadians(rotationSpeed * add));
 
 			p.setX(newX);
 			p.setY(newY);
