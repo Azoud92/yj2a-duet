@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
+import com.pi4.duet.model.game.GameDuo;
 import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
@@ -46,11 +47,10 @@ public class GameDuoController extends GameController {
 				ObstacleView ovH = iter.next();
 				if (ovH.id == idObs) {
 					ovBottom.setCollisionsMap(ovH.getCollisionsMap());
-					break;
 				}
 				
 				if (iter.hasNext()) {
-					ovH = iter.next();
+					ovH = iter.next();					
 					if (ovH.id == idObs + 1) {
 						ovTop.setCollisionsMap(ovH.getCollisionsMap());
 						break;
@@ -58,6 +58,7 @@ public class GameDuoController extends GameController {
 				}
 			}			
 		}
+		
 		ocBottom.setView(ovBottom);
 		ocTop.setView(ovTop);
 		o.setController(ocBottom);
@@ -65,7 +66,7 @@ public class GameDuoController extends GameController {
 		ocBottom.setModel(o);
 		ocTop.setModel(oTop);
 		model.addObstacle(o);
-		model.addObstacle(oTop);
+		((GameDuo) model).addTopObstacle(oTop);
 		view.addObstacle(ovBottom);
 		view.addObstacle(ovTop);
 	}

@@ -63,24 +63,18 @@ public class HomePageView extends JPanel {
 		bar.setFont(new Font("Verdana", Font.BOLD, (int) (30 * scale.getScaleX()))); 
 		this.add(bar);
 
-		
-		
-
 		title1 = new JLabel("DU");
 		title1.setBounds(this.size.width/2 - this.size.width/7, this.size.height/24, this.size.width/4 , this.size.height/4);
 		title1.setForeground(Color.RED);
 		title1.setBackground(Color.BLACK);
 		title1.setFont(new Font("Arial", Font.BOLD, (int) (110 * scale.getScaleY())));
-		//this.add(title1);
-
+		
 		title2 = new JLabel("ET");
 		title2.setBounds((int) (this.size.width / 2 + 6 * scale.getScaleX()), this.size.height/24, this.size.width/4 , this.size.height/4);
 		title2.setForeground(Color.BLUE);
 		title2.setBackground(Color.BLACK);
 		title2.setFont(new Font("Arial", Font.BOLD, (int) (110 * scale.getScaleY())));
-		//this.add(title2);
-		
-		
+				
 		this.timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -101,19 +95,17 @@ public class HomePageView extends JPanel {
 					
 				}
 			}
-		}, 0, 20);
-
-		
+		}, 0, 20);		
 	}
 	
 	public void initHPV(JFrame frame) {
 		bar.setVisible(false);
-		
+				
 		int tx1 = (this.size.width - (this.size.width/5*3) ) / 4;
 		int tx2 = (this.size.width - (this.size.width/5*2) ) / 3;
 
 		int ty = (this.size.height/3 - (2*this.size.width/5))/3;
-
+		
 		level1 = new LevelButton(1, new Point(tx1, this.size.height / 12 * 4 - ty), this.size.width / 5, this.size.width / 5);
 		this.add(level1);
 
@@ -154,6 +146,7 @@ public class HomePageView extends JPanel {
 			// action à effectuer pour fermer le programme
 			if(controller.getSettings().getMusic()) controller.stopMusic();
 			frame.dispose();
+			System.exit(0);
 		});
 
 		lvlDuo = new JButton("1 vs 1");
