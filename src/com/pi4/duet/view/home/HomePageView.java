@@ -179,7 +179,7 @@ public class HomePageView extends JPanel {
 		this.add(levelInf);
 		levelInf.addActionListener(e->{
 			this.setVisible(false);
-			controller.runLevelInfini(window,this,false);
+			controller.runInfinite(window, this, false);
 		});
 		controller.runMusic();
 	}

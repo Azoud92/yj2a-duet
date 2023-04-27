@@ -14,11 +14,11 @@ import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
 import com.pi4.duet.controller.game.GameDuoController;
-import com.pi4.duet.controller.game.GameInfiniController;
+import com.pi4.duet.controller.game.GameInfiniteController;
 import com.pi4.duet.controller.game.GameLevelController;
 import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.GameDuo;
-import com.pi4.duet.model.game.GameInfini;
+import com.pi4.duet.model.game.GameInfinite;
 import com.pi4.duet.model.game.GameLevel;
 import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.data.PatternData;
@@ -54,9 +54,9 @@ public class HomePageViewController {
 	private EditorController edc;
 	private EditorModel edm;
 
-	private GameInfini gi;
-	private GameInfiniView giv;
-	private GameInfiniController gic;
+	private GameInfinite gi;
+	private GameInfiniteView giv;
+	private GameInfiniteController gic;
 
 	private Scale scale;
 	private Dimension size;
@@ -94,8 +94,7 @@ public class HomePageViewController {
 		gv = new GameLevelView(size, scale, sc.getCommandsModel(), gc);
 		gc.getWheelController().setView(gv.getWheel());
 		gc.setView(gv);
-		//gv.addKeyListener(gc);
-
+		
 		window.setMainContainer(gv);
 
 		gv.requestFocus();
@@ -152,6 +151,42 @@ public class HomePageViewController {
 		homeMusic.stop();
 	}
 	
+	public void runInfinite(GameWindow window, HomePageView view, boolean replay) {
+		this.view = view;
+		this.window = window;
+
+		if (replay) {
+			giv.setVisible(false);
+			obstaclesViews = giv.getObstacles();
+		}
+
+		gic = new GameInfiniteController(this, sm, sc.getCommandsModel(), scale);
+		gi = new GameInfinite(size.width, size.height, new Point(size.width / 2, size.height - 150), scale, gic);
+		gic.getWheelController().setModel(gi.getWheel());
+		gic.setModel(gi);
+		giv = new GameInfiniteView(size, scale, sc.getCommandsModel(), gic);
+		gic.getWheelController().setView(giv.getWheel());
+		gic.setView(giv);
+		
+		window.setMainContainer(giv);
+
+		giv.requestFocus();
+		giv.setFocusable(true);
+		
+		try {
+			gi.addPattern(PatternData.read("src/resources/levels/levelInfinite.ser"));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		gi.gameStart();
+		homeMusic.stop();
+	}
+	
 	public void runLvlEditor(GameWindow window, HomePageView view) {
 		this.window = window;
 		this.view = view;
@@ -176,35 +211,7 @@ public class HomePageViewController {
 		window.setMainContainer(container);
 
 	}
-	public void runLevelInfini(GameWindow window,HomePageView view,boolean replay){
-		this.view = view;
-		this.window = window;
-
-		if (replay) {
-			giv.setVisible(false);
-			obstaclesViews = giv.getObstacles();
-		}
-
-		gic = new GameInfiniController(this, sm, sc.getCommandsModel(), scale);
-		gi= new GameInfini(size.width / 3, size.height, new Point(size.width / 6, size.height - 150));
-
-		gic.getWheelController().setModel(gi.getWheel());
-		gic.setModel(gi);
-		giv = new GameInfiniView(size, scale, gic);
-		gic.getWheelController().setView(giv.getWheel());
-		gic.setView(giv);
-		//giv.addKeyListener(gic);
-
-
-		window.setMainContainer(giv);
-
-		giv.requestFocus();
-		giv.setFocusable(true);
-		gic.gameStart();
-		homeMusic.stop();
-	}
-
-
+	
 	public void continueParty(){
 		this.gv.setVisible(true);
 		this.gc.getModel().setState(GameState.ON_GAME);

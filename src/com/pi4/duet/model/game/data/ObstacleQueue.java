@@ -17,12 +17,12 @@ public class ObstacleQueue extends Timer {
 
 	// Lien vers un GamePlane pour faire apparaitre les obstacles
 	// Les attributs statiques sont obligatoires en raison de la manipulation en temps réel de leur valeur
-	private final Game model;
-	private static ObstacleQueueStatus status = ObstacleQueueStatus.WAITING;
+	protected final Game model;
+	protected static ObstacleQueueStatus status = ObstacleQueueStatus.WAITING;
 	private Scale scale;
-	private static int time = 0; // le temps qui s'est écoulé
-	private static int add = 1; // pour modéliser l'accélération du temps
-	private PatternData data;
+	protected static int time = 0; // le temps qui s'est écoulé
+	protected static int add = 1; // pour modéliser l'accélération du temps
+	protected PatternData data;
 
 	private static int idsObstacles = 0; // pour calculer les ID. d'obstacles
 
@@ -46,7 +46,7 @@ public class ObstacleQueue extends Timer {
 				if (model.getState() == GameState.ON_GAME) {					
 					putObs();
 					model.updateGame();
-					time += add * 1;
+					time += add;
 				}				
 			}
 		}, 0, 1);
@@ -64,11 +64,11 @@ public class ObstacleQueue extends Timer {
 	}
 
 	public void fall() {
-		add = 10;
+		add += 10;
 	}
 
 	public void stopFall() {
-		add = 1;
+		add -= 10;
 	}
 
 	protected void putObs() {

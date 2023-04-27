@@ -36,11 +36,9 @@ public abstract class Game {
 		this.wheel = new Wheel(coordsWheel, width, controller.getWheelController(), controller.getSettings());
 	}
 	
-	public final void gameStart() {
+	public void gameStart() {
 		if (gameState != GameState.READY) return;
 		gameState = GameState.ON_GAME;
-		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
-
 		controller.start();		
 
 		gameTimer = new ObstacleQueue(this, scale);
@@ -123,7 +121,7 @@ public abstract class Game {
 		}
 	}
 	
-	public final void addPattern(PatternData d) { 
+	public void addPattern(PatternData d) { 
 		gameTimer = new ObstacleQueue(this, scale, d);
 	}
 
