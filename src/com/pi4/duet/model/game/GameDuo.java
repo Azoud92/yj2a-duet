@@ -131,6 +131,7 @@ public class GameDuo extends Game {
 			}
 			if (!visible) {
 				removeObstacle(o);
+				removeTopObstacle(o);
 			}
 		}
 	}
@@ -143,19 +144,14 @@ public class GameDuo extends Game {
 	public Wheel getTopWheel() {
 		return topWheel;
 	}
-	
-	@Override
-	public void addObstacle(Obstacle o) {
-		super.addObstacle(o);
-		Obstacle oTop = o.clone();
-		oTop.setDirection(Direction.TOP);
-		topObstacles.add(oTop);
+		
+	public void addTopObstacle(Obstacle o) {
+		o.setDirection(Direction.TOP);
+		topObstacles.add(o);
 	}
 	
-	@Override
-	public void removeObstacle(Obstacle o) {
-		super.removeObstacle(o);
+	public void removeTopObstacle(Obstacle o) {
 		topObstacles.remove(o);
-	}	
+	}
 
 }

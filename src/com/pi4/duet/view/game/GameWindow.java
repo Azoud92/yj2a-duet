@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,6 +21,7 @@ public class GameWindow extends JFrame { // fenêtre principale
 	private JPanel container;
 
 	public GameWindow() {
+		super("Duet");
 		// Taille de l'écran en soustrayant celle de la barre des tâches et du haut de la fenêtre
 		size = new Dimension();
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -45,10 +45,9 @@ public class GameWindow extends JFrame { // fenêtre principale
 			HomePageView hpv = new HomePageView(new Dimension(size.width, size.height), frame, this, hpc, scale);
 			hpc.setView(hpv);
 
-
 			frame.add(hpv);
-			frame.setVisible(true);
-		});
+			frame.setVisible(true);			
+		});	
 	}
 
 	public void setMainContainer(JPanel container){
@@ -65,6 +64,5 @@ public class GameWindow extends JFrame { // fenêtre principale
 	public JFrame getFrame() {
 		return frame;
 	}
-
 
 }
