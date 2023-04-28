@@ -32,13 +32,17 @@ public class GameDuo extends Game {
 		ArrayList<Obstacle> copyTop = (ArrayList<Obstacle>) topObstacles.clone();
 		if (copyBottom.size() > 0 && copyTop.size() > 0) {
 			for (Obstacle o : copyBottom) { // animation des obstacles pour les faire "tomber"
+				o.getController().paint();
 				o.updatePosition(gameTimer.getAdd());
+				o.getController().paint();
 				verifyCollision(o);
 				obstacleReached(o);
 				controller.refreshView();
 			}
 			for (Obstacle o : copyTop) {
-				o.updatePosition(gameTimer.getAdd());				
+				o.getController().paint();
+				o.updatePosition(gameTimer.getAdd());	
+				o.getController().paint();
 				verifyCollision(o);
 				obstacleReached(o);
 				controller.refreshView();

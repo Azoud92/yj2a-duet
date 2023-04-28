@@ -25,6 +25,10 @@ public class ObstacleController {
 	public ObstacleView getView() {
 		return view;
 	}
+	
+	public void paint() {
+		view.paintComponents(view.getGraphics());
+	}
 
 	public void setModel(Obstacle model) { this.model = model; }
 	public void setView(ObstacleView view) { this.view = view; }

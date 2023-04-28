@@ -38,7 +38,7 @@ public class ObstacleQueue extends Timer {
 	public ObstacleQueue(Game game, Scale scale, PatternData data) {
 		this(game, scale);
 		this.data = data;
-				
+		System.out.println(data.toString());
 		this.schedule(new TimerTask() {
 			@Override
 			public void run() {
