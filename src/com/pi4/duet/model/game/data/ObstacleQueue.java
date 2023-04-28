@@ -64,11 +64,11 @@ public class ObstacleQueue extends Timer {
 	}
 
 	public void fall() {
-		add += 10;
+		add = 10;
 	}
 
 	public void stopFall() {
-		add -= 10;
+		add = 1;
 	}
 
 	protected void putObs() {
