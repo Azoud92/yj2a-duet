@@ -7,7 +7,9 @@ import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.game.GameDuoController;
 import com.pi4.duet.controller.game.ObstacleController;
+import com.pi4.duet.model.game.data.InfiniteObstacleQueue;
 import com.pi4.duet.model.game.data.ObstacleQueueStatus;
+import com.pi4.duet.model.game.data.PatternData;
 
 public class GameDuo extends Game {
 
@@ -22,6 +24,22 @@ public class GameDuo extends Game {
 		
 		topWheel = new Wheel(coordsTopWheel, width, controller.getTopWheelController(), controller.getSettings());
 		topWheel.setRadius(topWheel.getRadius() * 9 / 10);
+	}
+	
+	@Override
+	public void gameStart() {
+		if (gameState != GameState.READY) return;
+		gameState = GameState.ON_GAME;
+		gameTimer.setStatus(ObstacleQueueStatus.WAITING);
+
+		controller.start();		
+
+		gameTimer = new InfiniteObstacleQueue(this, scale);
+	}
+	
+	@Override
+	public void addPattern(PatternData d) { 
+		gameTimer = new InfiniteObstacleQueue(this, scale, d);
 	}
 
 	@SuppressWarnings("unchecked")
