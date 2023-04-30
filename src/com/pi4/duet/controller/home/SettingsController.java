@@ -7,7 +7,7 @@ import com.pi4.duet.Scale;
 import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.home.Commands;
 import com.pi4.duet.model.home.Settings;
-import com.pi4.duet.view.game.GameWindow;
+import com.pi4.duet.view.MainWindow;
 import com.pi4.duet.view.home.CommandsView;
 import com.pi4.duet.view.home.SettingsView;
 import com.pi4.duet.view.home.Transition;
@@ -15,7 +15,7 @@ import com.pi4.duet.view.home.Transition;
 public class SettingsController {
 	
 	private SettingsView sv;
-	private GameWindow gw;
+	private MainWindow gw;
 
 	private HomePageViewController hpvC;
 	private Settings model;
@@ -26,9 +26,8 @@ public class SettingsController {
 	
 	private Scale scale;
 
-	public SettingsController(HomePageViewController hpvC, GameWindow gw, Scale scale){
+	public SettingsController(HomePageViewController hpvC, MainWindow gw, Scale scale){
 		this.hpvC = hpvC;
-
 		this.gw = gw;
 		this.scale = scale;
 	}
@@ -53,7 +52,7 @@ public class SettingsController {
 		else { hpvC.stopMusic(); }
 	}
 	
-	public void showCommands(GameWindow gw) {
+	public void showCommands(MainWindow gw) {
 		this.gw = gw;
 		sv.setVisible(false);
 		commandsView.setVisible(true);
@@ -75,11 +74,7 @@ public class SettingsController {
 				}
 			}
 		}, 0, 10);
-		
-
 	}
-
-
 
 	public void setEffects(boolean val) {
 		model.setEffects(val);
@@ -110,7 +105,6 @@ public class SettingsController {
 		sv.setVisible(false);
 		commandsView.setVisible(true);
 		Transition t = new Transition(hpvC.getView(), sv, hpvC.getSize().width, hpvC.getSize().height, Direction.RIGHT);
-		//JPanel container = new JPanel(new GridLayout(1, 3));
 
 		gw.setMainContainer(t);
 		hpvC.getView().ButtonsOff();
@@ -134,7 +128,7 @@ public class SettingsController {
 		model.save();
 	}
 	
-	public GameWindow getGw() {
+	public MainWindow getGw() {
 		return gw;
 	}
 
@@ -143,7 +137,7 @@ public class SettingsController {
 		return commandsModel;
 	}
 
-	public void setGw(GameWindow gw) {
+	public void setGw(MainWindow gw) {
 		this.gw = gw;
 		
 	}

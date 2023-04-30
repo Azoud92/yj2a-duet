@@ -1,6 +1,5 @@
 package com.pi4.duet.model.game.data;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,7 +38,6 @@ public class ObstacleQueue extends Timer {
 	public ObstacleQueue(Game game, Scale scale, PatternData data) {
 		this(game, scale);
 		this.data = data;
-		System.out.println(data.toString());
 		this.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -51,11 +49,6 @@ public class ObstacleQueue extends Timer {
 				}				
 			}
 		}, 0, 1);
-	}
-
-
-	public ObstacleQueue(Game g, Scale scale, String path) throws IOException, ClassNotFoundException {
-		this(g, scale, PatternData.read(path));
 	}
 
 	@Override

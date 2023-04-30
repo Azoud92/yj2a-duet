@@ -25,8 +25,8 @@ public abstract class Game {
 	protected GameState gameState = GameState.READY;
 	
 	private double effectDelaySpeed = 0.01;
-	protected double progressionEffect = 0;
-	protected boolean canUseEffect = false;
+	private double progressionEffect = 0;
+	private boolean canUseEffect = false;
 
 	public Game (int width, int height, Point coordsWheel, Scale scale, GameController controller) {
 		this.controller = controller;
@@ -157,7 +157,7 @@ public abstract class Game {
 	
 	public final double getProgressionEffect() { return progressionEffect; }
 	
-	public void incrProgressionEffect() {		
+	private void incrProgressionEffect() {		
 		if (this.progressionEffect >= 100) {
 			this.canUseEffect = true;
 		}

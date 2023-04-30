@@ -73,7 +73,7 @@ public class Wheel { // représente le volant du jeu
 		controller.updateMvt(wheelRotating, angle);
 	}
 
-	public void rotate(RotationType dir) {
+	private void rotate(RotationType dir) {
 		if (dir == RotationType.HORAIRE) {
 			angle -= Math.toRadians(inertia);
 		}
@@ -92,7 +92,7 @@ public class Wheel { // représente le volant du jeu
 		ball_1.centerBall.setY(center.getY() - dist2);
 	}
 
-	public void move() {
+	private void move() {
 		if (wheelMovement == null || isMoving == false) return;
 		switch(wheelMovement) {
 		case RIGHT:
@@ -119,7 +119,7 @@ public class Wheel { // représente le volant du jeu
 	}
 
 	// on remet les balles à leur position initiale (droites)
-	public void resetBallPosition() {
+	private void resetBallPosition() {
 		ball_2.setCenterBall(new Point(center.getX() + getRadius(), center.getY()));
 		ball_1.setCenterBall(new Point(center.getX() - getRadius(), center.getY()));
 	}

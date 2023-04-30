@@ -13,10 +13,6 @@ public class ObstacleController {
 	
 	public ObstacleController() {}
 	
-	public ObstacleController(Obstacle model, ObstacleView view){
-		this.model = model;
-		this.view = view;
-	}
 
 	public Obstacle getModel() {
 		return model;

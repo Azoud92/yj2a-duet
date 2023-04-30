@@ -13,12 +13,7 @@ public class Sound {
 	private AudioInputStream audioStream;
 	private Clip clip;
 	
-	private String filename;
-	private boolean loop;
-
 	public Sound(String filename, boolean loop) {
-		this.filename = filename;
-		this.loop = loop;
 		try {
 			audioStream = AudioSystem.getAudioInputStream(this.getClass().getResource("/resources/snd/" + filename));
 			clip = AudioSystem.getClip();
@@ -49,14 +44,6 @@ public class Sound {
 
 	public void stop() {
 		clip.stop();
-	}
-	
-	public void close() {
-		clip.close();
-	}
-	
-	public Sound recreate() {
-		return new Sound(this.filename, this.loop);
 	}
 
 }

@@ -45,9 +45,5 @@ public class InfiniteObstacleQueue extends ObstacleQueue {
 			}
 		}, 0, 1);
 	}
-		
-	public InfiniteObstacleQueue(Game g, Scale scale, String path) throws IOException, ClassNotFoundException {
-		super(g, scale, path);
-	}
 
 }

@@ -20,10 +20,10 @@ import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.GameDuo;
 import com.pi4.duet.model.game.GameInfinite;
 import com.pi4.duet.model.game.GameLevel;
-import com.pi4.duet.model.game.GameState;
 import com.pi4.duet.model.game.data.PatternData;
 import com.pi4.duet.model.home.HomePage;
 import com.pi4.duet.model.home.Settings;
+import com.pi4.duet.view.MainWindow;
 import com.pi4.duet.view.game.*;
 import com.pi4.duet.view.home.HomePageView;
 import com.pi4.duet.view.home.SettingsView;
@@ -40,7 +40,7 @@ public class HomePageViewController {
 	private HomePage model;
 
 	private HomePageView view;
-	private GameWindow window;
+	private MainWindow window;
 
 	private Settings sm;
 	private SettingsView sv;
@@ -67,7 +67,6 @@ public class HomePageViewController {
 
 	public HomePageViewController(Dimension size, Scale scale) {
 		this.size = size;
-		System.out.println(size);
 		this.scale = scale;
 		homeMusic.stop();
 		sm = Settings.read();
@@ -78,7 +77,7 @@ public class HomePageViewController {
 		sc.initCommands();
 	}
 
-	public void runLevel(GameWindow window, HomePageView view, int numLevel, boolean replay) {
+	public void runLevel(MainWindow window, HomePageView view, int numLevel, boolean replay) {
 		this.view = view;
 		this.window = window;
 
@@ -114,7 +113,7 @@ public class HomePageViewController {
 		homeMusic.stop();
 	}
 
-	public void runLvlDuo(GameWindow window, HomePageView view, boolean replay) {
+	public void runLvlDuo(MainWindow window, HomePageView view, boolean replay) {
 		this.view = view;
 		this.window = window;
 
@@ -151,7 +150,7 @@ public class HomePageViewController {
 		homeMusic.stop();
 	}
 	
-	public void runInfinite(GameWindow window, HomePageView view, boolean replay) {
+	public void runInfinite(MainWindow window, HomePageView view, boolean replay) {
 		this.view = view;
 		this.window = window;
 
@@ -187,7 +186,7 @@ public class HomePageViewController {
 		homeMusic.stop();
 	}
 	
-	public void runLvlEditor(GameWindow window, HomePageView view) {
+	public void runLvlEditor(MainWindow window, HomePageView view) {
 		this.window = window;
 		this.view = view;
 		
@@ -209,33 +208,20 @@ public class HomePageViewController {
 		c.weightx = .3;
 		container.add(new JPanel(), c);
 		window.setMainContainer(container);
-
 	}
 	
-	public void continueParty(){
-		this.gv.setVisible(true);
-		this.gc.getModel().setState(GameState.ON_GAME);
-		this.gv.requestFocus();
-		this.gv.setFocusable(true);
-		homeMusic.stop();
-		if(sc.getMusic())gc.playMusic();
-		this.gc.setBackgroundMovement(false);
-	}
-
 	public void runHomePage() {
 		view.setVisible(true);
 		view.revalidate();
 		view.repaint();
 		view.paintComponents(view.getGraphics());
 
-
 		window.setMainContainer(view);
 	}
 
-	public void runSettings(Dimension size, GameWindow window) {
+	public void runSettings(Dimension size, MainWindow window) {
 		this.window = window;
 		this.size = size;
-		System.out.println(size);
 		sv.setVisible(true);
 		Transition t = new Transition(view, sv, size.width, size.height, Direction.LEFT);
 
@@ -255,9 +241,7 @@ public class HomePageViewController {
 					temp.cancel();
 				}
 			}
-		}, 0, 10);
-		
-		
+		}, 0, 10);	
 	}
 
 	public void stopMusic() {
@@ -278,11 +262,11 @@ public class HomePageViewController {
 		return view;
 	}
 
-	public GameWindow getWindow() {
+	public MainWindow getWindow() {
 		return window;
 	}
 	
-	public void setWindow(GameWindow gw) {
+	public void setWindow(MainWindow gw) {
 		this.window = gw;
 		
 	}
@@ -312,5 +296,10 @@ public class HomePageViewController {
 	}
 
 	public ArrayList<ObstacleView> getObstaclesViews() { return obstaclesViews; }
+
+	public void refreshLevelButton(int i) {
+		// TODO Auto-generated method stub
+		view.refreshLevelButton(i);
+	}
 
 }

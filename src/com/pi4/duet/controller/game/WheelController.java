@@ -39,8 +39,6 @@ public class WheelController implements KeyListener {
 	public Point getWheelCenter() { return model.getCenter(); }
 	public double getWheelSpeed() { return model.getRotationSpeed(); }
 	
-	public void stopMvt() { view.stopMvt(); }
-
 	public void updateMvt(RotationType horaire, double angle) {
 		view.mvt_1_Rotate(horaire, angle);
 		view.mvt_2_Rotate(horaire, angle);

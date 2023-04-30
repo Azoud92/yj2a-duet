@@ -12,7 +12,6 @@ import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.data.PatternData;
 import com.pi4.duet.model.home.EditorModel;
 import com.pi4.duet.controller.home.EditorController;
-import com.pi4.duet.view.game.GameWindow;
 
 
 public class EditorView extends JPanel {
@@ -137,7 +136,7 @@ public class EditorView extends JPanel {
 		}
 	};
 	
-	public final Runnable sendSaveRequest = new Runnable() {
+	private final Runnable sendSaveRequest = new Runnable() {
 		public void run() {
 			try {
 				PatternData data = controller.transmitCompileRequest();
@@ -160,9 +159,6 @@ public class EditorView extends JPanel {
 	private final Runnable back = () -> {
 		this.setVisible(false);
 		hpv.setVisible(true);
-		
-		GameWindow gw = null;
-		//HomePageViewController hpvc = new HomePageViewController();
 	};
 	
 	public EditorView(EditorController cont, HomePageView home) {
@@ -293,7 +289,7 @@ public class EditorView extends JPanel {
 		return null;
 	}
 	
-	public void update() {
+	private void update() {
 		Obstacle currObs = controller.getSelectedObstacle();
 		
 		for (int i = 0 ; i < 4 ; i++) pointSelect[i].setSelection(currObs.getPoints()[i].getX(), currObs.getPoints()[i].getY());

@@ -24,11 +24,6 @@ public class EditorController {
 		model.getDelays().add(l);
 	}
 	
-	public void transferData(Obstacle o, Long l, int i) {
-		model.getObstacles().set(i, o);
-		model.getDelays().set(i, l);
-	}
-	
 	public void writeSelection(Obstacle o, Long l) {
 		model.getObstacles().set(selection, o);
 		model.getDelays().set(selection, l);

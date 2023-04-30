@@ -33,13 +33,12 @@ public abstract class GameView extends JPanel implements KeyListener {
 	protected Dimension size;
 
 	protected double y_background = 0;
-	protected double background_speed = 0.5;
+	private double background_speed = 0.5;
 
-	protected ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
-	protected int firstIndexObstacleVisible = 0;
+	private ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
 
-	protected Image bg = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
-	protected Image bg_grey = new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
+	private Image bg = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
+	private Image bg_grey = new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
 	
 	protected Image background = bg;
 	
@@ -215,7 +214,6 @@ public abstract class GameView extends JPanel implements KeyListener {
 	public final void removeObstacle(ObstacleView ov) {
 		this.remove(ov);
 		this.repaint();
-		this.firstIndexObstacleVisible++;
 	}
 
 	protected void superPaintComponent(Graphics g) {
@@ -285,7 +283,7 @@ public abstract class GameView extends JPanel implements KeyListener {
 		effectLabel.setVisible(true);
 	}
 
-	public void useEffect() {
+	private void useEffect() {
 		// TODO Auto-generated method stub
 		this.effectLabel.setVisible(false);
 	}

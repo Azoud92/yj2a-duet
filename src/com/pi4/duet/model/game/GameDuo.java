@@ -168,7 +168,7 @@ public class GameDuo extends Game {
 		topObstacles.add(o);
 	}
 	
-	public void removeTopObstacle(Obstacle o) {
+	private void removeTopObstacle(Obstacle o) {
 		topObstacles.remove(o);
 	}
 

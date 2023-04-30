@@ -71,11 +71,6 @@ public class WheelView extends JPanel {
 		mvtBall_2.rotate(dir, angle);
 	}
 
-	public void stopMvt() {
-		mvtBall_1.resetAngle();
-		mvtBall_2.resetAngle();
-	}
-
 	public void greyWheel() {
 		ball_1.color = Color.gray;
 		ball_2.color = Color.gray;
@@ -185,16 +180,6 @@ public class WheelView extends JPanel {
 						angleTmp -= Math.toRadians(1 * controller.getWheelSpeed());
 					}
 				}
-			}
-		}
-
-		void resetAngle() {
-			for (int i = 0; i < coordX.length; i++) {
-				coordX[i] = ball.coords.getX();
-			}
-			coordY[coordY.length - 1] = ball.coords.getY();
-			for (int i = 60; i >= 0; i--) {
-				coordY[i] = coordY[i + 1] + 0.5;
 			}
 		}
 	}

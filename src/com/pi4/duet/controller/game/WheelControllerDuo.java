@@ -10,7 +10,7 @@ import com.pi4.duet.model.home.Settings;
 
 public class WheelControllerDuo extends WheelController {
 
-	public final int idWheel;
+	private final int idWheel;
 	public WheelControllerDuo(Settings settings, Commands commands, GameController gameController, int idWheel) {
 		super(settings, commands, gameController);
 		this.idWheel = idWheel;

@@ -18,22 +18,20 @@ public abstract class GameController {
 
 	protected Game model;
 	protected GameView view;
-	protected Settings settings;	
-	protected Scale scale;
+	private Settings settings;	
 
-	protected Sound defeatSound = new Sound("defeat.wav", false);
-	protected Sound reachedSound = new Sound("reached.wav", false);
-	protected Sound music = new Sound("music.wav", true);
+	private Sound defeatSound = new Sound("defeat.wav", false);
+	private Sound reachedSound = new Sound("reached.wav", false);
+	private Sound music = new Sound("music.wav", true);
 
 	protected HomePageViewController hpvC;
 	protected WheelController wheelController;
 	
-	protected boolean backgroundMovement;	
+	private boolean backgroundMovement;	
 	
 	public GameController(HomePageViewController hpvC, Settings settings, Commands commands, Scale scale) {
 		this.hpvC = hpvC;
 		this.settings = settings;
-		this.scale = scale;
 		this.wheelController = new WheelController(settings, commands, this);
 	}
 
@@ -42,11 +40,7 @@ public abstract class GameController {
 	public final void setView(GameView view) { this.view = view; }
 	public final GameView getView() { return view; }
 	public final WheelController getWheelController() { return this.wheelController; }
-
-	public final void playMusic() {
-		music.play();
-	}
-
+	
 	public final void stopMusic() { music.stop(); }
 
 	public final void affMenu() {

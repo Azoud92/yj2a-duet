@@ -1,4 +1,4 @@
-package com.pi4.duet.view.game;
+package com.pi4.duet.view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -12,7 +12,7 @@ import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.home.HomePage;
 import com.pi4.duet.view.home.HomePageView;
 
-public class GameWindow extends JFrame { // fenêtre principale
+public class MainWindow extends JFrame { // fenêtre principale
 
 	private static final long serialVersionUID = 8560843128781641255L;
 
@@ -20,7 +20,7 @@ public class GameWindow extends JFrame { // fenêtre principale
 	private JFrame frame;
 	private JPanel container;
 
-	public GameWindow() {
+	public MainWindow() {
 		super("Duet");
 		// Taille de l'écran en soustrayant celle de la barre des tâches et du haut de la fenêtre
 		size = new Dimension();
@@ -41,6 +41,7 @@ public class GameWindow extends JFrame { // fenêtre principale
 
 			HomePage hp = HomePage.read();
 			HomePageViewController hpc = new HomePageViewController(new Dimension(size.width, size.height), scale);
+			hp.setController(hpc);
 			hpc.setModel(hp);
 			HomePageView hpv = new HomePageView(new Dimension(size.width, size.height), frame, this, hpc, scale);
 			hpc.setView(hpv);

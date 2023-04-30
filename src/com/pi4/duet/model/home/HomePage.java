@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import com.pi4.duet.controller.home.HomePageViewController;
+
 public class HomePage implements Serializable {
 
 	/**
@@ -20,14 +22,17 @@ public class HomePage implements Serializable {
 	private static final long serialVersionUID = 6683590500436200055L;
 
 	private ArrayList<Integer> levelsAvailable;
+	private HomePageViewController controller;
 
-	public HomePage() {
+	private HomePage(HomePageViewController controller) {
+		this.controller = controller;
 		levelsAvailable = new ArrayList<>();
 		levelsAvailable.add(1); // le niveau 1 est toujours accompli comme c'est le niveau de départ
 	}
 
 	public void addLevel(int i) {
 		this.levelsAvailable.add(i);
+		if(controller != null) controller.refreshLevelButton(i);
 	}
 
 	public boolean save() {
@@ -71,13 +76,17 @@ public class HomePage implements Serializable {
 			return homePage;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			return new HomePage();
+			return new HomePage(null);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			return new HomePage();
+			return new HomePage(null);
 		}
 	}
 
+	public void setController(HomePageViewController hpvc) {
+		this.controller = hpvc;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ArrayList<Integer> getLevelsAvailable() {
 		return (ArrayList<Integer>) levelsAvailable.clone();

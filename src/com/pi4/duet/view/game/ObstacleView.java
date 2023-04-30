@@ -143,13 +143,4 @@ public class ObstacleView extends JPanel {
 			if(color == Color.red) this.icon = collisionRed;
 		}
 	}
-
-	public void resetCollisions() {
-		@SuppressWarnings("unchecked")
-		LinkedHashMap<CollisionView, Double> copy = (LinkedHashMap<CollisionView, Double>) collisionsMap.clone();
-		for (CollisionView cv : copy.keySet()) {
-			collisionsMap.remove(cv);
-			collisionsMap.put(cv,Math.abs(copy.get(cv)));				
-		}
-	}
 }

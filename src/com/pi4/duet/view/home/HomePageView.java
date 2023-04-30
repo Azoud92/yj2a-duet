@@ -20,7 +20,7 @@ import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
-import com.pi4.duet.view.game.GameWindow;
+import com.pi4.duet.view.MainWindow;
 
 public class HomePageView extends JPanel {
 
@@ -37,11 +37,11 @@ public class HomePageView extends JPanel {
 	private Timer timer;
 	private JProgressBar bar;
 
-	private GameWindow window;
+	private MainWindow window;
 
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 
-	public HomePageView(Dimension size, JFrame frame, GameWindow window, HomePageViewController controller, Scale scale) {
+	public HomePageView(Dimension size, JFrame frame, MainWindow window, HomePageViewController controller, Scale scale) {
 		this.controller = controller;
 		this.scale = scale;
 		this.window = window;
@@ -49,8 +49,7 @@ public class HomePageView extends JPanel {
 		Dimension dim = new Dimension(size.width, size.height);
 		this.size = dim;
 		this.setPreferredSize(dim);
-		this.setLayout(null);
-		
+		this.setLayout(null);		
 		
 		int placeW = size.width/5;
 		int placeH = size.height/7;
@@ -98,7 +97,7 @@ public class HomePageView extends JPanel {
 		}, 0, 20);		
 	}
 	
-	public void initHPV(JFrame frame) {
+	private void initHPV(JFrame frame) {
 		bar.setVisible(false);
 				
 		int tx1 = (this.size.width - (this.size.width/5*3) ) / 4;
@@ -166,7 +165,7 @@ public class HomePageView extends JPanel {
 		lvlMaker.setBackground(Color.BLACK);
 		lvlMaker.setForeground(Color.WHITE);
 		lvlMaker.setFocusable(false);
-		lvlMaker.setFont(new Font("Arial", Font.BOLD, (int) (70 * scale.getScaleY())));
+		lvlMaker.setFont(new Font("Arial", Font.BOLD, (int) (40 * scale.getScaleY())));
 		this.add(lvlMaker);
 		lvlMaker.addActionListener(e -> {
 			this.setVisible(false);
@@ -184,8 +183,7 @@ public class HomePageView extends JPanel {
 		controller.runMusic();
 	}
 	
-	public void ButtonsOff() {
-		
+	public void ButtonsOff() {		
 		level1.setEnabled(false);
 		level2.setEnabled(false);
 		level3.setEnabled(false);
@@ -196,8 +194,7 @@ public class HomePageView extends JPanel {
 		levelInf.setEnabled(false);
 	}
 	
-	public void ButtonsOn() {
-		
+	public void ButtonsOn() {		
 		level1.setEnabled(true);
 		level2.setEnabled(true);
 		level3.setEnabled(true);
@@ -236,8 +233,27 @@ public class HomePageView extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if (controller.getSettings().getBackground()) g.drawImage(background, 0, 0, size.width, size.height, this);
-		
-		
+		if (controller.getSettings().getBackground()) g.drawImage(background, 0, 0, size.width, size.height, this);		
+	}
+
+	public void refreshLevelButton(int i) {
+		// TODO Auto-generated method stub
+		switch(i) {
+		case 1:
+			this.level1.setEnabled(true);
+			break;
+		case 2:
+			this.level2.setEnabled(true);
+			break;
+		case 3:
+			this.level3.setEnabled(true);
+			break;
+		case 4:
+			this.level4.setEnabled(true);
+			break;
+		case 5:
+			this.level5.setEnabled(true);
+			break;
+		}
 	}
 }

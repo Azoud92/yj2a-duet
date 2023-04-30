@@ -1,12 +1,10 @@
 package com.pi4.duet.model.game.data;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -28,16 +26,6 @@ public class PatternData extends LinkedHashMap<Obstacle, Long> {
 		ObjectOutputStream objectStream = new ObjectOutputStream(output);
 		objectStream.writeObject(this);
 		objectStream.close();
-	}
-
-	public void writeTxt(String path) throws IOException {
-		File destination = new File(path);
-		if (!destination.exists()) destination.createNewFile();
-		destination.setWritable(true);
-		FileWriter destwriter = new FileWriter(path);
-		BufferedWriter buffer = new BufferedWriter(destwriter);
-		buffer.write(toString());
-		buffer.close();
 	}
 
 	public static PatternData read(String path) throws IOException, ClassNotFoundException { // Pareil ici
@@ -63,7 +51,7 @@ public class PatternData extends LinkedHashMap<Obstacle, Long> {
 		return parse(txt);
 	}
 
-	public static PatternData parse(String input) {
+	private static PatternData parse(String input) {
 		PatternData res = new PatternData();
 		Scanner globalSc = new Scanner(input);
 		globalSc.useDelimiter("\n");

@@ -16,12 +16,12 @@ import javax.swing.SwingConstants;
 import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.SettingsController;
-import com.pi4.duet.view.game.GameWindow;
+import com.pi4.duet.view.MainWindow;
 
 public class SettingsView extends JPanel {
 
 	private static final long serialVersionUID = 8809186306938504775L;
-	private GameWindow gw;
+	private MainWindow gw;
 
 	private Dimension size;
 	private JButton back,commands;
@@ -30,11 +30,9 @@ public class SettingsView extends JPanel {
 	private Icon back_img;
 	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 
-	private SettingsController controller;
-	
-	
+	private SettingsController controller;	
 
-	public SettingsView(Dimension size, SettingsController controller, Scale scale, GameWindow gw) {
+	public SettingsView(Dimension size, SettingsController controller, Scale scale, MainWindow gw) {
 		this.controller = controller;
 		this.gw=gw;
 		this.setBackground(Color.black);
@@ -211,7 +209,7 @@ public class SettingsView extends JPanel {
 			repaint();
 		});
 	}
-	
+		
 	public void ButtonsOff() {
 		son_on.setEnabled(false); 
 		son_off.setEnabled(false); 
@@ -252,12 +250,12 @@ public class SettingsView extends JPanel {
 		return size;
 	}
 	
-	public void setGw(GameWindow gw) {
+	public void setGw(MainWindow gw) {
 		this.gw = gw;
 		controller.setGw(gw);
 	}
 
-	public GameWindow getGw() {
+	public MainWindow getGw() {
 		return gw;
 	}
 
