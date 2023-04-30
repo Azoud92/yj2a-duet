@@ -23,6 +23,7 @@ public class ObstacleQueue extends Timer {
 	protected static int time = 0; // le temps qui s'est écoulé
 	protected static int add = 1; // pour modéliser l'accélération du temps
 	protected PatternData data;
+	private boolean isFalling = false;
 
 	private static int idsObstacles = 0; // pour calculer les ID. d'obstacles
 
@@ -63,12 +64,18 @@ public class ObstacleQueue extends Timer {
 		status = ObstacleQueueStatus.FINISHED;
 	}
 
-	public void fall() {
-		add = 10;
+	public final void fall() {
+		if (!isFalling) {
+			add += 10;
+			isFalling = true;
+		}
 	}
 
-	public void stopFall() {
-		add = 1;
+	public final void stopFall() {
+		if (isFalling) {
+			add -= 10;
+			isFalling = false;
+		}
 	}
 
 	protected void putObs() {

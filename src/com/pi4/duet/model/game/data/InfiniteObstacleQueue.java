@@ -26,7 +26,7 @@ public class InfiniteObstacleQueue extends ObstacleQueue {
 					putObs();
 					model.updateGame();
 					time += add;
-					if (time > 0 && time % 2000 == 0) { // implémentation de l'accélération progressive
+					if (time > 0 && time % 4000 == 0) { // implémentation de l'accélération progressive
 						add += 1;
 					}
 					
@@ -45,7 +45,7 @@ public class InfiniteObstacleQueue extends ObstacleQueue {
 			}
 		}, 0, 1);
 	}
-	
+		
 	public InfiniteObstacleQueue(Game g, Scale scale, String path) throws IOException, ClassNotFoundException {
 		super(g, scale, path);
 	}
