@@ -87,7 +87,6 @@ public abstract class GameController {
 		model.setState(GameState.PAUSED);		
 	}
 	
-	public final void stopPause() { model.setState(GameState.ON_GAME); }
 
 	public final void useEffect() {
 		// TODO Auto-generated method stub

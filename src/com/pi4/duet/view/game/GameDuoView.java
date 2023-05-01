@@ -37,7 +37,42 @@ public class GameDuoView extends GameView {
 		}
 		else g.fillRect(0, 0, size.width, size.height);
 	}
+	
+	@Override
+	public final void affichePause() {
+		background =  bg_grey;
+		wheelView.greyWheel();
+		wheelTopView.greyWheel();
 		
+		close.setVisible(true);
+		menu.setVisible(true);
+		resume.setVisible(true);
+		
+		setComponentZOrder(resume, 2);
+		setComponentZOrder(close, 1);
+		setComponentZOrder(menu, 0);
+		
+		this.setVisible(true);
+		this.revalidate();
+		this.repaint();		
+	
+	}
+	
+	@Override
+	protected void gameResume() {
+		background = bg;
+		wheelView.resetWheelColor();
+		wheelTopView.resetWheelColor();
+		
+		close.setVisible(false);
+		menu.setVisible(false);
+		resume.setVisible(false);
+		
+		this.setVisible(true);
+		this.revalidate();
+		this.repaint();		
+	}
+	
 	@Override
 	public void lostGame() {
 		wheelTopView.greyWheel();
@@ -61,7 +96,8 @@ public class GameDuoView extends GameView {
 		}
 		else {
 			if (commands.getPause() == e.getKeyCode()) {
-				controller.stopPause();
+				gameResume();
+				controller.gameResume();
 			}
 		}
 	}

@@ -28,8 +28,14 @@ public abstract class GameView extends JPanel implements KeyListener {
 	protected GameController controller;
 	protected Commands commands;
 
-	private WheelView wheelView;
-	private JButton back, replay, resume, menu, close;
+	protected WheelView wheelView;
+	private JButton back, replay;
+
+	protected JButton resume;
+
+	protected JButton menu;
+
+	protected JButton close;
 	protected Dimension size;
 
 	protected double y_background = 0;
@@ -37,8 +43,8 @@ public abstract class GameView extends JPanel implements KeyListener {
 
 	private ArrayList<ObstacleView> obstacles = new ArrayList<ObstacleView>();
 
-	private Image bg = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
-	private Image bg_grey = new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
+	protected Image bg = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
+	protected Image bg_grey = new ImageIcon(this.getClass().getResource("/resources/img/background_grey.png")).getImage();
 	
 	protected Image background = bg;
 	
@@ -163,7 +169,7 @@ public abstract class GameView extends JPanel implements KeyListener {
 		});		
 	}
 
-	private void gameResume() {
+	protected void gameResume() {
 		background = bg;
 		wheelView.resetWheelColor();
 		
@@ -177,7 +183,7 @@ public abstract class GameView extends JPanel implements KeyListener {
 	}
 
 	
-	public final void affichePause() {
+	public void affichePause() {
 		background =  bg_grey;
 		wheelView.greyWheel();
 		
@@ -310,7 +316,8 @@ public abstract class GameView extends JPanel implements KeyListener {
 		}
 		else {
 			if (commands.getPause() == e.getKeyCode()) {
-				controller.stopPause();
+				gameResume();
+				controller.gameResume();
 			}
 		}
 	}
