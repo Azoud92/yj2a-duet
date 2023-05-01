@@ -217,5 +217,12 @@ public class Wheel { // représente le volant du jeu
 	        }
 	        return false;
 	    }
+	}
+
+	public void setSpeeds(double d) {
+		// TODO Auto-generated method stub
+		this.rotationSpeed *= d;
+		this.movementSpeed *= d;
+		this.inertiaSpeed *= d;
 	}	
 }

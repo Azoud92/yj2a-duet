@@ -21,9 +21,11 @@ public class GameDuo extends Game {
 		// TODO Auto-generated constructor stub
 		this.wheel = new Wheel(coordsWheel, width, controller.getWheelController(), controller.getSettings());
 		wheel.setRadius(wheel.getRadius() * 9 / 10);
+		wheel.setSpeeds(1.25);
 		
 		topWheel = new Wheel(coordsTopWheel, width, controller.getTopWheelController(), controller.getSettings());
 		topWheel.setRadius(topWheel.getRadius() * 9 / 10);
+		topWheel.setSpeeds(1.25);
 	}
 	
 	@Override
