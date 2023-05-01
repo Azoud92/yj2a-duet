@@ -1,8 +1,6 @@
 package com.pi4.duet.view.home;
 
 import java.awt.Dimension;
-import java.util.concurrent.ExecutionException;
-
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 

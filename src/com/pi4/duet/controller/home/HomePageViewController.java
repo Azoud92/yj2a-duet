@@ -85,6 +85,7 @@ public class HomePageViewController {
 			gv.setVisible(false);
 			obstaclesViews = gv.getObstacles();
 		}
+		else obstaclesViews = null;
 
 		gc = new GameLevelController(this, sm, sc.getCommandsModel(), scale);
 		gp = new GameLevel(size.width, size.height, new Point(size.width / 2, size.height - 150), numLevel, scale, gc);
@@ -100,7 +101,7 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 		
 		try {
-			gp.addPattern(PatternData.read("src/resources/levels/level" + numLevel + ".ser"));
+			gp.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/level" + numLevel + ".ser").getFile()));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,6 +121,7 @@ public class HomePageViewController {
 		if (replay) {
 			obstaclesViews = gdv.getObstacles();
 		}
+		else obstaclesViews = null;
 
 		gdc = new GameDuoController(this, sm, sc.getCommandsModel(), scale);
 		gpd = new GameDuo(size.width, size.height, new Point(size.width / 2, size.height - 150), new Point(size.width / 2, 150), scale, gdc);
@@ -137,7 +139,8 @@ public class HomePageViewController {
 		gdv.setFocusable(true);
 
 		try {
-			gpd.addPattern(PatternData.read("src/resources/levels/levelDuo.ser"));
+			gpd.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelDuo.ser").getFile()));
+			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -158,6 +161,7 @@ public class HomePageViewController {
 			giv.setVisible(false);
 			obstaclesViews = giv.getObstacles();
 		}
+		else obstaclesViews = null;
 
 		gic = new GameInfiniteController(this, sm, sc.getCommandsModel(), scale);
 		gi = new GameInfinite(size.width, size.height, new Point(size.width / 2, size.height - 150), scale, gic);
@@ -173,7 +177,7 @@ public class HomePageViewController {
 		giv.setFocusable(true);
 		
 		try {
-			gi.addPattern(PatternData.read("src/resources/levels/levelInfinite.ser"));
+			gi.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelInfinite.ser").getFile()));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

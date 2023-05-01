@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
@@ -31,6 +32,31 @@ public class ObstacleView extends JPanel {
 	private LinkedHashMap<CollisionView, Double> collisionsMap = new LinkedHashMap<>();
 	private int widthCollision, heightCollision;
 	private Image collisionRed, collisionBlue;
+	
+	private static BufferedImage imgColBlue;
+	{
+		if (imgColBlue == null) {
+			try {
+				imgColBlue = ImageIO.read(ObstacleView.class.getResource("/resources/img/collision_blue.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	private static BufferedImage imgColRed;
+	{
+		if (imgColRed == null) {
+			try {
+				imgColRed = ImageIO.read(ObstacleView.class.getResource("/resources/img/collision_red.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+	}
 
 	private ObstacleController controller;
 	
@@ -46,19 +72,14 @@ public class ObstacleView extends JPanel {
 		this.setVisible(true);
 		this.setLayout(null);
 		this.id = idObs;
-		
 		Thread thread = new Thread(() -> {
-            try {
-                Image imageBlue = Auxiliaire.resizeImage(new ImageIcon(ImageIO.read(this.getClass().getResource("/resources/img/collision_blue.png"))), widthCollision, heightCollision).getImage(); 
-                Image imageRed = Auxiliaire.resizeImage(new ImageIcon(ImageIO.read(this.getClass().getResource("/resources/img/collision_red.png"))), widthCollision, heightCollision).getImage(); 
-                SwingUtilities.invokeLater(() -> {
-                    // Mettre à jour l'interface utilisateur après le chargement de l'image
-                    collisionBlue = imageBlue;
-                    collisionRed = imageRed;
-                });
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+			 Image imageBlue = Auxiliaire.resizeImage(new ImageIcon(imgColBlue), widthCollision, heightCollision).getImage(); 
+             Image imageRed = Auxiliaire.resizeImage(new ImageIcon(imgColRed), widthCollision, heightCollision).getImage(); 
+             SwingUtilities.invokeLater(() -> {
+                 // Mettre à jour l'interface utilisateur après le chargement de l'image
+                 collisionBlue = imageBlue;
+                 collisionRed = imageRed;
+             });
         });
         thread.start();
 	}
@@ -128,7 +149,7 @@ public class ObstacleView extends JPanel {
 	public void addCollision(double angle, Point point, Color color) {
 		collisionsMap.put(new CollisionView(point.getX(), point.getY(), color), angle);
 	}
-
+	
 	private class CollisionView { // représente l'effet de tâche sur l'obstacle
 		Image icon;
 		Point point;
