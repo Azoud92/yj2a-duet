@@ -46,7 +46,6 @@ public class ObstacleView extends JPanel {
 		this.setVisible(true);
 		this.setLayout(null);
 		this.id = idObs;
-		
 		Thread thread = new Thread(() -> {
             try {
                 Image imageBlue = Auxiliaire.resizeImage(new ImageIcon(ImageIO.read(this.getClass().getResource("/resources/img/collision_blue.png"))), widthCollision, heightCollision).getImage(); 
@@ -55,6 +54,10 @@ public class ObstacleView extends JPanel {
                     // Mettre à jour l'interface utilisateur après le chargement de l'image
                     collisionBlue = imageBlue;
                     collisionRed = imageRed;
+                    collisionBlue.flush();
+                    collisionRed.flush();
+                    imageBlue.flush();
+                    imageRed.flush();
                 });
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -128,7 +131,7 @@ public class ObstacleView extends JPanel {
 	public void addCollision(double angle, Point point, Color color) {
 		collisionsMap.put(new CollisionView(point.getX(), point.getY(), color), angle);
 	}
-
+	
 	private class CollisionView { // représente l'effet de tâche sur l'obstacle
 		Image icon;
 		Point point;
