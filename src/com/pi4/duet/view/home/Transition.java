@@ -57,7 +57,7 @@ public class Transition extends JPanel{
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                for (int i = width; i >= 0; i--) {
+                for (int i = width; i > 0; i--) {
                     int x1 = jp1.getLocation().x;
                     int x2 = jp2.getLocation().x;
                     
@@ -90,17 +90,6 @@ public class Transition extends JPanel{
                 return null;
             }
             
-            
-            
-
-            @Override
-            protected void done() {
-                try {
-                    get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
         }.execute();
     }
 
