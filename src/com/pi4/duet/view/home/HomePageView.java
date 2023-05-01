@@ -193,6 +193,7 @@ public class HomePageView extends JPanel {
 		settings.setEnabled(false);
 		lvlDuo.setEnabled(false);
 		levelInf.setEnabled(false);
+		lvlMaker.setEnabled(false);
 	}
 	
 	public void ButtonsOn() {		
@@ -204,6 +205,7 @@ public class HomePageView extends JPanel {
 		settings.setEnabled(true);
 		lvlDuo.setEnabled(true);
 		levelInf.setEnabled(true);
+		lvlMaker.setEnabled(true);
 	}
 
 	private class LevelButton extends JButton {

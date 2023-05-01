@@ -76,7 +76,6 @@ public class EditorView extends JPanel {
 	private JPanel obstacleSelect = new JPanel(new GridBagLayout());
 	private JPanel menuButtons = new JPanel(new BorderLayout());
 	
-	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 	
 	private final Runnable addNewObstacle = new Runnable() {
 		public void run() {
@@ -160,6 +159,8 @@ public class EditorView extends JPanel {
 		this.setVisible(false);
 		hpv.setVisible(true);
 	};
+
+	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();;
 	
 	public EditorView(EditorController cont, HomePageView home) {
 		controller = cont;
