@@ -76,7 +76,6 @@ public class EditorView extends JPanel {
 	private JPanel obstacleSelect = new JPanel(new GridBagLayout());
 	private JPanel menuButtons = new JPanel(new BorderLayout());
 	
-	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();
 	
 	private final Runnable addNewObstacle = new Runnable() {
 		public void run() {
@@ -160,6 +159,8 @@ public class EditorView extends JPanel {
 		this.setVisible(false);
 		hpv.setVisible(true);
 	};
+
+	private Image background = new ImageIcon(this.getClass().getResource("/resources/img/background.png")).getImage();;
 	
 	public EditorView(EditorController cont, HomePageView home) {
 		controller = cont;
@@ -332,22 +333,6 @@ public class EditorView extends JPanel {
 		g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
 	}
 	
-	public static void main(String[] args) {
-		JFrame main = new JFrame("Test");
-		main.setSize(400, 700);
-		main.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		EditorView pane = new EditorView(null, null);
-		EditorModel model = new EditorModel();
-		EditorController ctrl = new EditorController(model);
-		pane.controller = ctrl;
-		
-		main.getContentPane().setLayout(new GridBagLayout());
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		main.getContentPane().add(pane, c);
-		main.setVisible(true);
-	}
+	
 
 }

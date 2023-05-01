@@ -26,13 +26,13 @@ public class InfiniteObstacleQueue extends ObstacleQueue {
 					putObs();
 					model.updateGame();
 					time += add;
-					if (time > 0 && time % 4000 == 0) { // implémentation de l'accélération progressive
+					if (time > 0 && time % 10000 == 0) { // implémentation de l'accélération progressive
 						add += 1;
 					}
 					
 					if (status == ObstacleQueueStatus.FINISHED) { // on recrée le niveau et on ajoute de l'accélération
 						status = ObstacleQueueStatus.WAITING;
-						time = -5000; // on laisse 5 secondes (de plus en plus petites avec l'accélération du temps) de pause entre le dernier obstacle et la nouvelle livraison
+						time = -3000; // on laisse 5 secondes (de plus en plus petites avec l'accélération du temps) de pause entre le dernier obstacle et la nouvelle livraison
 						
 						try {
 							InfiniteObstacleQueue.this.data = PatternData.read("src/resources/levels/levelInfinite.ser");
