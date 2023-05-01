@@ -184,7 +184,7 @@ public class HomePageView extends JPanel {
 		controller.runMusic();
 	}
 	
-	public void ButtonsOff() {		
+	public void buttonsOff() {		
 		level1.setEnabled(false);
 		level2.setEnabled(false);
 		level3.setEnabled(false);
@@ -195,12 +195,12 @@ public class HomePageView extends JPanel {
 		levelInf.setEnabled(false);
 	}
 	
-	public void ButtonsOn() {		
-		level1.setEnabled(true);
-		level2.setEnabled(true);
-		level3.setEnabled(true);
-		level4.setEnabled(true);
-		level5.setEnabled(true);
+	public void buttonsOn() {
+		if (controller.isLevelAvailable(1)) level1.setEnabled(true);
+		if (controller.isLevelAvailable(2)) level2.setEnabled(true);
+		if (controller.isLevelAvailable(3)) level3.setEnabled(true);
+		if (controller.isLevelAvailable(4)) level4.setEnabled(true);
+		if (controller.isLevelAvailable(5)) level5.setEnabled(true);
 		settings.setEnabled(true);
 		lvlDuo.setEnabled(true);
 		levelInf.setEnabled(true);
@@ -235,26 +235,5 @@ public class HomePageView extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (controller.getSettings().getBackground()) g.drawImage(background, 0, 0, size.width, size.height, this);		
-	}
-
-	public void refreshLevelButton(int i) {
-		// TODO Auto-generated method stub
-		switch(i) {
-		case 1:
-			this.level1.setEnabled(true);
-			break;
-		case 2:
-			this.level2.setEnabled(true);
-			break;
-		case 3:
-			this.level3.setEnabled(true);
-			break;
-		case 4:
-			this.level4.setEnabled(true);
-			break;
-		case 5:
-			this.level5.setEnabled(true);
-			break;
-		}
 	}
 }

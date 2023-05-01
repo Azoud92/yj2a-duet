@@ -22,7 +22,7 @@ public class HomePage implements Serializable {
 	private static final long serialVersionUID = 6683590500436200055L;
 
 	private ArrayList<Integer> levelsAvailable;
-	private HomePageViewController controller;
+	private transient HomePageViewController controller;
 
 	private HomePage(HomePageViewController controller) {
 		this.controller = controller;
