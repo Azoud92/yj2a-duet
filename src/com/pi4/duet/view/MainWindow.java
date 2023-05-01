@@ -4,17 +4,47 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.model.home.HomePage;
+import com.pi4.duet.view.game.ObstacleView;
 import com.pi4.duet.view.home.HomePageView;
 
 public class MainWindow extends JFrame { // fenêtre principale
 
 	private static final long serialVersionUID = 8560843128781641255L;
+	
+	private static BufferedImage imgColBlue;
+	{
+		if (imgColBlue == null) {
+			try {
+				imgColBlue = ImageIO.read(ObstacleView.class.getResource("/resources/img/collision_blue.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	private static BufferedImage imgColRed;
+	{
+		if (imgColRed == null) {
+			try {
+				imgColRed = ImageIO.read(ObstacleView.class.getResource("/resources/img/collision_red.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+	}
 
 	private Dimension size;
 	private JFrame frame;
@@ -65,5 +95,8 @@ public class MainWindow extends JFrame { // fenêtre principale
 	public JFrame getFrame() {
 		return frame;
 	}
+	
+	public static BufferedImage getImgColRed() { return imgColRed; }
+	public static BufferedImage getImgColBlue() { return imgColBlue; }
 
 }

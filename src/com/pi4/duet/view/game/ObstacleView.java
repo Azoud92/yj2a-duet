@@ -8,11 +8,8 @@ import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -20,6 +17,7 @@ import javax.swing.SwingUtilities;
 import com.pi4.duet.Auxiliaire;
 import com.pi4.duet.Point;
 import com.pi4.duet.controller.game.ObstacleController;
+import com.pi4.duet.view.MainWindow;
 
 public class ObstacleView extends JPanel {
 
@@ -33,31 +31,6 @@ public class ObstacleView extends JPanel {
 	private int widthCollision, heightCollision;
 	private Image collisionRed, collisionBlue;
 	
-	private static BufferedImage imgColBlue;
-	{
-		if (imgColBlue == null) {
-			try {
-				imgColBlue = ImageIO.read(ObstacleView.class.getResource("/resources/img/collision_blue.png"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-	}
-	
-	private static BufferedImage imgColRed;
-	{
-		if (imgColRed == null) {
-			try {
-				imgColRed = ImageIO.read(ObstacleView.class.getResource("/resources/img/collision_red.png"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}		
-	}
-
 	private ObstacleController controller;
 	
 	public final int id;
@@ -73,8 +46,8 @@ public class ObstacleView extends JPanel {
 		this.setLayout(null);
 		this.id = idObs;
 		Thread thread = new Thread(() -> {
-			 Image imageBlue = Auxiliaire.resizeImage(new ImageIcon(imgColBlue), widthCollision, heightCollision).getImage(); 
-             Image imageRed = Auxiliaire.resizeImage(new ImageIcon(imgColRed), widthCollision, heightCollision).getImage(); 
+			 Image imageBlue = Auxiliaire.resizeImage(new ImageIcon(MainWindow.getImgColBlue()), widthCollision, heightCollision).getImage(); 
+             Image imageRed = Auxiliaire.resizeImage(new ImageIcon(MainWindow.getImgColRed()), widthCollision, heightCollision).getImage(); 
              SwingUtilities.invokeLater(() -> {
                  // Mettre à jour l'interface utilisateur après le chargement de l'image
                  collisionBlue = imageBlue;

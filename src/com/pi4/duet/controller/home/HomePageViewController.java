@@ -231,7 +231,7 @@ public class HomePageViewController {
 
 		window.setMainContainer(t);
 		sv.setGw(this.window);
-		view.ButtonsOff();
+		view.buttonsOff();
 		sv.ButtonsOff();
 		t.transition();
 		
@@ -240,7 +240,7 @@ public class HomePageViewController {
 			@Override
 			public void run() {
 				if(!t.getTransition()) {
-					view.ButtonsOn();
+					view.buttonsOn();
 					sv.ButtonsOn();
 					temp.cancel();
 				}
@@ -303,7 +303,7 @@ public class HomePageViewController {
 
 	public void refreshLevelButton(int i) {
 		// TODO Auto-generated method stub
-		view.refreshLevelButton(i);
+		view.buttonsOn();
 	}
 
 }

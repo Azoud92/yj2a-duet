@@ -107,7 +107,7 @@ public class SettingsController {
 		Transition t = new Transition(hpvC.getView(), sv, hpvC.getSize().width, hpvC.getSize().height, Direction.RIGHT);
 
 		gw.setMainContainer(t);
-		hpvC.getView().ButtonsOff();
+		hpvC.getView().buttonsOff();
 		sv.ButtonsOff();
 		t.transition();
 		
@@ -116,7 +116,7 @@ public class SettingsController {
 			@Override
 			public void run() {
 				if(!t.getTransition()) {
-					hpvC.getView().ButtonsOn();
+					hpvC.getView().buttonsOn();
 					sv.ButtonsOn();
 					temp.cancel();
 				}
