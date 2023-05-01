@@ -122,7 +122,7 @@ public class HomePageView extends JPanel {
 
 		settings_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/settings.png")), this.size.width/13, this.size.width/13);
 		settings = new JButton(settings_i);
-		settings.setBounds(this.size.width - this.size.width/10, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
+		settings.setBounds(this.size.width - this.size.width/10, this.size.height - this.size.width/10, this.size.width/10,this.size.width/10);
 		settings.setBorderPainted(false);
 		settings.setContentAreaFilled(false);
 		settings.setFocusPainted(false);
@@ -135,7 +135,7 @@ public class HomePageView extends JPanel {
 
 		quit_i = Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/quit.png")), this.size.width/10, this.size.width/10);
 		quit = new JButton(quit_i);
-		quit.setBounds(0, this.size.height - this.size.width/20 - this.size.width/10, this.size.width/10,this.size.width/10);
+		quit.setBounds(0, this.size.height - this.size.width/10, this.size.width/10,this.size.width/10);
 		quit.setBorderPainted(false);
 		quit.setContentAreaFilled(false);
 		quit.setFocusPainted(false);
@@ -149,7 +149,7 @@ public class HomePageView extends JPanel {
 		});
 
 		lvlDuo = new JButton("1 vs 1");
-		lvlDuo.setBounds(level4.getX()-30, quit.getY() - this.size.width/5 - quit.getHeight(), (level5.getX() + level5.getWidth() - level4.getX())/2, this.size.width/5);
+		lvlDuo.setBounds(level4.getX()/2, quit.getY() - this.size.height/4, level5.getWidth()*3/2, this.size.width/5);
 		lvlDuo.setBackground(Color.BLACK);
 		lvlDuo.setForeground(Color.white);
 		lvlDuo.setFocusable(false);
@@ -161,7 +161,7 @@ public class HomePageView extends JPanel {
 		});
 		
 		lvlMaker = new JButton("Créer");
-		lvlMaker.setBounds(level4.getX(), quit.getY() - this.size.width/20, level5.getX() + level5.getWidth() - level4.getX(), this.size.width/5);
+		lvlMaker.setBounds(level4.getX(), quit.getY() - this.size.height/10, level5.getX() + level5.getWidth() - level4.getX(), this.size.width/5);
 		lvlMaker.setBackground(Color.BLACK);
 		lvlMaker.setForeground(Color.WHITE);
 		lvlMaker.setFocusable(false);
@@ -173,13 +173,14 @@ public class HomePageView extends JPanel {
 		});
 		
 		levelInf = new JButton(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/infini.png")),this.size.width/10, this.size.width/10));
-		levelInf.setBounds(level5.getX()-(30+level4.getHeight())+level4.getWidth(),quit.getY() - this.size.width/5 - quit.getHeight(),(level5.getX() + level5.getWidth() - level4.getX())/2,this.size.width/5);
+		levelInf.setBounds(this.size.width -lvlDuo.getX()- lvlDuo.getWidth(), quit.getY() - this.size.height/4, level5.getWidth()*3/2, this.size.width/5);
 		levelInf.setBackground(Color.BLACK);
 		this.add(levelInf);
 		levelInf.addActionListener(e->{
 			this.setVisible(false);
 			controller.runInfinite(window, this, false);
 		});
+		
 		controller.runMusic();
 	}
 	
