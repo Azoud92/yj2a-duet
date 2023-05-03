@@ -33,7 +33,15 @@ extern void commande_ls(noeud* );
 ///mkdir
 extern void commande_mkdir(noeud* ,char*);
 extern noeud* creationRacine();
-extern noeud* creationNoeud(noeud*,char[100]);
+extern noeud* creationNoeudDossier(noeud*,char[100]);
+
+///pwd
+extern void commande_pwd();
+extern int profondeurNoeud();
+
+///touch
+extern void commande_touch(noeud*,char*);
+extern noeud* creationNoeudFichier(noeud* ,char*);
 
 
 

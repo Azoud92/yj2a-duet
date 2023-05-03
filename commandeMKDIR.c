@@ -13,7 +13,7 @@ void commande_mkdir(noeud* l,char* string){
         exit(EXIT_FAILURE);
     }
     if(l->fils==NULL){
-        noeud* newNoeud= creationNoeud(l,string);
+        noeud* newNoeud= creationNoeudDossier(l,string);
         l->fils->no=newNoeud;
     }else{
         noeud* current=l->fils->no;
@@ -30,7 +30,7 @@ void commande_mkdir(noeud* l,char* string){
             perror("Nom existe déjà");
             exit(EXIT_FAILURE);
         }
-        noeud* newNoeud= creationNoeud(l,string);
+        noeud* newNoeud= creationNoeudDossier(l,string);
         currentListe->no=newNoeud;
     }
 
@@ -48,8 +48,8 @@ noeud* creationRacine(){
 }
 
 
-///Creation d'un noeud
-noeud* creationNoeud(noeud* n,char* name){
+///Creation d'un noeud Dossier
+noeud* creationNoeudDossier(noeud* n,char* name){
     noeud* newNoeud= malloc(sizeof(noeud));
     newNoeud->est_dossier=true;
     for(int i=0;i<100;++i) newNoeud->nom[i]=*(name+i);
