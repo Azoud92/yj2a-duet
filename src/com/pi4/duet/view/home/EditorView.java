@@ -3,6 +3,7 @@ package com.pi4.duet.view.home;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.Math;
 
 import javax.swing.*;
 
@@ -10,7 +11,6 @@ import com.pi4.duet.Point;
 import com.pi4.duet.model.game.Direction;
 import com.pi4.duet.model.game.Obstacle;
 import com.pi4.duet.model.game.data.PatternData;
-import com.pi4.duet.model.home.EditorModel;
 import com.pi4.duet.controller.home.EditorController;
 
 
@@ -76,13 +76,16 @@ public class EditorView extends JPanel {
 	private JPanel obstacleSelect = new JPanel(new GridBagLayout());
 	private JPanel menuButtons = new JPanel(new BorderLayout());
 	
+	private long minDelay = 0l;
 	
 	private final Runnable addNewObstacle = new Runnable() {
 		public void run() {
+			writeCurrentObstacle.run();
 			Point[] points = new Point[4];
 			for (int i = 0 ; i < 4 ; i++) points[i] = new Point(0, 0);
 			
-			controller.transferData(new Obstacle(points, new Point(0, 0), 0, 0, 0, Direction.BOTTOM, null), 0l);
+			minDelay = controller.getSelectedDelay();
+			controller.transferData(new Obstacle(points, new Point(0, 0), 0, 0, 0, Direction.BOTTOM, null), minDelay);
 			controller.incrementSelection(1);
 			update();
 		}
@@ -91,7 +94,10 @@ public class EditorView extends JPanel {
 	private final Runnable deleteCurrentObstacle = new Runnable() {
 		public void run() {
 			controller.deleteSelection();
-			if (controller.getSelection() > 0) controller.incrementSelection(-1);
+			if (controller.getSelection() > 0) {
+				controller.incrementSelection(-1);
+				minDelay = controller.getSelectedDelay();
+			}
 			update();
 		}
 	};
@@ -105,7 +111,7 @@ public class EditorView extends JPanel {
 			Direction dir = (Direction) dirSelect.getValue();
 			double velocity = (double) speedSelect.getValue();
 			double rotationSpeed = (double) rotationSpeedSelect.getValue();
-			double angle = (double) angleSelect.getValue();
+			double angle = Math.toRadians((double) angleSelect.getValue());
 			
 			//Je sais que ce code pue, mais c'est la solution la plus consistante que j'aie trouvé
 			long delay = 0l;
@@ -117,12 +123,15 @@ public class EditorView extends JPanel {
 			
 			Obstacle res = new Obstacle(points, center, velocity, rotationSpeed, angle, dir, null);
 			
+			minDelay = delay;
 			controller.writeSelection(res, delay);
 		}
 	};
 	
 	private final Runnable selectNextObstacle = new Runnable() {
 		public void run() {
+			writeCurrentObstacle.run();
+			minDelay = controller.getSelectedDelay();
 			controller.incrementSelection(1);
 			update();
 		}
@@ -130,7 +139,13 @@ public class EditorView extends JPanel {
 	
 	private final Runnable selectPreviousObstacle = new Runnable() {
 		public void run() {
+			writeCurrentObstacle.run();
 			controller.incrementSelection(-1);
+			if (controller.getSelection() != 0) {
+				controller.incrementSelection(-1);
+				minDelay = controller.getSelectedDelay();
+				controller.incrementSelection(1);
+			} else minDelay = 0;
 			update();
 		}
 	};
@@ -234,6 +249,7 @@ public class EditorView extends JPanel {
 		paramPanel.add(dirLabel);
 		dirSelect.getEditor().getComponent(0).setBackground(Color.BLACK);
 		dirSelect.getEditor().getComponent(0).setForeground(Color.WHITE);
+		dirSelect.setValue(Direction.BOTTOM);
 		paramPanel.add(dirSelect);
 		
 		JLabel speedLabel = new JLabel("Vitesse :");
@@ -252,7 +268,7 @@ public class EditorView extends JPanel {
 		rotationSpeedSelect.getEditor().getComponent(0).setForeground(Color.WHITE);
 		paramPanel.add(rotationSpeedSelect);
 		
-		JLabel angleLabel = new JLabel("Angle :");
+		JLabel angleLabel = new JLabel("Angle (Degrés) :");
 		angleLabel.setFont(labelFont);
 		angleLabel.setForeground(Color.WHITE);
 		paramPanel.add(angleLabel);
@@ -270,6 +286,7 @@ public class EditorView extends JPanel {
 		paramPanel.add(delaySelect);
 		
 		c.gridy = 2;
+		c.weightx = .8;
 		paramPanel.setOpaque(false);
 		paramPanel.setForeground(Color.WHITE);
 		add(paramPanel, c);
@@ -299,8 +316,14 @@ public class EditorView extends JPanel {
 		dirSelect.setValue(currObs.getDirection());
 		speedSelect.setValue(currObs.getVelocity());
 		rotationSpeedSelect.setValue(currObs.getRotationSpeed());
-		angleSelect.setValue(currObs.getAngle());		//Conversion en degrés à faire
-		delaySelect.setValue(controller.getSelectedDelay());
+		angleSelect.setValue(Math.toDegrees(currObs.getAngle()));
+		
+		delaySelect.setModel(new SpinnerNumberModel(minDelay, minDelay, 180000l, 1000l));
+		delaySelect.getEditor().getComponent(0).setBackground(Color.BLACK);
+		delaySelect.getEditor().getComponent(0).setForeground(Color.WHITE);
+
+		delaySelect.setValue((controller.getSelectedDelay() >= minDelay) ? controller.getSelectedDelay() : minDelay);
+
 		
 		if (controller.getSelection() == controller.getSize() - 1) {
 			nextObstacle.setText("+");
