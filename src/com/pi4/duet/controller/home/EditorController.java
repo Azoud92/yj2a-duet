@@ -27,6 +27,11 @@ public class EditorController {
 	public void writeSelection(Obstacle o, Long l) {
 		model.getObstacles().set(selection, o);
 		model.getDelays().set(selection, l);
+		Long delta = 0l;
+		if (selection < model.getDelays().size()-1) delta = model.getDelays().get(selection+1) - model.getDelays().get(selection);
+		if (delta < 0) for (int i = selection+1 ; i < model.getDelays().size() ; i++) {
+			model.getDelays().set(i, model.getDelays().get(i) - delta);
+		}
 	}
 	
 	public void deleteSelection() {

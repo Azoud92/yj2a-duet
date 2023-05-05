@@ -3,6 +3,7 @@ package com.pi4.duet.controller.home;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -198,19 +199,10 @@ public class HomePageViewController {
 		edc = new EditorController(edm);
 		edv = new EditorView(edc, view);
 		
-		JPanel container = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		JPanel container = new JPanel(new GridLayout());
 		
-		c.weightx = .3;
-		container.add(new JPanel(), c);
+		container.add(edv);
 		
-		c.gridx = 1;
-		c.weightx = .4;
-		container.add(edv, c);
-		
-		c.gridx = 2;
-		c.weightx = .3;
-		container.add(new JPanel(), c);
 		window.setMainContainer(container);
 	}
 	
