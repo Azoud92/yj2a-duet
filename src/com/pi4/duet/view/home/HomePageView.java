@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +30,7 @@ public class HomePageView extends JPanel {
 	private Dimension size;
 	private LevelButton level1, level2, level3, level4, level5;
 	private JLabel title1, title2;
-	private JButton settings, quit, lvlDuo, lvlMaker, levelInf;
+	private JButton settings, quit, lvlDuo, lvlMaker, levelInf, readLvl;
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
 	private Scale scale;
@@ -161,7 +162,7 @@ public class HomePageView extends JPanel {
 		});
 		
 		lvlMaker = new JButton("Créer");
-		lvlMaker.setBounds(level4.getX(), quit.getY() - this.size.height/10, level5.getX() + level5.getWidth() - level4.getX(), this.size.width/5);
+		lvlMaker.setBounds(lvlDuo.getX(), quit.getY() - this.size.height/10, (level5.getX() + level5.getWidth() - level4.getX())/2, this.size.width/5);
 		lvlMaker.setBackground(Color.BLACK);
 		lvlMaker.setForeground(Color.WHITE);
 		lvlMaker.setFocusable(false);
@@ -171,7 +172,7 @@ public class HomePageView extends JPanel {
 			this.setVisible(false);
 			controller.runLvlEditor(window, this);
 		});
-		
+
 		levelInf = new JButton(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/infini.png")),this.size.width/10, this.size.width/10));
 		levelInf.setBounds(this.size.width -lvlDuo.getX()- lvlDuo.getWidth(), quit.getY() - this.size.height/4, level5.getWidth()*3/2, this.size.width/5);
 		levelInf.setBackground(Color.BLACK);
@@ -179,6 +180,21 @@ public class HomePageView extends JPanel {
 		levelInf.addActionListener(e->{
 			this.setVisible(false);
 			controller.runInfinite(window, this, false);
+		});
+		
+		readLvl = new JButton("Lire");
+		readLvl.setBounds(level5.getX(), quit.getY() - this.size.height/10, levelInf.getWidth(), this.size.width/5);
+		readLvl.setBackground(Color.BLACK);
+		readLvl.setForeground(Color.WHITE);
+		readLvl.setFocusable(false);
+		readLvl.setFont(new Font("Arial", Font.BOLD, (int) (40 * scale.getScaleY())));
+		this.add(readLvl);
+		readLvl.addActionListener(e -> {
+			String path = null;
+			JFileChooser explorer = new JFileChooser();
+			if (explorer.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) path = explorer.getSelectedFile().getAbsolutePath();
+			else return;
+			if (controller.runCustomLvl(window, this, path, false)) this.setVisible(false);
 		});
 		
 		controller.runMusic();
