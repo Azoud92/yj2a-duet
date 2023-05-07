@@ -35,7 +35,7 @@ public class InfiniteObstacleQueue extends ObstacleQueue {
 						time = -3000; // on laisse 5 secondes (de plus en plus petites avec l'accélération du temps) de pause entre le dernier obstacle et la nouvelle livraison
 						
 						try {
-							InfiniteObstacleQueue.this.data = PatternData.read("src/resources/levels/levelInfinite.ser");
+							InfiniteObstacleQueue.this.data = PatternData.read(this.getClass().getResource("/resources/levels/levelInfinite.ser"));
 						} catch (ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

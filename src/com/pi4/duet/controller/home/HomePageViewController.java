@@ -1,8 +1,6 @@
 package com.pi4.duet.controller.home;
 
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -109,7 +107,7 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 		
 		try {
-			gp.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/level" + numLevel + ".ser").getFile()));
+			gp.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/level" + numLevel + ".ser")));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -147,7 +145,7 @@ public class HomePageViewController {
 		gdv.setFocusable(true);
 
 		try {
-			gpd.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelDuo.ser").getFile()));
+			gpd.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelDuo.ser")));
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -185,7 +183,7 @@ public class HomePageViewController {
 		giv.setFocusable(true);
 		
 		try {
-			gi.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelInfinite.ser").getFile()));
+			gi.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelInfinite.ser")));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
