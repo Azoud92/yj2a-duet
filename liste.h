@@ -31,7 +31,7 @@ extern void commande_ls(noeud* );
 
 
 ///mkdir
-extern void commande_mkdir(noeud* ,char*);
+extern noeud* commande_mkdir(noeud* ,char*);
 extern noeud* creationRacine();
 extern noeud* creationNoeudDossier(noeud*,char[100]);
 
@@ -42,6 +42,16 @@ extern int profondeurNoeud();
 ///touch
 extern void commande_touch(noeud*,char*);
 extern noeud* creationNoeudFichier(noeud* ,char*);
+
+///print
+extern void print_dossier(noeud*);
+
+
+///remove
+extern void commande_remove(noeud*);
+extern void remove_fichier(noeud* );
+extern void remove_dossier(noeud*);
+
 
 
 

@@ -2,12 +2,10 @@
 
 ///Affichage du nom
 void affiche(char nom[100]){
-    int lastIndice;
-    for(int i=99;i>=0;--i){
-        if(*(nom+i)!=' ') lastIndice=i;
-    }
-    for(int i=0;i<=lastIndice;++i){
-        printf("%c",*(nom+i));
+    for(int i=0;i< strlen(nom);++i){
+        if(*(nom+i)!=' ') {
+            printf("%c", *(nom + i));
+        }
     }
     printf(" ");
 }
