@@ -127,6 +127,11 @@ public class CommandsView extends JPanel implements KeyListener {
         
     @Override
     public void keyPressed(KeyEvent keyEvent) {
+    	if (keyEvent.getKeyCode() == KeyEvent.VK_F4 && keyEvent.isAltDown()) {
+            // Arrêter tous les threads de l'application
+            System.exit(0);
+        }
+    	
         for (int i = 0; i < allJButton.length; i++) {
             if (allJButton[i] != null) {            	
                 if(allJButton[i].isPressed){

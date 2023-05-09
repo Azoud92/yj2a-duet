@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,7 +25,7 @@ import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.view.MainWindow;
 
-public class HomePageView extends JPanel {
+public class HomePageView extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 5945161001415252238L;
 
@@ -96,6 +98,8 @@ public class HomePageView extends JPanel {
 				}
 			}
 		}, 0, 20);		
+		this.setFocusable(true);
+		this.addKeyListener(this);
 	}
 	
 	private void initHPV(JFrame frame) {
@@ -254,4 +258,25 @@ public class HomePageView extends JPanel {
 		super.paintComponent(g);
 		if (controller.getSettings().getBackground()) g.drawImage(background, 0, 0, size.width, size.height, this);		
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_F4 && e.isAltDown()) {
+            // Arrêter tous les threads de l'application
+            System.exit(0);
+        }
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}	
 }

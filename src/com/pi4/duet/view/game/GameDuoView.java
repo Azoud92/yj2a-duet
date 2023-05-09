@@ -101,11 +101,6 @@ public class GameDuoView extends GameView {
 			}
 		}
 	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		
-	}
 	
 	@Override
 	public void keyTyped(KeyEvent e) {

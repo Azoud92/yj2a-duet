@@ -78,7 +78,7 @@ public class MainWindow extends JFrame { // fenêtre principale
 
 			frame.add(hpv);
 			frame.setVisible(true);			
-		});	
+		});
 	}
 
 	public void setMainContainer(JPanel container){
