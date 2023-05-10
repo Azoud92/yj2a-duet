@@ -14,7 +14,7 @@ public class InfiniteObstacleQueue extends ObstacleQueue {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public InfiniteObstacleQueue(Game game, Scale scale, PatternData data) {
+	public InfiniteObstacleQueue(Game game, Scale scale, String nameLevel, PatternData data) {
 		this(game, scale);		
 		this.data = data;		
 				
@@ -35,7 +35,7 @@ public class InfiniteObstacleQueue extends ObstacleQueue {
 						time = -3000; // on laisse 5 secondes (de plus en plus petites avec l'accélération du temps) de pause entre le dernier obstacle et la nouvelle livraison
 						
 						try {
-							InfiniteObstacleQueue.this.data = PatternData.read(this.getClass().getResource("/resources/levels/levelInfinite.ser"));
+							InfiniteObstacleQueue.this.data = PatternData.read(this.getClass().getResource("/resources/levels/" + nameLevel + ".ser"));
 						} catch (ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

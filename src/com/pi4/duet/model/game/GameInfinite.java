@@ -45,7 +45,7 @@ public class GameInfinite extends Game {
 	
 	@Override
 	public void addPattern(PatternData d) { 
-		gameTimer = new InfiniteObstacleQueue(this, scale, d);
+		gameTimer = new InfiniteObstacleQueue(this, scale, "levelDuo", d);
 	}
 
 }

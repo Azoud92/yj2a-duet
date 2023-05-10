@@ -41,7 +41,7 @@ public class GameDuo extends Game {
 	
 	@Override
 	public void addPattern(PatternData d) { 
-		gameTimer = new InfiniteObstacleQueue(this, scale, d);
+		gameTimer = new InfiniteObstacleQueue(this, scale, "levelDuo", d);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -47,7 +47,7 @@ public abstract class Game {
 	public void updateGame() {
 		if (gameState != GameState.ON_GAME) return;		
 		updateObstacles();
-		incrProgressionEffect();
+		incrProgressionEffect(gameTimer.getAdd());
 		if (getCanUseEffect()) controller.effectCanBeUsed();
 		wheel.animateWheel();
 	}
@@ -157,11 +157,11 @@ public abstract class Game {
 	
 	public final double getProgressionEffect() { return progressionEffect; }
 	
-	private void incrProgressionEffect() {		
+	private void incrProgressionEffect(int add) {		
 		if (this.progressionEffect >= 100) {
 			this.canUseEffect = true;
 		}
-		else this.progressionEffect += effectDelaySpeed;
+		else this.progressionEffect += effectDelaySpeed * add;
 	}
 	
 	public void useEffect() {
