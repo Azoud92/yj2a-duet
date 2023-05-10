@@ -125,6 +125,7 @@ public class HomePageViewController {
 		this.window = window;
 
 		if (replay) {
+			gdv.setVisible(false);
 			obstaclesViews = gdv.getObstacles();
 		}
 		else obstaclesViews = null;
