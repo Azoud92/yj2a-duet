@@ -214,6 +214,7 @@ public class HomePageView extends JPanel implements KeyListener {
 		lvlDuo.setEnabled(false);
 		levelInf.setEnabled(false);
 		lvlMaker.setEnabled(false);
+		readLvl.setEnabled(false);
 	}
 	
 	public void buttonsOn() {
@@ -226,6 +227,7 @@ public class HomePageView extends JPanel implements KeyListener {
 		lvlDuo.setEnabled(true);
 		levelInf.setEnabled(true);
 		lvlMaker.setEnabled(true);
+		readLvl.setEnabled(true);
 	}
 
 	private class LevelButton extends JButton {

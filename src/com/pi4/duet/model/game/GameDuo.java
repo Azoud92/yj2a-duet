@@ -16,6 +16,8 @@ public class GameDuo extends Game {
 	private Wheel topWheel;
 	private ArrayList<Obstacle> topObstacles = new ArrayList<>();
 	
+	private Thread threadObstacles;
+	
 	public GameDuo(int width, int height, Point coordsWheel, Point coordsTopWheel, Scale scale, GameDuoController controller) {
 		super(width, height, coordsWheel, scale, controller);
 		// TODO Auto-generated constructor stub
@@ -73,8 +75,15 @@ public class GameDuo extends Game {
 	
 	@Override
 	public void updateGame() {
-		if (gameState != GameState.ON_GAME) return;		
-		updateObstacles();
+		if (gameState != GameState.ON_GAME) return;	
+		threadObstacles = new Thread() {
+			@Override
+			public void run() {
+				updateObstacles();
+			}
+		};
+		threadObstacles.start();
+		
 		wheel.animateWheel();
 		topWheel.animateWheel();
 	}
@@ -116,7 +125,6 @@ public class GameDuo extends Game {
 				oc.addCollisionView(new Point(topWheel.getCenterBall2().getX() - oX,
 						topWheel.getCenterBall2().getY() - oY), Color.BLUE);
 			}
-			
 			controller.lost();
 		}
 	}
