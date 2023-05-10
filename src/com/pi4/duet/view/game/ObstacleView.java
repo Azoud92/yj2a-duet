@@ -71,6 +71,7 @@ public class ObstacleView extends JPanel {
 			for(CollisionView cv : copy.keySet()) {
 				g2d = (Graphics2D) g.create();
 				g2d.clip(polygon);
+				if (collisionsMap.get(cv) == null) return;
 				Double angle = -collisionsMap.get(cv);
 				
 				// Translation pour centrer l'image
