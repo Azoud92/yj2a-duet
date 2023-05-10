@@ -5,12 +5,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,14 +25,14 @@ import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.HomePageViewController;
 import com.pi4.duet.view.MainWindow;
 
-public class HomePageView extends JPanel {
+public class HomePageView extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 5945161001415252238L;
 
 	private Dimension size;
 	private LevelButton level1, level2, level3, level4, level5;
 	private JLabel title1, title2;
-	private JButton settings, quit, lvlDuo, lvlMaker, levelInf;
+	private JButton settings, quit, lvlDuo, lvlMaker, levelInf, readLvl;
 	private Icon settings_i, quit_i;
 	private HomePageViewController controller;
 	private Scale scale;
@@ -95,6 +98,8 @@ public class HomePageView extends JPanel {
 				}
 			}
 		}, 0, 20);		
+		this.setFocusable(true);
+		this.addKeyListener(this);
 	}
 	
 	private void initHPV(JFrame frame) {
@@ -161,7 +166,7 @@ public class HomePageView extends JPanel {
 		});
 		
 		lvlMaker = new JButton("Créer");
-		lvlMaker.setBounds(level4.getX(), quit.getY() - this.size.height/10, level5.getX() + level5.getWidth() - level4.getX(), this.size.width/5);
+		lvlMaker.setBounds(lvlDuo.getX(), quit.getY() - this.size.height/10, (level5.getX() + level5.getWidth() - level4.getX())/2, this.size.width/5);
 		lvlMaker.setBackground(Color.BLACK);
 		lvlMaker.setForeground(Color.WHITE);
 		lvlMaker.setFocusable(false);
@@ -171,7 +176,7 @@ public class HomePageView extends JPanel {
 			this.setVisible(false);
 			controller.runLvlEditor(window, this);
 		});
-		
+
 		levelInf = new JButton(Auxiliaire.resizeImage(new ImageIcon(this.getClass().getResource("/resources/img/infini.png")),this.size.width/10, this.size.width/10));
 		levelInf.setBounds(this.size.width -lvlDuo.getX()- lvlDuo.getWidth(), quit.getY() - this.size.height/4, level5.getWidth()*3/2, this.size.width/5);
 		levelInf.setBackground(Color.BLACK);
@@ -179,6 +184,21 @@ public class HomePageView extends JPanel {
 		levelInf.addActionListener(e->{
 			this.setVisible(false);
 			controller.runInfinite(window, this, false);
+		});
+		
+		readLvl = new JButton("Lire");
+		readLvl.setBounds(level5.getX(), quit.getY() - this.size.height/10, levelInf.getWidth(), this.size.width/5);
+		readLvl.setBackground(Color.BLACK);
+		readLvl.setForeground(Color.WHITE);
+		readLvl.setFocusable(false);
+		readLvl.setFont(new Font("Arial", Font.BOLD, (int) (40 * scale.getScaleY())));
+		this.add(readLvl);
+		readLvl.addActionListener(e -> {
+			String path = null;
+			JFileChooser explorer = new JFileChooser();
+			if (explorer.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) path = explorer.getSelectedFile().getAbsolutePath();
+			else return;
+			if (controller.runCustomLvl(window, this, path, false)) this.setVisible(false);
 		});
 		
 		controller.runMusic();
@@ -238,4 +258,25 @@ public class HomePageView extends JPanel {
 		super.paintComponent(g);
 		if (controller.getSettings().getBackground()) g.drawImage(background, 0, 0, size.width, size.height, this);		
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_F4 && e.isAltDown()) {
+            // Arrêter tous les threads de l'application
+            System.exit(0);
+        }
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}	
 }

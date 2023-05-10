@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
@@ -28,8 +30,8 @@ public class PatternData extends LinkedHashMap<Obstacle, Long> {
 		objectStream.close();
 	}
 
-	public static PatternData read(String path) throws IOException, ClassNotFoundException { // Pareil ici
-		FileInputStream fileInput = new FileInputStream(path);
+	public static PatternData read(URL url) throws IOException, ClassNotFoundException { // Pareil ici
+		InputStream fileInput = url.openStream();
 		ObjectInputStream inputStream = new ObjectInputStream(fileInput);
 		PatternData res = (PatternData) inputStream.readObject(); // Cette instruction peut lever plusieurs exceptions, voir la documentation java
 		inputStream.close();
@@ -134,6 +136,15 @@ public class PatternData extends LinkedHashMap<Obstacle, Long> {
 			if (i < keySet().size() -1) res += "<br>";
 			i++;
 		}
+		return res;
+	}
+
+	public static PatternData read(String path) throws IOException, ClassNotFoundException {
+		// TODO Auto-generated method stub
+		FileInputStream fileInput = new FileInputStream(path);
+		ObjectInputStream inputStream = new ObjectInputStream(fileInput);
+		PatternData res = (PatternData) inputStream.readObject(); // Cette instruction peut lever plusieurs exceptions, voir la documentation java
+		inputStream.close();
 		return res;
 	}
 

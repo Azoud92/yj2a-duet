@@ -321,10 +321,15 @@ public abstract class GameView extends JPanel implements KeyListener {
 			}
 		}
 	}
-	
+		
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method 
+		if (e.getKeyCode() == KeyEvent.VK_F4 && e.isAltDown()) {
+            // Arrêter tous les threads de l'application
+            System.exit(0);
+        }
+		
 		if(e.getKeyCode() == commands.getFallObs()){
 			controller.fall();			
 		}

@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -18,7 +20,7 @@ import com.pi4.duet.Scale;
 import com.pi4.duet.controller.home.SettingsController;
 import com.pi4.duet.view.MainWindow;
 
-public class SettingsView extends JPanel {
+public class SettingsView extends JPanel implements KeyListener {
 
 	private static final long serialVersionUID = 8809186306938504775L;
 	private MainWindow gw;
@@ -208,6 +210,9 @@ public class SettingsView extends JPanel {
 			controller.setBackground(false);
 			repaint();
 		});
+		
+		this.setFocusable(true);
+		this.addKeyListener(this);
 	}
 		
 	public void ButtonsOff() {
@@ -257,6 +262,27 @@ public class SettingsView extends JPanel {
 
 	public MainWindow getGw() {
 		return gw;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_F4 && e.isAltDown()) {
+            // Arrêter tous les threads de l'application
+            System.exit(0);
+        }
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

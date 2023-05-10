@@ -7,15 +7,18 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
 import com.pi4.duet.Sound;
+import com.pi4.duet.controller.game.GameCustomController;
 import com.pi4.duet.controller.game.GameDuoController;
 import com.pi4.duet.controller.game.GameInfiniteController;
 import com.pi4.duet.controller.game.GameLevelController;
 import com.pi4.duet.model.game.Direction;
+import com.pi4.duet.model.game.GameCustom;
 import com.pi4.duet.model.game.GameDuo;
 import com.pi4.duet.model.game.GameInfinite;
 import com.pi4.duet.model.game.GameLevel;
@@ -56,6 +59,10 @@ public class HomePageViewController {
 	private GameInfinite gi;
 	private GameInfiniteView giv;
 	private GameInfiniteController gic;
+	
+	private GameCustom gcm;
+	private GameCustomView gcv;
+	private GameCustomController gcc;
 
 	private Scale scale;
 	private Dimension size;
@@ -100,7 +107,7 @@ public class HomePageViewController {
 		gv.setFocusable(true);
 		
 		try {
-			gp.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/level" + numLevel + ".ser").getFile()));
+			gp.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/level" + numLevel + ".ser")));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,7 +145,7 @@ public class HomePageViewController {
 		gdv.setFocusable(true);
 
 		try {
-			gpd.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelDuo.ser").getFile()));
+			gpd.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelDuo.ser")));
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -176,7 +183,7 @@ public class HomePageViewController {
 		giv.setFocusable(true);
 		
 		try {
-			gi.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelInfinite.ser").getFile()));
+			gi.addPattern(PatternData.read(this.getClass().getResource("/resources/levels/levelInfinite.ser")));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -202,6 +209,47 @@ public class HomePageViewController {
 		container.add(edv);
 		
 		window.setMainContainer(container);
+	}
+	
+	public boolean runCustomLvl(MainWindow window, HomePageView view, String path, boolean replay) {
+		this.window = window;
+		this.view = view;
+		
+		if (replay) {
+			gcv.setVisible(false);
+			obstaclesViews = gcv.getObstacles();
+		}
+		else obstaclesViews = null;
+
+		gcc = new GameCustomController(this, sm, sc.getCommandsModel(), scale);
+		gcm = new GameCustom(size.width, size.height, new Point(size.width / 2, size.height - 150), scale, gcc, path);
+		gcc.getWheelController().setModel(gcm.getWheel());
+		gcc.setModel(gcm);
+		gcv = new GameCustomView(size, scale, sc.getCommandsModel(), gcc);
+		gcc.getWheelController().setView(gcv.getWheel());
+		gcc.setView(gcv);
+		
+		try {
+			gcm.addPattern(PatternData.read(path));
+		} catch (ClassNotFoundException e) {
+			JOptionPane.showOptionDialog(this.getView(), "Impossible de lire le fichier : " + e.getMessage(), "Erreur", 
+					JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+			return false;
+		} catch (IOException e) {
+			JOptionPane.showOptionDialog(this.getView(), "Impossible d'accéder au fichier : " + e.getMessage(), "Erreur", 
+					JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+			return false;
+		}
+		
+		window.setMainContainer(gcv);
+
+		gcv.requestFocus();
+		gcv.setFocusable(true);
+		
+		gcm.gameStart();
+		homeMusic.stop();
+		
+		return true;
 	}
 	
 	public void runHomePage() {
