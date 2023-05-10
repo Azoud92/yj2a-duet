@@ -4,15 +4,14 @@ import java.util.ArrayList;
 
 import com.pi4.duet.Point;
 import com.pi4.duet.Scale;
-import com.pi4.duet.controller.game.GameController;
-import com.pi4.duet.controller.game.GameLevelController;
+import com.pi4.duet.controller.game.GameCustomController;
 import com.pi4.duet.model.game.data.ObstacleQueueStatus;
 
 public class GameCustom extends Game {
 	
 	public final String path;
 	
-	public GameCustom(int width, int height, Point coordsWheel, Scale scale, GameController controller, String path) {
+	public GameCustom(int width, int height, Point coordsWheel, Scale scale, GameCustomController controller, String path) {
 		super(width, height, coordsWheel, scale, controller);
 		this.path = path;
 	}
@@ -44,7 +43,7 @@ public class GameCustom extends Game {
 			gameStop();
 			gameTimer.setStatus(ObstacleQueueStatus.FINISHED);
 			gameState = GameState.FINISHED;			
-			((GameLevelController) controller).win();
+			((GameCustomController) controller).win();
 		}
 	}
 	
