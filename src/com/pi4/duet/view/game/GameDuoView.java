@@ -108,6 +108,15 @@ public class GameDuoView extends GameView {
 		
 	}
 	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method 
+		if (e.getKeyCode() == KeyEvent.VK_F4 && e.isAltDown()) {
+            // Arrêter tous les threads de l'application
+            System.exit(0);
+        }
+	}
+	
 	public WheelView getWheelTopView() {
 		// TODO Auto-generated method stub
 		return wheelTopView;
