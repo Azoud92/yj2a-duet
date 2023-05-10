@@ -1,6 +1,7 @@
 package com.pi4.duet.controller.home;
 
 import com.pi4.duet.model.home.EditorModel;
+import com.pi4.duet.model.home.Settings;
 
 import java.io.IOException;
 
@@ -10,11 +11,12 @@ import com.pi4.duet.model.game.data.PatternData;
 public class EditorController {
 	
 	private final EditorModel model;
-	
+	private Settings settings;
 	private int selection = 0;
 	
-	public EditorController(EditorModel m) {
+	public EditorController(EditorModel m, Settings s) {
 		model = m;
+		settings = s;
 	}
 	
 	public void incrementSelection(int n) {selection += n;}
@@ -53,5 +55,7 @@ public class EditorController {
 	public PatternData transmitCompileRequest() {
 		return model.compile();
 	}
+
+	public final boolean isBackgroundEnabled() { return settings.getBackground(); }
 	
 }

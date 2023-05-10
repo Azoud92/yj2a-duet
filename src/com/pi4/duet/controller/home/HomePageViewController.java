@@ -201,7 +201,7 @@ public class HomePageViewController {
 		this.view = view;
 		
 		edm = new EditorModel();
-		edc = new EditorController(edm);
+		edc = new EditorController(edm, sm);
 		edv = new EditorView(edc, view);
 		
 		JPanel container = new JPanel(new GridLayout());

@@ -353,7 +353,10 @@ public class EditorView extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+		if (controller.isBackgroundEnabled()){
+			g.drawImage(background, 0, 0,  getWidth(), getHeight(), this);
+		}
+		else g.fillRect(0, 0, getWidth(), getHeight());
 	}
 	
 	
